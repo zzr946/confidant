@@ -1,0 +1,135 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<title>修改密码-伯乐网</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="style/css/style.css" />
+		
+		<!--<script id="allmobilize" charset="utf-8" src="style/js/allmobilize.min.js"></script>-->
+		<script src="style/js/jquery.1.10.1.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="style/js/jquery.lib.min.js"></script>
+		<script type="text/javascript" src="style/js/core.min.js"></script>
+		<!--引入layui.js-->
+		<script type="text/javascript" src="style/js/layer/layer.js"></script>
+
+	</head>
+
+	<body id="login_bg">
+		<div class="login_wrapper" style="padding-top: 40px;">
+			<div class="login_header">
+				<a href="h/"><img src="style/images/logo_white.png" width="285" height="62" alt="伯乐网" /></a>
+				<div id="cloud_s"><img src="style/images/cloud_s.png" width="81" height="52" alt="cloud" /></div>
+				<div id="cloud_m"><img src="style/images/cloud_m.png" width="136" height="95" alt="cloud" /></div>
+			</div>
+
+			<input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27" />
+			<div class="login_box">
+				<form id="loginForm">
+					<!--手机号-->
+					<input type="text" id="email" class="phone" name="email" placeholder="请输入电话号码" />
+					<!--验证码-->
+					<input type="text" id="email" class="code" name="email" placeholder="请输入验证码" style="width: 200px;padding-right: 0px;" />
+					<input type="button" id="getcode" style="height: 42px;width: 106px;margin-left: -5px;background-color: white; color: #019875;padding-top: 2px;" value="获取验证码" />
+					<!--密码-->
+					<input type="password" id="password" class="pwd" name="password" placeholder="请输入密码" />
+					<!--确认密码-->
+					<input type="password" id="password" class="repwd" name="password" placeholder="请输入确认密码" />
+
+					<input type="button" id="submitLogin" value="修 &nbsp; &nbsp; 改" />
+					<input type="hidden" id="callback" name="callback" value="" />
+					<input type="hidden" id="authType" name="authType" value="" />
+					<input type="hidden" id="signature" name="signature" value="" />
+					<input type="hidden" id="timestamp" name="timestamp" value="" />
+				</form>
+				<div class="login_right">
+					<div>已有伯乐帐号</div>
+					<a href="login.html" class="registor_now">直接登录</a>
+				</div>
+				<div class="login_right" style="margin-top: 40px;">
+					<div>没有账号？</div>
+					<a href="register.html" class="registor_now">前往注册</a>
+				</div>
+			</div>
+			<div class="login_box_btm"></div>
+		</div>
+
+		<script>
+			//点击获取验证码按钮，验证电话号码，通过后请求后端
+			$("#getcode").click(function() {
+				//获取电话号码
+				var phone = $(".phone").val().trim();
+				if(phone == null || phone == "") {
+					layer.alert("请输入手机号！", {icon: 2});
+					return false;
+				}
+				if(!(/^1[3456789]\d{9}$/.test(phone))) {
+					layer.alert("手机号有误!", {icon: 2});
+					return false;
+				}
+				//手机号码输入成功，向后端发送请求
+				//TODO
+				layer.alert("向后端发送请求，获取验证码", {icon: 1});
+
+			});
+
+			//点击修改按钮，校验数据通过后发送到后端
+			$('#submitLogin').click(function() {
+				//获取手机号
+				var phone = $(".phone").val().trim();
+				//获取验证码
+				var code = $(".code").val().trim();
+				//获取密码
+				var pwd = $(".pwd").val().trim();
+				//获取确认密码
+				var repwd = $(".repwd").val().trim();
+				
+				if(phone == null || phone == "") {
+					layer.alert("请输入手机号!", {icon: 2});
+					return false;
+				}
+				if(!(/^1[3456789]\d{9}$/.test(phone))) {
+					layer.alert("手机号有误!", {icon: 2});
+					return false;
+				}
+
+				if(code == null || code == "") {
+					layer.alert("请输入验证码!", {icon: 2});
+					return false;
+				}
+				if(code.length != 6) {
+					layer.alert("验证码格式错误!", {icon: 2});
+					return false;
+				}
+
+				if(pwd == null || pwd == "") {
+					layer.alert("请输入密码!", {icon: 2});
+					return false;
+				}
+				if(pwd.length < 6 || pwd.length > 16) {
+					layer.alert("密码应长度介于6~16位!", {icon: 2});
+					return false;
+				}
+
+				if(repwd == null || repwd == "") {
+					layer.alert("请输入确认密码!", {icon: 2});
+					return false;
+				}
+				if(repwd.length < 6 || repwd.length > 16) {
+					layer.alert("确认密码应长度介于6~16位!", {icon: 2});
+					return false;
+				}
+				if(pwd != repwd) {
+					layer.alert("两次密码输入不一致!", {icon: 2});
+					return false;
+				}
+
+				//数据校验成功，向后端发送和请求
+				//TODO
+				layer.alert("向后端发送请求，修改密码", {icon: 1});
+
+			});
+		</script>
+	</body>
+
+</html>
