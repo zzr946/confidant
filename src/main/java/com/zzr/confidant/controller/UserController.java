@@ -1,6 +1,8 @@
 package com.zzr.confidant.controller;
 
 import com.zzr.confidant.dto.ResultDTO;
+import com.zzr.confidant.mapper.UserMapper;
+import com.zzr.confidant.model.User;
 import com.zzr.confidant.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +10,10 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author 赵志然
@@ -55,6 +61,29 @@ public class UserController {
     }
 
     /**
+     * 企业用户登陆后，如果已经认证则跳转到公司首页
+     * @return
+     */
+    @ApiOperation(value = "跳转到公司首页 页面", notes = "开发：赵志然")
+    @GetMapping("/myhome")
+    public String tomyhomePage(){
+        return "myhome";
+    }
+
+    /**
+     * 企业用户登陆后，如果未认证则跳转到认证第一步
+     * @return
+     */
+    @ApiOperation(value = "跳转到公司认证 页面", notes = "开发：赵志然")
+    @GetMapping("/index01")
+    public String toindex01Page(){
+        return "index01";
+    }
+
+
+
+
+    /**
      * 获取短信验证码
      *
      * @param phone 电话号码
@@ -83,6 +112,31 @@ public class UserController {
                               @ApiParam(value = "密码") @PathVariable(value = "pwd") String pwd) {
         return userService.register(type,phone,code,pwd);
     }
+
+    /**
+     * 用户登陆的方法
+     * @param phone 电话号码，登陆账号
+     * @param pwd 登陆密码
+     * @return
+     */
+    @ApiOperation(value = "用户登陆", notes = "开发：赵志然")
+    @PostMapping("/login/{phone}/{pwd}")
+    @ResponseBody
+    public ResultDTO login(@ApiParam(value = "电话号码，登陆账号") @PathVariable(value = "phone") String phone,
+                           @ApiParam(value = "登陆密码") @PathVariable(value = "pwd") String pwd,
+                           HttpServletRequest request){
+        ResultDTO result = userService.login(phone, pwd);
+        //获取session
+        HttpSession session = request.getSession();
+        if(result.getData()!=null){
+            //登陆成功，将user信息存入session
+            session.setAttribute("user",result.getData());
+        }
+        //登陆失败,直接将result返回
+        return result;
+    }
+
+
 
 
 }

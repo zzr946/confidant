@@ -98,4 +98,32 @@ public class UserService {
         }
         return result;
     }
+
+    /**
+     * 用户登陆的方法
+     * @param phone 手机号，也是登陆账号
+     * @param pwd 登陆密码
+     * @return
+     */
+    public ResultDTO login(String phone, String pwd) {
+        ResultDTO result=new ResultDTO();
+        List<User> list = new ArrayList<>();
+        User user = null;
+        //调用mpper 查询
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone",phone).eq("password",Tools.getMD5(pwd));
+        user = userMapper.selectOne(queryWrapper);
+        if(user==null){
+            //登陆失败
+            result.setCode(-1);
+            result.setMsg("用户名或密码错误!");
+            result.setData(null);
+        }else{
+            //登陆成功
+            result.setCode(0);
+            result.setMsg("登陆成功!");
+            result.setData(user);
+        }
+        return result;
+    }
 }
