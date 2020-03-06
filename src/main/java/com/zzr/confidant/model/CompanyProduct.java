@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 赵志然
- * @description 公司标签表(companytags)表实体类
+ * @description 公司产品表(companyproduct)表实体类
  * @date 2020-03-05 22:50:36
  */
-@ApiModel(description = "公司标签")
-@TableName(value = "companytags")
+@ApiModel(description = "公司产品表")
+@TableName(value = "companyproduct")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyTags {
+public class CompanyProduct {
     /**
-     *公司标签id
+     *公司产品id
      */
     @TableId(value="id")
-    @ApiModelProperty(value = "公司标签id")
+    @ApiModelProperty(value = "公司产品id")
     private String id;
 
     /**
@@ -44,11 +44,32 @@ public class CompanyTags {
     private String companyName;
 
     /**
-     * 标签内容
+     * 产品海报
      */
-    @TableField(value = "companyTag")
-    @ApiModelProperty(value = "标签内容")
-    private String companyTag;
+    @TableField(value = "productLogo")
+    @ApiModelProperty(value = "产品海报")
+    private String productLogo;
+
+    /**
+     * 产品名称
+     */
+    @TableField(value = "productName")
+    @ApiModelProperty(value = "产品名称")
+    private String productName;
+
+    /**
+     * 产品网址
+     */
+    @TableField(value = "productUrl")
+    @ApiModelProperty(value = "产品网址")
+    private String productUrl;
+
+    /**
+     * 产品介绍
+     */
+    @TableField(value = "productDescribe")
+    @ApiModelProperty(value = "产品介绍")
+    private String productDescribe;
 
     /**
      * 预留字段1

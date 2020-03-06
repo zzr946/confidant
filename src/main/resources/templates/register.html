@@ -1,151 +1,211 @@
 ﻿<!DOCTYPE HTML>
 <html>
 
-	<head>
-		<title>注册-伯乐网</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link rel="stylesheet" type="text/css" href="style/css/style.css" />
-		
-		<!--<script id="allmobilize" charset="utf-8" src="style/js/allmobilize.min.js"></script>-->
-		<script type="text/javascript" src="style/js/jquery.1.10.1.min.js" ></script>
-		<script type="text/javascript" src="style/js/jquery.lib.min.js"></script>
-		<script type="text/javascript" src="style/js/core.min.js"></script>
-		<!--引入layui.js-->
-		<script type="text/javascript" src="style/js/layer/layer.js"></script>
-	</head>
+<head>
+    <title>注册-伯乐网</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="style/css/style.css"/>
 
-	<body id="login_bg">
-		<div class="login_wrapper" style="padding-top: 40px;">
-			<div class="login_header">
-				<a href="h/"><img src="style/images/logo_white.png" width="285" height="62" alt="伯乐网" /></a>
-				<div id="cloud_s"><img src="style/images/cloud_s.png" width="81" height="52" alt="cloud" /></div>
-				<div id="cloud_m"><img src="style/images/cloud_m.png" width="136" height="95" alt="cloud" /></div>
-			</div>
+    <!--<script id="allmobilize" charset="utf-8" src="style/js/allmobilize.min.js"></script>-->
+    <script type="text/javascript" src="style/js/jquery.1.10.1.min.js"></script>
+    <script type="text/javascript" src="style/js/jquery.lib.min.js"></script>
+    <script type="text/javascript" src="style/js/core.min.js"></script>
+    <!--引入layui.js-->
+    <script type="text/javascript" src="style/js/layer/layer.js"></script>
+</head>
 
-			<input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27" />
-			<div class="login_box">
-				<form id="loginForm">
-					<!--注册的目的-->
-					<ul class="register_radio clearfix">
-						<li>
-							找工作
-							<input type="radio" value="0" name="type" />
-						</li>
-						<li>
-							招人
-							<input type="radio" value="1" name="type" />
-						</li>
-					</ul>
-					<!--电话号码-->
-					<input type="text" id="email" class="phone" name="phone" tabindex="1" placeholder="请输入电话号码" />
+<body id="login_bg">
+<div class="login_wrapper" style="padding-top: 50px;">
+    <div class="login_header">
+        <a href="h/"><img src="style/images/logo_white.png" width="285" height="62" alt="伯乐网"/></a>
+        <div id="cloud_s"><img src="style/images/cloud_s.png" width="81" height="52" alt="cloud"/></div>
+        <div id="cloud_m"><img src="style/images/cloud_m.png" width="136" height="95" alt="cloud"/></div>
+    </div>
 
-					<!--验证码-->
-					<input type="text" id="email" class="code" name="code" tabindex="1" placeholder="请输入验证码" style="width: 200px;padding-right: 0px;" />
-					<input type="button" id="getcode" style="height: 42px;width: 106px;margin-left: -5px;background-color: white; color: #019875;padding-top: 2px;" value="获取验证码" />
+    <input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27"/>
+    <div class="login_box">
+        <form id="loginForm">
+            <!--注册的目的-->
+            <ul class="register_radio clearfix">
+                <li>
+                    找工作
+                    <input type="radio" value="p" name="type"/>
+                </li>
+                <li>
+                    招人
+                    <input type="radio" value="q" name="type"/>
+                </li>
+            </ul>
+            <!--电话号码-->
+            <input type="text" id="email" class="phone" name="phone" tabindex="1" placeholder="请输入电话号码"/>
 
-					<!--密码-->
-					<input type="password" id="password" class="pwd" name="password" tabindex="2" placeholder="请输入密码" />
-					<label class="fl registerJianJu" for="checkbox">
-            			<input type="checkbox" id="checkbox" name="checkbox" checked  class="checkbox valid" />我已阅读并同意<a href="javascript:void(0)">《伯乐网用户协议》</a>
-           			</label>
-					<input type="button" id="submitLogin" class="reg" value="注 &nbsp; &nbsp; 册" />
-				</form>
+            <!--验证码-->
+            <input type="text" id="email" class="code" name="code" tabindex="1" placeholder="请输入验证码"
+                   style="width: 200px;padding-right: 0px;"/>
+            <input type="button" id="getcode"
+                   style="height: 42px;width: 106px;margin-left: -5px;background-color: white; color: #019875;padding-top: 2px;"
+                   value="获取验证码"/>
 
-				<div class="login_right" style="margin-top: 30px;">
-					<div>已有伯乐帐号</div>
-					<a href="login.html" class="registor_now">直接登录</a>
-				</div>
-			</div>
-			<div class="login_box_btm"></div>
-		</div>
+            <!--密码-->
+            <input type="password" id="password" class="pwd" name="password" tabindex="2" placeholder="请输入密码"/>
+            <label class="fl registerJianJu" for="checkbox">
+                <input type="checkbox" id="checkbox" name="checkbox" checked class="checkbox valid"/>我已阅读并同意<a
+                    href="javascript:void(0)">《伯乐网用户协议》</a>
+            </label>
+            <input type="button" id="submitLogin" class="reg" value="注 &nbsp; &nbsp; 册"/>
+        </form>
 
-		<script type="text/javascript">
-			$(document).ready(function(e) {
-				$('.register_radio li input').click(function(e) {
-					$(this).parent('li').addClass('current').append('<em></em>').siblings().removeClass('current').find('em').remove();
-				});
+        <div class="login_right" style="margin-top: 30px;">
+            <div>已有伯乐帐号</div>
+            <a href="/loginPage" class="registor_now">直接登录</a>
+        </div>
+    </div>
+    <div class="login_box_btm"></div>
+</div>
 
-				$('#email').focus(function() {
-					$('#beError').hide();
-				});
-			});
+<script type="text/javascript">
+    //全局的短信验证码code
+    var phoneCode = "";
 
-			//点击获取验证码按钮，验证电话号码，通过后请求后端
-			$("#getcode").click(function() {
-				//获取电话号码
-				var phone = $(".phone").val().trim();
-				if(phone == null || phone == "") {
-					layer.alert("请输入手机号！", {icon: 2});
-					return false;
-				}
-				if(!(/^1[3456789]\d{9}$/.test(phone))) {
-					layer.alert("手机号有误!", {icon: 2});
-					return false;
-				}
-				//手机号码输入成功，向后端发送请求
-				//TODO
-				layer.alert("向后端发送请求", {icon: 1});
+    //选择用户类型的效果
+    $(document).ready(function (e) {
+        $('.register_radio li input').click(function (e) {
+            $(this).parent('li').addClass('current').append('<em></em>').siblings().removeClass('current').find('em').remove();
+        });
 
-			});
-			
-			
-			
-			//点击注册按钮
-			$(".reg").click(function() {
-				//判断是否选中注册目的   0表示找工作  1表示招人
-				var type = $('input:radio[name="type"]:checked').val();
-				if(!type) {
-					layer.alert('请选择使用伯乐网的目的', {icon: 2});
-					return false;
-				}
-				
-				//获取手机号
-				var phone = $(".phone").val().trim();
-				//获取验证码
-				var code = $(".code").val().trim();
-				//获取密码
-				var pwd = $(".pwd").val().trim();
-				
-				if(phone == null || phone == "") {
-					layer.alert("请输入手机号!", {icon: 2});
-					return false;
-				}
-				if(!(/^1[3456789]\d{9}$/.test(phone))) {
-					layer.alert("手机号有误!", {icon: 2});
-					return false;
-				}
-				
-				if(code == null || code == "") {
-					layer.alert("请输入验证码!", {icon: 2});
-					return false;
-				}
-				if(code.length != 6) {
-					layer.alert("验证码格式错误!", {icon: 2});
-					return false;
-				}
-				
-				if(pwd == null || pwd == "") {
-					layer.alert("请输入密码!", {icon: 2});
-					return false;
-				}
-				if(pwd.length < 6 || pwd.length > 16) {
-					layer.alert("密码应长度介于6~16位!", {icon: 2});
-					return false;
-				}
-				
-				//判断是否同意条理
-				if(!$("#checkbox").prop('checked')){
-					layer.alert("您需要先同意用户协议!", {icon: 2});
-					return false;
-				}
-				
-				//数据校验成功，向后端发送和请求
-				//TODO
-				layer.alert("向后端发送请求，注册", {icon: 1});
-				
-				
-			});
-		</script>
-	</body>
+        $('#email').focus(function () {
+            $('#beError').hide();
+        });
+    });
+
+    //点击获取验证码按钮，验证电话号码，通过后请求后端
+    $("#getcode").click(function () {
+        //如果显示的是倒计时内容，不是显示的获取验证码，则点击按不做任何操作
+        if ($("#getcode").val() != "获取验证码") {
+            return false;
+        }
+
+        //获取电话号码
+        var phone = $(".phone").val().trim();
+        if (phone == null || phone == "") {
+            layer.alert("请输入手机号！", {icon: 2});
+            return false;
+        }
+        if (!(/^1[3456789]\d{9}$/.test(phone))) {
+            layer.alert("手机号有误!", {icon: 2});
+            return false;
+        }
+
+        //设置倒计时
+        var i = 60;
+        var fun = setInterval(function () {
+            $("#getcode").val(i + "秒后重试");
+            i--;
+            if (i < 0) {
+                $("#getcode").val("获取验证码");
+                clearInterval(fun);
+            }
+        }, 1000);
+        //手机号码输入成功，向后端发送请求
+
+        $.ajax({
+            type: "post",
+            url: "/getCode/" + phone,
+            success: function (result) {
+                //成功的回调函数
+                if (result.code == 0) {
+                    layer.alert("短信发送成功,请注意查收短信!", {icon: 1});
+                    phoneCode = result.data;
+                    console.log(phoneCode);
+                } else {
+                    layer.alert("系统异常,请稍后再试！", {icon: 5});
+                }
+            }
+        });
+
+    });
+
+    //点击注册按钮
+    $(".reg").click(function () {
+        //判断是否选中注册目的   p表示普通用户，找工作  q表示企业用户，招人
+        var type = $('input:radio[name="type"]:checked').val();
+        if (!type) {
+            layer.alert('请选择使用伯乐网的目的!', {icon: 2});
+            return false;
+        }
+
+        //获取手机号
+        var phone = $(".phone").val().trim();
+        //获取验证码
+        var code = $(".code").val().trim();
+        //获取密码
+        var pwd = $(".pwd").val().trim();
+
+        if (phone == null || phone == "") {
+            layer.alert("请输入手机号!", {icon: 2});
+            return false;
+        }
+        if (!(/^1[3456789]\d{9}$/.test(phone))) {
+            layer.alert("手机号有误!", {icon: 2});
+            return false;
+        }
+
+        if (code == null || code == "") {
+            layer.alert("请输入验证码!", {icon: 2});
+            return false;
+        }
+        if (code.length != 6) {
+            layer.alert("验证码格式错误!", {icon: 2});
+            return false;
+        }
+        if (code != phoneCode) {
+            layer.alert("短信验证码不正确!", {icon: 4});
+            return false;
+        }
+
+        if (pwd == null || pwd == "") {
+            layer.alert("请输入密码!", {icon: 2});
+            return false;
+        }
+        if (pwd.length < 6 || pwd.length > 16) {
+            layer.alert("密码应长度介于6~16位!", {icon: 2});
+            return false;
+        }
+
+        //判断是否同意条理
+        if (!$("#checkbox").prop('checked')) {
+            layer.alert("您需要先同意用户协议!", {icon: 2});
+            return false;
+        }
+
+        //数据校验成功，向后端发送和请求
+        $.ajax({
+            type: "post",
+            url: "/reg/" + type + "/" + phone + "/" + code + "/" + pwd,
+            success: function (result) {
+                //成功的回调函数
+                if (result.code == -1) {
+                    //手机号已经注册过了
+                    layer.alert(result.msg, {icon: 4});
+                    return false;
+                } else if (result.code == 0) {
+                    //后端校验，验证码错误
+                    layer.alert(result.msg, {icon: 2});
+                    return false;
+                } else if (result.code == 1) {
+                    //注册成功
+                    layer.confirm("注册成功,请前往登陆", {icon: 1, title: '提示'}, function () {
+                        location.href = "/loginPage";
+                    });
+                    return false;
+                } else {
+                    layer.alert("系统异常,请稍后再试！", {icon: 5});
+                    return false;
+                }
+            }
+        });
+    });
+</script>
+</body>
 
 </html>

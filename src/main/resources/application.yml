@@ -1,8 +1,6 @@
 server:
   port: 8888
 
-
-
 spring:
   datasource:
     url: jdbc:mysql://49.235.20.164:3306/confidant
@@ -14,16 +12,20 @@ spring:
       maximum-pool-size: 10
       max-lifetime: 30000 # 不能小于30秒，否则默认回到1800秒
       connection-test-query: SELECT 1
-  resources:
-    static-locations: classpath:/static/
-
+  #redis配置
   redis:
     host: 49.235.20.164
+  #配置css、js等静态资源访问路径
+  resources:
+    static-locations: classpath:/static/
+  #配置thymeleaf
+  thymeleaf:
+    prefix:
+      classpath: /templates   # 访问template下的html文件需要配置模板，映射
+    cache: false # 开发时关闭缓存,不然没法看到实时页面
 
-#logging:
-#  level:
-#    com:
-#      zzr:
-#        confidant:
-#          mapper: debug
+#mapper 文件日志输出级别
+logging:
+  level:
+    com.zzr.confidant.mapper: debug
 

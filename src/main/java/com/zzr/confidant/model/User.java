@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,64 +12,57 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 赵志然
- * @description 公司产品表(companyproduct)表实体类
+ * @description 用户表(user)表实体类
  * @date 2020-03-05 22:50:36
  */
-@ApiModel(description = "公司产品表")
-@TableName(value = "companyproduct")
+@ApiModel(description = "用户登陆信息")
+@TableName(value = "user")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyProduct {
+public class User {
     /**
-     *公司产品id
+     * 用户id
      */
-    @TableId(value="id")
-    @ApiModelProperty(value = "公司产品id")
+    @TableId(value = "id")
+    @ApiModelProperty(value = "用户id")
     private String id;
 
     /**
-     * 公司id
+     * 电话号码,登录账号
      */
-    @TableField(value = "companyId")
-    @ApiModelProperty(value = "公司id")
-    private String companyId;
+    @TableField(value = "phone")
+    @ApiModelProperty(value = "电话号码,登录账号")
+    private String phone;
 
     /**
-     * 公司名称
+     * 登录密码
      */
-    @TableField(value = "companyName")
-    @ApiModelProperty(value = "公司名称")
-    private String companyName;
+    @TableField(value = "password")
+    @ApiModelProperty(value = "登录密码")
+    private String password;
 
     /**
-     * 产品海报
+     * 用户类型
      */
-    @TableField(value = "productLogo")
-    @ApiModelProperty(value = "产品海报")
-    private String productLogo;
+    @TableField(value = "userType")
+    @ApiModelProperty(value = "用户类型")
+    private String userType;
 
     /**
-     * 产品名称
+     * 企业用户是否认证
      */
-    @TableField(value = "productName")
-    @ApiModelProperty(value = "产品名称")
-    private String productName;
+    @TableField(value = "authentication")
+    @ApiModelProperty(value = "企业用户是否认证")
+    private String authentication;
 
     /**
-     * 产品网址
+     * 登录状态
      */
-    @TableField(value = "productUrl")
-    @ApiModelProperty(value = "产品网址")
-    private String productUrl;
-
-    /**
-     * 产品介绍
-     */
-    @TableField(value = "productDescribe")
-    @ApiModelProperty(value = "产品介绍")
-    private String productDescribe;
+    @TableField(value = "loginState")
+    @ApiModelProperty(value = "登录状态")
+    private String loginState;
 
     /**
      * 预留字段1
@@ -79,7 +72,7 @@ public class CompanyProduct {
     private String reserved1;
 
     /**
-     * 预留字段2
+     * 预留字段1
      */
     @TableField(value = "reserved2")
     @ApiModelProperty(value = "预留字段2")

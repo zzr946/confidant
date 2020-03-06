@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,57 +12,64 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 赵志然
- * @description 用户表(user)表实体类
+ * @description 公司创始人表(companyInit)表实体类
  * @date 2020-03-05 22:50:36
  */
-@ApiModel(description = "用户登陆信息")
-@TableName(value = "user")
+@ApiModel(description = "公司创始团队")
+@TableName(value = "companyinit")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class CompanyInit {
     /**
-     *用户id
+     *公司创始人id
      */
     @TableId(value="id")
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "公司创始人id")
     private String id;
 
     /**
-     * 电话号码,登录账号
+     * 公司id
      */
-    @TableField(value = "phone")
-    @ApiModelProperty(value = "电话号码,登录账号")
-    private String phone;
+    @TableField(value = "companyId")
+    @ApiModelProperty(value = "公司id")
+    private String companyId;
 
     /**
-     * 登录密码
+     * 公司名称
      */
-    @TableField(value = "password")
-    @ApiModelProperty(value = "登录密码")
-    private String password;
+    @TableField(value = "companyName")
+    @ApiModelProperty(value = "公司名称")
+    private String companyName;
 
     /**
-     * 用户类型
+     * 公司创始人姓名
      */
-    @TableField(value = "userType")
-    @ApiModelProperty(value = "用户类型")
-    private String userType;
+    @TableField(value = "founderName")
+    @ApiModelProperty(value = "公司创始人姓名")
+    private String founderName;
 
     /**
-     * 企业用户是否认证
+     * 创始人当前职位
      */
-    @TableField(value = "authentication")
-    @ApiModelProperty(value = "企业用户是否认证")
-    private String authentication;
+    @TableField(value = "founderPosition")
+    @ApiModelProperty(value = "创始人当前职位")
+    private String founderPosition;
 
     /**
-     * 登录状态
+     * 创始人头像
      */
-    @TableField(value = "loginState")
-    @ApiModelProperty(value = "登录状态")
-    private String loginState;
+    @TableField(value = "founderPhoto")
+    @ApiModelProperty(value = "创始人头像")
+    private String founderPhoto;
+
+    /**
+     * 创始人介绍
+     */
+    @TableField(value = "founderDescribe")
+    @ApiModelProperty(value = "创始人介绍")
+    private String founderDescribe;
 
     /**
      * 预留字段1
@@ -72,7 +79,7 @@ public class User {
     private String reserved1;
 
     /**
-     * 预留字段1
+     * 预留字段2
      */
     @TableField(value = "reserved2")
     @ApiModelProperty(value = "预留字段2")

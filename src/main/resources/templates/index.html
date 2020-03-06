@@ -4,23 +4,62 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>首页-伯乐网</title>
-		<link rel="stylesheet" type="text/css" href="style/css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="style/css/style.css" th:href="@{style/css/style.css}"/>
 		<link rel="stylesheet" type="text/css" href="style/css/external.min.css" />
 		<link rel="stylesheet" type="text/css" href="style/css/popup.css" />
 		<script src="style/js/jquery.1.10.1.min.js" type="text/javascript"></script>
-		<script type="text/javascript" src="static/style/js/jquery.lib.min.js"></script>
+		<script type="text/javascript" src="style/js/jquery.lib.min.js"></script>
 		<script src="style/js/ajaxfileupload.js" type="text/javascript"></script>
 		<script type="text/javascript" src="style/js/additional-methods.js"></script>
 		<!--layer.js-->
 		<script type="text/javascript" src="style/js/layer/layer.js"></script>
+<!--自带内部样式-->
+		<style>
+			.ui-autocomplete {
+				width: 488px;
+				background: #fafafa !important;
+				position: relative;
+				z-index: 10;
+				border: 2px solid #91cebe;
+			}
+
+			.ui-autocomplete-category {
+				font-size: 16px;
+				color: #999;
+				width: 50px;
+				position: absolute;
+				z-index: 11;
+				right: 0px;
+				/*top: 6px; */
+				text-align: center;
+				border-top: 1px dashed #e5e5e5;
+				padding: 5px 0;
+			}
+
+			.ui-menu-item {
+				*width: 439px;
+				vertical-align: middle;
+				position: relative;
+				margin: 0px;
+				margin-right: 50px !important;
+				background: #fff;
+				border-right: 1px dashed #ededed;
+			}
+
+			.ui-menu-item a {
+				display: block;
+				overflow: hidden;
+			}
+		</style>
 	</head>
 
 	<body>
 		<div id="body">
+<!--			顶部logo、首页、。。。。。。-->
 			<div id="header">
 				<div class="wrapper">
 					<a href="index.html" class="logo">
-						<img src="style/images/logo.png" width="229" height="43" alt="拉勾招聘-专注互联网招聘" />
+						<img src="style/images/logo.png" width="229" height="43" alt="伯乐网-专注互联网招聘" />
 					</a>
 					<ul class="reset" id="navheader">
 						<li class="current">
@@ -39,20 +78,52 @@
 							<a href="create.html" rel="nofollow">发布职位</a>
 						</li>
 					</ul>
+<!--					未登陆显示登陆注册-->
 					<ul class="loginTop">
 						<li>
-							<a href="login.html" rel="nofollow">登录</a>
+							<a href="/loginPage" rel="nofollow">登录</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="register.html" rel="nofollow">注册</a>
+							<a href="/registerPage" rel="nofollow">注册</a>
 						</li>
 					</ul>
+<!--					已经登陆显示下拉列表-->
+					<dl class="collapsible_menu" hidden>
+						<dt>
+							<span>jason&nbsp;</span>
+							<span class="red dn" id="noticeDot-0"></span>
+							<i></i>
+						</dt>
+						<dd>
+							<a rel="nofollow" href="jianli.html">我的简历</a>
+						</dd>
+						<dd>
+							<a href="collections.html">我收藏的职位</a>
+						</dd>
+						<dd>
+							<a href="delivery.html">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+						</dd>
+						<dd class="btm">
+							<a href="subscribe.html">我的订阅</a>
+						</dd>
+						<dd>
+							<a href="create.html">我要招人</a>
+						</dd>
+						<dd>
+							<a href="accountBind.html">帐号设置</a>
+						</dd>
+						<dd class="logout">
+							<a rel="nofollow" href="login.html">退出</a>
+						</dd>
+					</dl>
+
 				</div>
 			</div>
-			<!-- end #header -->
-			<div id="container">
 
+<!--			主体部分-->
+			<div id="container">
+<!--				左侧类别框-->
 				<div id="sidebar">
 					<div class="mainNavs">
 
@@ -466,70 +537,29 @@
 							</div>
 						</div>
 					</div>
-					<a class="subscribe" href="subscribe.html" target="_blank">订阅职位</a>
+<!--					<a class="subscribe" href="subscribe.html" target="_blank">订阅职位</a>-->
 				</div>
+
+<!--				右侧具体的职位信息-->
 				<div class="content">
+<!--					搜索框-->
 					<div id="search_box">
 						<form id="searchForm" name="searchForm" action="list.html" method="get">
+<!--							选择按公司搜索还是按职位搜索-->
 							<ul id="searchType">
 								<li data-searchtype="1" class="type_selected">职位</li>
 								<li data-searchtype="4">公司</li>
 							</ul>
+
 							<div class="searchtype_arrow"></div>
 							<input type="text" id="search_input" name="kd" tabindex="1" value="" placeholder="请输入职位名称，如：产品经理" />
-							<input type="hidden" name="spc" id="spcInput" value="" />
-							<input type="hidden" name="pl" id="plInput" value="" />
-							<input type="hidden" name="gj" id="gjInput" value="" />
-							<input type="hidden" name="xl" id="xlInput" value="" />
-							<input type="hidden" name="yx" id="yxInput" value="" />
-							<input type="hidden" name="gx" id="gxInput" value="" />
-							<input type="hidden" name="st" id="stInput" value="" />
-							<input type="hidden" name="labelWords" id="labelWords" value="" />
-							<input type="hidden" name="lc" id="lc" value="" />
-							<input type="hidden" name="workAddress" id="workAddress" value="" />
-							<input type="hidden" name="city" id="cityInput" value="" />
-							<input type="submit" id="search_button" value="搜索" />
+							<input type="button" id="search_button" value="搜索" />
 
 						</form>
 					</div>
-					<style>
-						.ui-autocomplete {
-							width: 488px;
-							background: #fafafa !important;
-							position: relative;
-							z-index: 10;
-							border: 2px solid #91cebe;
-						}
-						
-						.ui-autocomplete-category {
-							font-size: 16px;
-							color: #999;
-							width: 50px;
-							position: absolute;
-							z-index: 11;
-							right: 0px;
-							/*top: 6px; */
-							text-align: center;
-							border-top: 1px dashed #e5e5e5;
-							padding: 5px 0;
-						}
-						
-						.ui-menu-item {
-							*width: 439px;
-							vertical-align: middle;
-							position: relative;
-							margin: 0px;
-							margin-right: 50px !important;
-							background: #fff;
-							border-right: 1px dashed #ededed;
-						}
-						
-						.ui-menu-item a {
-							display: block;
-							overflow: hidden;
-						}
-					</style>
-					<script type="text/javascript" src="style/js/search.min.js"></script>
+					<!--点击搜索按钮后触发的事件-->
+					<script></script>
+
 					<dl class="hotSearch">
 						<dt>热门搜索：</dt>
 						<dd>
@@ -600,8 +630,7 @@
 							</ul>
 						</div>
 					</div>
-					<!--/#main_banner-->
-
+<!--					轮播图下面的六张图片广告，点击就是搜索该公司-->
 					<ul id="da-thumbs" class="da-thumbs">
 						<li>
 							<a href="h/c/1650.html" target="_blank">
@@ -677,10 +706,7 @@
 						</li>
 					</ul>
 
-					<ul class="reset hotabbing">
-						<li class="current">热门职位</li>
-						<li>最新职位</li>
-					</ul>
+<!--					推荐的职位列表-->
 					<div id="hotList">
 						<ul class="hot_pos reset">
 							<li class="clearfix">
@@ -997,166 +1023,6 @@
 										<li>单身住宿</li>
 										<li>股票期权</li>
 										<li>午餐补助</li>
-									</ul>
-								</div>
-							</li>
-							<li class="clearfix">
-								<div class="hot_pos_l">
-									<div class="mb10">
-										<a href="h/jobs/148783.html" target="_blank">网页产品设计师</a>
-										&nbsp;
-										<span class="c9">[北京]</span>
-									</div>
-									<span><em class="c7">月薪： </em>8k-10k</span>
-									<span><em class="c7">经验：</em> 1-3年</span>
-									<span><em class="c7">最低学历： </em>本科</span>
-									<br />
-									<span><em class="c7">职位诱惑：</em>六险一金，饭补，班车，晋升机制，氛围好</span>
-									<br />
-									<span>14:15发布</span>
-									<!-- <a  class="wb">分享到微博</a> -->
-								</div>
-								<div class="hot_pos_r">
-									<div class="mb10 recompany">
-										<a href="h/c/8143.html" target="_blank">途家网</a>
-									</div>
-									<span><em class="c7">领域：</em> 移动互联网,O2O</span>
-									<span><em class="c7">创始人：</em>罗军</span>
-									<br />
-									<span><em class="c7">阶段：</em> 成长型(B轮)</span>
-									<span><em class="c7">规模：</em>500-2000人</span>
-									<ul class="companyTags reset">
-										<li>绩效奖金</li>
-										<li>五险一金</li>
-										<li>带薪年假</li>
-									</ul>
-								</div>
-							</li>
-							<li class="odd clearfix">
-								<div class="hot_pos_l">
-									<div class="mb10">
-										<a href="h/jobs/148206.html" target="_blank">产品经理（工商系统项目）</a>
-										&nbsp;
-										<span class="c9">[北京]</span>
-									</div>
-									<span><em class="c7">月薪： </em>10k-20k</span>
-									<span><em class="c7">经验：</em> 5-10年</span>
-									<span><em class="c7">最低学历： </em>本科</span>
-									<br />
-									<span><em class="c7">职位诱惑：</em>和一群聪明的人共事</span>
-									<br />
-									<span>1天前发布</span>
-									<!-- <a  class="wb">分享到微博</a> -->
-								</div>
-								<div class="hot_pos_r">
-									<div class="mb10 recompany">
-										<a href="h/c/3646.html" target="_blank">PEVC</a>
-									</div>
-									<span><em class="c7">领域：</em> 金融互联网</span>
-									<span><em class="c7">创始人：</em>兰宁羽</span>
-									<br />
-									<span><em class="c7">阶段：</em> 成长型(A轮)</span>
-									<span><em class="c7">规模：</em>50-150人</span>
-									<ul class="companyTags reset">
-										<li>五险一金</li>
-										<li>节日礼物</li>
-										<li>弹性工作</li>
-									</ul>
-								</div>
-							</li>
-							<li class="clearfix">
-								<div class="hot_pos_l">
-									<div class="mb10">
-										<a href="h/jobs/147720.html" target="_blank">团队经理</a>
-										&nbsp;
-										<span class="c9">[北京]</span>
-									</div>
-									<span><em class="c7">月薪： </em>10k-15k</span>
-									<span><em class="c7">经验：</em> 不限</span>
-									<span><em class="c7">最低学历： </em>大专</span>
-									<br />
-									<span><em class="c7">职位诱惑：</em>位置佳，环境优越，发展空间大，薪酬高</span>
-									<br />
-									<span>2天前发布</span>
-									<!-- <a  class="wb">分享到微博</a> -->
-								</div>
-								<div class="hot_pos_r">
-									<div class="mb10 recompany">
-										<a href="h/c/3786.html" target="_blank">宜信公司</a>
-									</div>
-									<span><em class="c7">领域：</em> 移动互联网,金融互联网</span>
-									<span><em class="c7">创始人：</em>唐宁</span>
-									<br />
-									<span><em class="c7">阶段：</em> 成熟型(D轮及以上)</span>
-									<span><em class="c7">规模：</em>2000人以上</span>
-									<ul class="companyTags reset">
-										<li>管理规范</li>
-										<li>技能培训</li>
-										<li>扁平管理</li>
-									</ul>
-								</div>
-							</li>
-							<li class="odd clearfix">
-								<div class="hot_pos_l">
-									<div class="mb10">
-										<a href="h/jobs/145249.html" target="_blank">手游商务</a>
-										&nbsp;
-										<span class="c9">[上海]</span>
-									</div>
-									<span><em class="c7">月薪： </em>6k-10k</span>
-									<span><em class="c7">经验：</em> 1-3年</span>
-									<span><em class="c7">最低学历： </em>大专</span>
-									<br />
-									<span><em class="c7">职位诱惑：</em>一年两次调薪，免费早、晚餐，项目、年终奖</span>
-									<br />
-									<span>2014-06-27</span>
-									<!-- <a  class="wb">分享到微博</a> -->
-								</div>
-								<div class="hot_pos_r">
-									<div class="mb10 recompany">
-										<a href="h/c/4428.html" target="_blank">恺英网络</a>
-									</div>
-									<span><em class="c7">领域：</em> 移动互联网,游戏</span>
-									<span><em class="c7">创始人：</em>王悦</span>
-									<br />
-									<span><em class="c7">阶段：</em> 初创型(未融资)</span>
-									<span><em class="c7">规模：</em>500-2000人</span>
-									<ul class="companyTags reset">
-										<li>游戏公司</li>
-										<li>页游</li>
-										<li>手游</li>
-									</ul>
-								</div>
-							</li>
-							<li class="clearfix">
-								<div class="hot_pos_l">
-									<div class="mb10">
-										<a href="h/jobs/148680.html" target="_blank">市场推广</a>
-										&nbsp;
-										<span class="c9">[上海]</span>
-									</div>
-									<span><em class="c7">月薪： </em>7k-12k</span>
-									<span><em class="c7">经验：</em> 1-3年</span>
-									<span><em class="c7">最低学历： </em>大专</span>
-									<br />
-									<span><em class="c7">职位诱惑：</em>年度16薪 市场营销发展方向</span>
-									<br />
-									<span>1天前发布</span>
-									<!-- <a  class="wb">分享到微博</a> -->
-								</div>
-								<div class="hot_pos_r">
-									<div class="mb10 recompany">
-										<a href="h/c/1235.html" target="_blank">在路上</a>
-									</div>
-									<span><em class="c7">领域：</em> 移动互联网,在线旅游</span>
-									<span><em class="c7">创始人：</em>黄天赐</span>
-									<br />
-									<span><em class="c7">阶段：</em> 成熟型(C轮)</span>
-									<span><em class="c7">规模：</em>50-150人</span>
-									<ul class="companyTags reset">
-										<li>弹性工作</li>
-										<li>领导好</li>
-										<li>移动互联网</li>
 									</ul>
 								</div>
 							</li>
@@ -1647,95 +1513,31 @@
 					</div>
 
 					<div class="clear"></div>
-					<div id="linkbox">
-						<dl>
-							<dt>友情链接</dt>
-							<dd>
-								<a href="http://www.zhuqu.com/" target="_blank">住趣家居网</a> <span>|</span>
-								<a href="http://www.woshipm.com/" target="_blank">人人都是产品经理</a> <span>|</span>
-								<a href="http://zaodula.com/" target="_blank">互联网er的早读课</a> <span>|</span>
-								<a href="http://lieyunwang.com/" target="_blank">猎云网</a> <span>|</span>
-								<a href="http://www.ucloud.cn/" target="_blank">UCloud</a> <span>|</span>
-								<a href="http://www.iconfans.com/" target="_blank">iconfans</a> <span>|</span>
-								<a href="http://www.html5dw.com/" target="_blank">html5梦工厂</a> <span>|</span>
-								<a href="http://www.sykong.com/" target="_blank">手游那点事</a>
-
-								<a href="http://www.php100.com/" target="_blank">php100</a> <span>|</span>
-								<a href="http://www.uehtml.com/" target="_blank">uehtml</a> <span>|</span>
-								<a href="http://www.w3cplus.com/" target="_blank">W3CPlus</a> <span>|</span>
-								<a href="http://www.boxui.com/" target="_blank">盒子UI</a> <span>|</span>
-								<a href="http://www.uimaker.com/" target="_blank">uimaker</a> <span>|</span>
-								<a href="http://www.yixieshi.com/" target="_blank">互联网的一些事</a> <span>|</span>
-								<a href="http://www.chuanke.com/" target="_blank">传课网</a> <span>|</span>
-								<a href="http://www.eoe.cn/" target="_blank">安卓开发</a> <span>|</span>
-								<a href="http://www.eoeandroid.com/" target="_blank">安卓开发论坛</a>
-								<a href="http://hao.360.cn/" target="_blank">360安全网址导航</a> <span>|</span>
-								<a href="http://se.360.cn/" target="_blank">360安全浏览器</a> <span>|</span>
-								<a href="http://www.hao123.com/" target="_blank">hao123上网导航</a> <span>|</span>
-								<a href="http://www.ycpai.com" target="_blank">互联网创业</a><span>|</span>
-								<a href="http://www.zhongchou.cn" target="_blank">众筹网</a><span>|</span>
-								<a href="http://www.marklol.com/" target="_blank">马克互联网</a><span>|</span>
-								<a href="http://www.chaohuhr.com/" target="_blank">巢湖英才网</a>
-
-								<a href="http://www.zhubajie.com/" target="_blank">创意服务外包</a><span>|</span>
-								<a href="http://www.thinkphp.cn/" target="_blank">thinkphp</a><span>|</span>
-								<a href="http://www.chuangxinpai.com/" target="_blank">创新派</a><span>|</span>
-
-								<a href="http://w3cshare.com/" target="_blank">W3Cshare</a><span>|</span>
-								<a href="http://www.518lunwen.cn/" target="_blank">论文发表网</a><span>|</span>
-								<a href="http://www.199it.com" target="_blank">199it</a><span>|</span>
-
-								<a href="http://www.shichangbu.com" target="_blank">市场部网</a><span>|</span>
-								<a href="http://www.meitu.com/" target="_blank">美图公司</a><span>|</span>
-								<a href="https://www.teambition.com/" target="_blank">Teambition</a>
-								<a href="http://oupeng.com/" target="_blank">欧朋浏览器</a><span>|</span>
-								<a href="http://iwebad.com/" target="_blank">网络广告人社区</a>
-								<a href="h/af/flink.html" target="_blank" class="more">更多</a>
-							</dd>
-						</dl>
-					</div>
 				</div>
 				<input type="hidden" value="" name="userid" id="userid" />
-				<!-- <div id="qrSide"><a></a></div> -->
-				<!--  -->
 
-				<!-- <div id="loginToolBar">
-	<div>
-		<em></em>
-		<img src="style/images/footbar_logo.png" width="138" height="45" />
-		<span class="companycount"></span>
-		<span class="positioncount"></span>
-		<a href="#loginPop" class="bar_login inline" title="登录"><i></i></a>
-		<div class="right">
-			<a href="register.html?from=index_footerbar" onclick="_hmt.push(['_trackEvent', 'button', 'click', 'register'])" class="bar_register" id="bar_register" target="_blank"><i></i></a>
-		</div>
-		<input type="hidden" id="cc" value="16002" />
-		<input type="hidden" id="cp" value="96531" />
-	</div>
-</div>
- -->
 				<!-------------------------------------弹窗lightbox  ----------------------------------------->
-				<div style="display:none;">
-					<!-- 登录框 -->
-					<div id="loginPop" class="popup" style="height:240px;">
-						<form id="loginForm">
-							<input type="text" id="email" name="email" tabindex="1" placeholder="请输入登录邮箱地址" />
-							<input type="password" id="password" name="password" tabindex="2" placeholder="请输入密码" />
-							<span class="error" style="display:none;" id="beError"></span>
-							<label class="fl" for="remember"><input type="checkbox" id="remember" value="" checked="checked" name="autoLogin" /> 记住我</label>
-							<a href="h/reset.html" class="fr">忘记密码？</a>
-							<input type="submit" id="submitLogin" value="登 &nbsp; &nbsp; 录" />
-						</form>
-						<div class="login_right">
-							<div>还没有拉勾帐号？</div>
-							<a href="register.html" class="registor_now">立即注册</a>
-							<div class="login_others">使用以下帐号直接登录:</div>
-							<a href="h/ologin/auth/sina.html" target="_blank" id="icon_wb" class="icon_wb" title="使用新浪微博帐号登录"></a>
-							<a href="h/ologin/auth/qq.html" class="icon_qq" id="icon_qq" target="_blank" title="使用腾讯QQ帐号登录"></a>
-						</div>
-					</div>
-					<!--/#loginPop-->
-				</div>
+<!--				<div style="display:none;">-->
+<!--					&lt;!&ndash; 登录框 &ndash;&gt;-->
+<!--					<div id="loginPop" class="popup" style="height:240px;">-->
+<!--						<form id="loginForm">-->
+<!--							<input type="text" id="email" name="email" tabindex="1" placeholder="请输入登录邮箱地址" />-->
+<!--							<input type="password" id="password" name="password" tabindex="2" placeholder="请输入密码" />-->
+<!--							<span class="error" style="display:none;" id="beError"></span>-->
+<!--							<label class="fl" for="remember"><input type="checkbox" id="remember" value="" checked="checked" name="autoLogin" /> 记住我</label>-->
+<!--							<a href="h/reset.html" class="fr">忘记密码？</a>-->
+<!--							<input type="submit" id="submitLogin" value="登 &nbsp; &nbsp; 录" />-->
+<!--						</form>-->
+<!--						<div class="login_right">-->
+<!--							<div>还没有伯乐帐号？</div>-->
+<!--							<a href="register.html" class="registor_now">立即注册</a>-->
+<!--							<div class="login_others">使用以下帐号直接登录:</div>-->
+<!--							<a href="h/ologin/auth/sina.html" target="_blank" id="icon_wb" class="icon_wb" title="使用新浪微博帐号登录"></a>-->
+<!--							<a href="h/ologin/auth/qq.html" class="icon_qq" id="icon_qq" target="_blank" title="使用腾讯QQ帐号登录"></a>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					&lt;!&ndash;/#loginPop&ndash;&gt;-->
+<!--				</div>-->
 				<!------------------------------------- end ----------------------------------------->
 				<script type="text/javascript" src="style/js/Chart.min.js"></script>
 				<script type="text/javascript" src="style/js/home.min.js"></script>
@@ -1746,14 +1548,10 @@
 			</div>
 			<!-- end #container -->
 		</div>
-		<!-- end #body -->
+		<!-- 页面底部 备案号-->
 		<div id="footer">
 			<div class="wrapper">
-				<a href="h/about.html" target="_blank" rel="nofollow">联系我们</a>
-				<a href="h/af/zhaopin.html" target="_blank">互联网公司导航</a>
-				<a href="http://e.weibo.com/lagou720" target="_blank" rel="nofollow">拉勾微博</a>
-				<a class="footer_qr" href="javascript:void(0)" rel="nofollow">拉勾微信<i></i></a>
-				<div class="copyright">&copy;2013-2014 Lagou
+				<div class="copyright">&copy;2019-2020 BoLe
 					<a target="_blank" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">京ICP备14023790号-2</a>
 				</div>
 			</div>
@@ -1761,10 +1559,6 @@
 
 		<script type="text/javascript" src="style/js/core.min.js"></script>
 		<script type="text/javascript" src="style/js/popup.min.js"></script>
-
-		<!-- <script src="style/js/wb.js" type="text/javascript" charset="utf-8"></script>
- -->
-
 	</body>
 
 </html>

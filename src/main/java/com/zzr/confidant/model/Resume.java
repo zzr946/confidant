@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

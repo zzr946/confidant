@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,36 +12,43 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 赵志然
- * @description 职位收藏表(collect)表实体类
- * @date 2020-03-05 22:50:32
+ * @description 职位表(position)表实体类
+ * @date 2020-03-05 22:50:36
  */
-@ApiModel(description = "职位收藏")
-@TableName(value = "collect")
+@ApiModel(description = "职位信息")
+@TableName(value = "position")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Collect {
+public class Position {
     /**
-     * 收藏id
+     *职位id
      */
     @TableId(value="id")
-    @ApiModelProperty(value = "收藏id")
+    @ApiModelProperty(value = "职位id")
     private String id;
 
     /**
-     * 普通用户id
+     * 公司id
      */
-    @TableField(value = "userId")
-    @ApiModelProperty(value = "普通用户id")
-    private String userId;
+    @TableField(value = "companyId")
+    @ApiModelProperty(value = "公司id")
+    private String companyId;
 
     /**
-     * 职位id
+     * 公司名称
      */
-    @TableField(value = "positionId")
-    @ApiModelProperty(value = "职位id")
-    private String positionId;
+    @TableField(value = "companyName")
+    @ApiModelProperty(value = "公司名称")
+    private String companyName;
+
+    /**
+     * 职位类型
+     */
+    @TableField(value = "positionType")
+    @ApiModelProperty(value = "职位类型")
+    private String positionType;
 
     /**
      * 职位名称
@@ -51,11 +58,32 @@ public class Collect {
     private String positionName;
 
     /**
-     * 职位所属公司名称
+     * 职位所属部门
      */
-    @TableField(value = "companyName")
-    @ApiModelProperty(value = "职位所属公司名称")
-    private String companyName;
+    @TableField(value = "department")
+    @ApiModelProperty(value = "职位所属部门")
+    private String department;
+
+    /**
+     * 工作性质
+     */
+    @TableField(value = "jobType")
+    @ApiModelProperty(value = "工作性质")
+    private String jobtTpe;
+
+    /**
+     * 最低月薪
+     */
+    @TableField(value = "leastSalary")
+    @ApiModelProperty(value = "最低月薪")
+    private Integer leastSalary;
+
+    /**
+     * 最高月薪
+     */
+    @TableField(value = "mostSalary")
+    @ApiModelProperty(value = "最高月薪")
+    private Integer mostSalary;
 
     /**
      * 工作城市
@@ -86,11 +114,32 @@ public class Collect {
     private String positionTempt;
 
     /**
-     * 职位发布时间
+     * 职位描述
+     */
+    @TableField(value = "positionDescribe")
+    @ApiModelProperty(value = "职位描述")
+    private String positionDescribe;
+
+    /**
+     * 联系方式邮箱
+     */
+    @TableField(value = "contactWay")
+    @ApiModelProperty(value = "联系方式邮箱")
+    private String contactWay;
+
+    /**
+     * 发布时间
      */
     @TableField(value = "publishTime")
-    @ApiModelProperty(value = "职位发布时间")
+    @ApiModelProperty(value = "发布时间")
     private String publishTime;
+
+    /**
+     * 职位状态
+     */
+    @TableField(value = "positionState")
+    @ApiModelProperty(value = "公司id")
+    private String positionState;
 
     /**
      * 预留字段1

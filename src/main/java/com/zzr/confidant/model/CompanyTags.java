@@ -1,4 +1,4 @@
-package com.zzr.confidant.entity;
+package com.zzr.confidant.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 赵志然
- * @description 公司创始人表(companyInit)表实体类
+ * @description 公司标签表(companytags)表实体类
  * @date 2020-03-05 22:50:36
  */
-@ApiModel(description = "公司创始团队")
-@TableName(value = "companyinit")
+@ApiModel(description = "公司标签")
+@TableName(value = "companytags")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyInit {
+public class CompanyTags {
     /**
-     *公司创始人id
+     *公司标签id
      */
     @TableId(value="id")
-    @ApiModelProperty(value = "公司创始人id")
+    @ApiModelProperty(value = "公司标签id")
     private String id;
 
     /**
@@ -44,32 +44,11 @@ public class CompanyInit {
     private String companyName;
 
     /**
-     * 公司创始人姓名
+     * 标签内容
      */
-    @TableField(value = "founderName")
-    @ApiModelProperty(value = "公司创始人姓名")
-    private String founderName;
-
-    /**
-     * 创始人当前职位
-     */
-    @TableField(value = "founderPosition")
-    @ApiModelProperty(value = "创始人当前职位")
-    private String founderPosition;
-
-    /**
-     * 创始人头像
-     */
-    @TableField(value = "founderPhoto")
-    @ApiModelProperty(value = "创始人头像")
-    private String founderPhoto;
-
-    /**
-     * 创始人介绍
-     */
-    @TableField(value = "founderDescribe")
-    @ApiModelProperty(value = "创始人介绍")
-    private String founderDescribe;
+    @TableField(value = "companyTag")
+    @ApiModelProperty(value = "标签内容")
+    private String companyTag;
 
     /**
      * 预留字段1

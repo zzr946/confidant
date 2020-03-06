@@ -1,6 +1,6 @@
-package com.zzr.confidant.persistence;
+package com.zzr.confidant.mapper;
 
-import com.zzr.confidant.entity.CompanyProduct;
+import com.zzr.confidant.model.CompanyProduct;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

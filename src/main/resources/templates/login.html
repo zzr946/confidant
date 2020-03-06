@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE HTML>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 	<head>
 		<title>登录-伯乐网</title>
@@ -15,7 +15,7 @@
 	</head>
 
 	<body id="login_bg">
-		<div class="login_wrapper">
+		<div class="login_wrapper" style="padding-top: 50px;">
 			<div class="login_header">
 				<a href="h/"><img src="style/images/logo_white.png" width="285" height="62" alt="伯乐网" /></a>
 				<div id="cloud_s"><img src="style/images/cloud_s.png" width="81" height="52" alt="cloud" /></div>
@@ -34,7 +34,7 @@
 						<input type="checkbox" id="remember" value="" checked="checked" name="autoLogin" /> 记住我
 					</label>
 					<!--忘记密码-->
-					<a href="reset.html" class="fr" target="_blank">忘记密码？</a>
+					<a href="/resetPage" class="fr">忘记密码？</a>
 
 					<input type="button" id="submitLogin" class="login" value="登 &nbsp; &nbsp; 录" />
 					<!--<a style="color:#fff;" href="index.html" class="submitLogin" title="登 &nbsp; &nbsp; 录" />登 &nbsp; &nbsp; 录</a>-->
@@ -42,7 +42,7 @@
 				</form>
 				<div class="login_right">
 					<div>还没有伯乐帐号？</div>
-					<a href="register.html" class="registor_now">立即注册</a>
+					<a href="/registerPage" class="registor_now">立即注册</a>
 				</div>
 			</div>
 			<div class="login_box_btm"></div>
