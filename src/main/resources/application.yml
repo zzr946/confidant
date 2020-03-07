@@ -29,3 +29,8 @@ logging:
   level:
     com.zzr.confidant.mapper: debug
 
+mybatis-plus:
+  #配置mapper.xml文件所在位置
+  mapper-locations: classpath:mapper/*.xml
+  #配置映射类所在位置
+  type-aliases-package: com.zzr.confidant.mapper

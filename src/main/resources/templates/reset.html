@@ -55,8 +55,14 @@
 		</div>
 
 		<script>
+			//全局的短信验证码code
+			var phoneCode = "";
 			//点击获取验证码按钮，验证电话号码，通过后请求后端
 			$("#getcode").click(function() {
+				//如果显示的是倒计时内容，不是显示的获取验证码，则点击按不做任何操作
+				if ($("#getcode").val() != "获取验证码") {
+					return false;
+				}
 				//获取电话号码
 				var phone = $(".phone").val().trim();
 				if(phone == null || phone == "") {
@@ -67,9 +73,32 @@
 					layer.alert("手机号有误!", {icon: 2});
 					return false;
 				}
+				//设置倒计时
+				var i = 60;
+				var fun = setInterval(function () {
+					$("#getcode").val(i + "秒后重试");
+					i--;
+					if (i < 0) {
+						$("#getcode").val("获取验证码");
+						clearInterval(fun);
+					}
+				}, 1000);
 				//手机号码输入成功，向后端发送请求
-				//TODO
-				layer.alert("向后端发送请求，获取验证码", {icon: 1});
+
+				$.ajax({
+					type: "post",
+					url: "/getCode/" + phone,
+					success: function (result) {
+						//成功的回调函数
+						if (result.code == 0) {
+							layer.alert("短信发送成功,请注意查收短信!", {icon: 1});
+							phoneCode = result.data;
+							console.log(phoneCode);
+						} else {
+							layer.alert("系统异常,请稍后再试！", {icon: 5});
+						}
+					}
+				});
 
 			});
 
@@ -101,6 +130,10 @@
 					layer.alert("验证码格式错误!", {icon: 2});
 					return false;
 				}
+				if (code != phoneCode) {
+					layer.alert("短信验证码不正确!", {icon: 4});
+					return false;
+				}
 
 				if(pwd == null || pwd == "") {
 					layer.alert("请输入密码!", {icon: 2});
@@ -125,8 +158,27 @@
 				}
 
 				//数据校验成功，向后端发送和请求
-				//TODO
-				layer.alert("向后端发送请求，修改密码", {icon: 1});
+				$.ajax({
+					type: "post",
+					url: "/resetpassword/" + phone+"/"+code+"/"+pwd,
+					success: function (result) {
+						//成功的回调函数
+						if (result.code == 0) {
+							//后端校验，验证码不正确
+							layer.alert(result.msg, {icon: 5});
+						} else if(result.code==-1){
+							//该手机号未注册，请前往注册
+							layer.alert(result.msg, {icon: 4});
+						}else if(result.code==1){
+							//密码已重置
+							layer.confirm("密码已重置,请前往登陆", {icon: 1, title: '提示'}, function () {
+								location.href = "/loginPage";
+							});
+						}else{
+							layer.alert("响应超时，请稍后再试!", {icon: 2});
+						}
+					}
+				});
 
 			});
 		</script>

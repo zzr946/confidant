@@ -6,7 +6,7 @@ import com.zzr.confidant.mapper.UserMapper;
 import com.zzr.confidant.model.User;
 import com.zzr.confidant.tool.PhoneCode;
 import com.zzr.confidant.tool.Tools;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -19,6 +19,7 @@ import java.util.List;
  * @description 用户表(User)表服务接口
  * @date 2020-03-05 22:50:36
  */
+@CacheConfig(cacheNames = "user")
 @Service
 public class UserService {
     //临时存放短信验证码
@@ -29,15 +30,16 @@ public class UserService {
 
     /**
      * 发送短信验证码
+     *
      * @param phone 手机号
      * @return
      */
     public synchronized ResultDTO sendPhoneCode(String phone) {
-        ResultDTO result=new ResultDTO();
+        ResultDTO result = new ResultDTO();
         //获取六位数的验证码，并保存下来
-        phoneCode=PhoneCode.getCode();
+        phoneCode = PhoneCode.getCode();
         //发送短信
-        PhoneCode.sendCode(phone,phoneCode);
+        //PhoneCode.sendCode(phone,phoneCode);
         result.setCode(0);
         result.setMsg("发送成功");
         result.setData(phoneCode);
@@ -46,23 +48,24 @@ public class UserService {
 
     /**
      * 用户注册的方法
-     * @param type 用户类型
+     *
+     * @param type  用户类型
      * @param phone 电话号码
-     * @param code 验证码
-     * @param pwd 密码
+     * @param code  验证码
+     * @param pwd   密码
      * @return
      */
     public ResultDTO register(String type, String phone, String code, String pwd) {
-        ResultDTO result=new ResultDTO();
+        ResultDTO result = new ResultDTO();
         List<User> list = new ArrayList<>();
         User user = new User();
         //注册之前先判断该手机号是否已经注册过了
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone",phone);
+        queryWrapper.eq("phone", phone);
         list = userMapper.selectList(queryWrapper);
 //        System.out.println("验证手机号是否已经注册过："+list.isEmpty());//true
 //        System.out.println("验证手机号是否已经注册过?"+list==null);//false
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             //查询结果不为空，则说明该手机号已经注册过了
             result.setCode(-1);
             result.setMsg("该手机号已经注册过了");
@@ -73,11 +76,11 @@ public class UserService {
         //二次校验，判断验证码是否正确
 //        System.out.println("生成的验证码："+phoneCode);
 //        System.out.println("用户输入的验证码："+code);
-        if(!StringUtils.equals(code,phoneCode)){
+        if (!StringUtils.equals(code, phoneCode)) {
             result.setCode(0);
             result.setMsg("后端校验，验证码不正确！");
             result.setData(null);
-        }else{
+        } else {
             //验证码正确，则将用户信息存入数据库
             user.setId(Tools.getUUID());
             user.setPhone(phone);
@@ -89,7 +92,7 @@ public class UserService {
             user.setLoginState("1");
             //调用mapper，将user存入数据库
             int i = userMapper.insert(user);
-            if(i==1){
+            if (i == 1) {
                 //数据插入成功
                 result.setCode(1);
                 result.setMsg("注册成功!");
@@ -101,29 +104,73 @@ public class UserService {
 
     /**
      * 用户登陆的方法
+     *
      * @param phone 手机号，也是登陆账号
-     * @param pwd 登陆密码
+     * @param pwd   登陆密码
      * @return
      */
     public ResultDTO login(String phone, String pwd) {
-        ResultDTO result=new ResultDTO();
+        ResultDTO result = new ResultDTO();
         List<User> list = new ArrayList<>();
         User user = null;
         //调用mpper 查询
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone",phone).eq("password",Tools.getMD5(pwd));
+        queryWrapper.eq("phone", phone).eq("password", Tools.getMD5(pwd));
         user = userMapper.selectOne(queryWrapper);
-        if(user==null){
+        if (user == null) {
             //登陆失败
             result.setCode(-1);
             result.setMsg("用户名或密码错误!");
             result.setData(null);
-        }else{
+        } else {
             //登陆成功
             result.setCode(0);
             result.setMsg("登陆成功!");
             result.setData(user);
         }
+        return result;
+    }
+
+    /**
+     * 用户通过短信验证码修改密码
+     *
+     * @param phone 手机号
+     * @param code  验证码
+     * @param pwd   新密码
+     * @return
+     */
+    public ResultDTO resetPassword(String phone, String code, String pwd) {
+        ResultDTO result = new ResultDTO();
+        User u = null;
+        //二次校验，判断验证码是否正确
+        if (!StringUtils.equals(code, phoneCode)) {
+            result.setCode(0);
+            result.setMsg("后端校验，验证码不正确！");
+            result.setData(null);
+            return result;
+        }
+        //先查询该手机号是否已经注册
+        u = userMapper.selectOne(new QueryWrapper<User>().eq("phone", phone));
+        if (u == null) {
+            //该手机号未注册
+            result.setCode(-1);
+            result.setMsg("该手机号未注册，请前往注册!");
+            result.setData(null);
+            return result;
+        }
+        //手机号已经注册过，则执行修改密码的操作
+        pwd = Tools.getMD5(pwd);
+        int i = userMapper.resetPassword(phone, pwd);
+        if (i == 1) {
+            result.setCode(1);
+            result.setMsg("密码已重置!");
+            result.setData(null);
+        } else {
+            result.setCode(2);
+            result.setMsg("系统异常!");
+            result.setData(null);
+        }
+
         return result;
     }
 }

@@ -136,7 +136,21 @@ public class UserController {
         return result;
     }
 
-
+    /**
+     * 用户通过短信验证码修改密码
+     * @param phone 手机号
+     * @param code 用户输入的验证码
+     * @param pwd 新密码
+     * @return
+     */
+    @ApiOperation(value = "用户通过短信验证码修改密码", notes = "开发：赵志然")
+    @PostMapping("/resetpassword/{phone}/{code}/{pwd}")
+    @ResponseBody
+    public ResultDTO resetPassword(@ApiParam(value = "电话号码，登陆账号") @PathVariable(value = "phone") String phone,
+                                   @ApiParam(value = "验证码") @PathVariable(value = "code") String code,
+                                   @ApiParam(value = "密码") @PathVariable(value = "pwd") String pwd){
+        return userService.resetPassword(phone,code,pwd);
+    }
 
 
 }
