@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公共片段</title>
+</head>
+<body>
+<!--企业用户显示的顶部导航栏-->
+<div id="header" th:fragment="company_top_nav">
+    <div class="wrapper">
+        <a class="logo" href="javascript:void(0)">
+            <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
+        </a>
+        <ul id="navheader" class="reset">
+            <!--<li>-->
+            <!--<a href="index.html">首页</a>-->
+            <!--</li>-->
+            <li class="current">
+                <a href="#">我的公司</a>
+            </li>
+            <!--<li>-->
+            <!--<a target="_blank" href="">论坛</a>-->
+            <!--</li>-->
+            <li>
+                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
+            </li>
+            <li>
+                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px">发布职位</a>
+            </li>
+        </ul>
+
+        <!--未登陆显示登陆注册-->
+        <ul class="loginTop" th:if="${session.user}==null">
+            <li>
+                <a href="/loginPage" rel="nofollow">登录</a>
+            </li>
+            <li>|</li>
+            <li>
+                <a href="/registerPage" rel="nofollow">注册</a>
+            </li>
+        </ul>
+        <!--已登陆显示下列表-->
+        <dl class="collapsible_menu" th:if="${session.user}!=null">
+            <dt>
+                <span th:text="${session.user.phone}">姓名</span>
+                <span class="red dn" id="noticeDot-1"></span>
+                <i></i>
+            </dt>
+            <dd>
+                <a href="/positions.html">我发布的职位</a>
+            </dd>
+            <dd>
+                <a href="/positions.html">我收到的简历</a>
+            </dd>
+            <dd class="btm">
+                <a href="/myhome.html">我的公司主页</a>
+            </dd>
+            <dd>
+                <a href="/jianli.html">我要找工作</a>
+            </dd>
+            <dd>
+                <a href="accountBind.html">帐号设置</a>
+            </dd>
+            <dd class="logout">
+                <a rel="nofollow" href="/logout">退出</a>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!--普通用户显示的顶部导航栏-->
+<div id="header" th:fragment="common_top_nav">
+    <div class="wrapper">
+        <a href="/index" class="logo">
+            <img src="style/images/logo.png" width="229" height="43" alt="伯乐网-专注互联网招聘"/>
+        </a>
+        <ul class="reset" id="navheader">
+            <li class="current">
+                <a href="/toIndex">首页</a>
+            </li>
+            <li>
+                <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
+            </li>
+            <!--<li>-->
+            <!--<a href="h/toForum.html" target="_blank">论坛</a>-->
+            <!--</li>-->
+            <li>
+                <a href="jianli.html" rel="nofollow" style="margin-left: 50px">我的简历</a>
+            </li>
+            <!--<li>-->
+            <!--<a href="create.html" rel="nofollow">发布职位</a>-->
+            <!--</li>-->
+        </ul>
+        <!--未登陆显示登陆注册-->
+        <ul class="loginTop" th:if="${session.user}==null">
+            <li>
+                <a href="/loginPage" rel="nofollow">登录</a>
+            </li>
+            <li>|</li>
+            <li>
+                <a href="/registerPage" rel="nofollow">注册</a>
+            </li>
+        </ul>
+        <!--已经登陆显示下拉列表-->
+        <dl class="collapsible_menu" th:if="${session.user}!=null">
+            <dt>
+                <span th:text="${session.user.phone}">路人甲</span>
+                <span class="red dn" id="noticeDot-0"></span>
+                <i></i>
+            </dt>
+            <dd>
+                <a rel="nofollow" href="jianli.html">我的简历</a>
+            </dd>
+            <dd>
+                <a href="collections.html">我收藏的职位</a>
+            </dd>
+            <dd>
+                <a href="delivery.html">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+            </dd>
+            <dd class="btm">
+                <a href="subscribe.html">我的订阅</a>
+            </dd>
+            <dd>
+                <a href="create.html">我要招人</a>
+            </dd>
+            <dd>
+                <a href="accountBind.html">帐号设置</a>
+            </dd>
+            <dd class="logout">
+                <a rel="nofollow" href="/logout">退出</a>
+            </dd>
+        </dl>
+
+    </div>
+</div>
+
+
+<!-- 页面底部 备案号-->
+<div id="footer" th:fragment="footer_nav">
+    <div class="wrapper">
+        <div class="copyright" style="margin-left: 100px;float: left;">&copy;2019-2020 BoLe
+            <a target="_blank" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">鄂ICP备19030901号-1</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

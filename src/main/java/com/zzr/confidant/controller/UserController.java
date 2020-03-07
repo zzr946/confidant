@@ -152,5 +152,20 @@ public class UserController {
         return userService.resetPassword(phone,code,pwd);
     }
 
+    /**
+     * 退出登陆的方法
+     * @return
+     */
+    @ApiOperation(value = "退出登陆", notes = "开发：赵志然")
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        //获取session
+        HttpSession session=request.getSession();
+        //清空session
+        session.removeAttribute("user");
+        //返回到主页面
+        return "index";
+    }
+
 
 }
