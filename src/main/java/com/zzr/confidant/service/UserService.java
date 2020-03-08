@@ -6,7 +6,9 @@ import com.zzr.confidant.mapper.UserMapper;
 import com.zzr.confidant.model.User;
 import com.zzr.confidant.tool.PhoneCode;
 import com.zzr.confidant.tool.Tools;
-import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -19,7 +21,6 @@ import java.util.List;
  * @description 用户表(User)表服务接口
  * @date 2020-03-05 22:50:36
  */
-@CacheConfig(cacheNames = "user")
 @Service
 public class UserService {
     //临时存放短信验证码
@@ -27,6 +28,14 @@ public class UserService {
 
     @Resource
     UserMapper userMapper;
+
+
+    @Qualifier("myRedisTemplate")
+    @Autowired
+    RedisTemplate<Object, Object> myRedisTemplate;
+
+
+
 
     /**
      * 发送短信验证码
@@ -109,6 +118,7 @@ public class UserService {
      * @param pwd   登陆密码
      * @return
      */
+    //@Cacheable(value = "user",key = "'userlogin['+#phone+']'")
     public ResultDTO login(String phone, String pwd) {
         ResultDTO result = new ResultDTO();
         List<User> list = new ArrayList<>();
@@ -127,6 +137,7 @@ public class UserService {
             result.setCode(0);
             result.setMsg("登陆成功!");
             result.setData(user);
+            //myRedisTemplate.opsForValue().set("login_user",user);
         }
         return result;
     }
@@ -139,6 +150,7 @@ public class UserService {
      * @param pwd   新密码
      * @return
      */
+    //@CachePut(value = "user",key = "'userlogin['+#phone+']'")
     public ResultDTO resetPassword(String phone, String code, String pwd) {
         ResultDTO result = new ResultDTO();
         User u = null;
@@ -165,6 +177,10 @@ public class UserService {
             result.setCode(1);
             result.setMsg("密码已重置!");
             result.setData(null);
+            //根据phone查询user，存入缓存
+            //myRedisTemplate.opsForValue().set("login_user", userMapper.selectOne(new QueryWrapper<User>().eq("phone",phone)));
+
+
         } else {
             result.setCode(2);
             result.setMsg("系统异常!");
