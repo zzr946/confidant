@@ -1,5 +1,6 @@
 package com.zzr.confidant.controller;
 
+import com.zzr.confidant.dto.ResultDTO;
 import com.zzr.confidant.service.CompanyInfoService;
 import com.zzr.confidant.tool.Tools;
 import io.swagger.annotations.Api;
@@ -78,13 +79,19 @@ public class UploadController {
             // 写入文件
             companyPhoto.transferTo(new File(path + File.separator + filename));
             //调用service，将公司基本信息存入数据库
-            int count = companyInfoService.saveCompanyInfo(name,filename,companyUrl,companyCity,companyField,companyScale,companyStage);
-
+            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage);
+            if(result.getCode()==1){
+                //失败，直接返回
+                return "index01";
+            }
+            if(result.getCode()==0){
+                //成功，将公司基本信息存入session
+                session.setAttribute("reg_companyInfo",result.getData());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "tag";
     }
-
 
 }

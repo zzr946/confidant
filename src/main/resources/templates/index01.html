@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>基本信息-招聘服务-伯乐网</title>
+    <title>基本信息-公司认证-伯乐网</title>
 
     <script type="text/javascript">
         var ctx = "http://www.lagou.com";
@@ -49,30 +49,31 @@
                         <h3>公司LOGO</h3>
 
                         <div class="c_logo c_logo_pos" id="PicDiv">
-                            <input id="btn_file" type="file" name="companyPhoto" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" value="">
+                            <input id="btn_file" type="file" name="companyPhoto" class="inputPic"
+                                   allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" value="">
                             <img id="select_btn" style="width:190px;height: 190px" src="style/images/upload.png"/>
                         </div>
-<!--                        <span type="hidden" th:text="${session.notSetLogo}" style="font-size: 16px;color: red;margin-left: 25px;"></span>-->
+                        <!--                        <span type="hidden" th:text="${session.notSetLogo}" style="font-size: 16px;color: red;margin-left: 25px;"></span>-->
                         <script type="text/javascript">
                             //头像效果预览
-                            $(function(){
-                                $('#select_btn').click(function(){
+                            $(function () {
+                                $('#select_btn').click(function () {
                                     $('#btn_file').click();
                                 })
-                                $('#btn_file').change(function(event){
-                                    var file=event.currentTarget.files[0];
+                                $('#btn_file').change(function (event) {
+                                    var file = event.currentTarget.files[0];
 
-                                    var reader=new FileReader();
+                                    var reader = new FileReader();
 
-                                    reader.onload=function(e){
-                                        document.getElementById('select_btn').src=e.target.result;
+                                    reader.onload = function (e) {
+                                        document.getElementById('select_btn').src = e.target.result;
                                     }
                                     reader.readAsDataURL(file);
                                 })
                             })
 
                             //页面加载完，获取img的src
-                            var oldSrc=$("#select_btn").attr("src");
+                            var oldSrc = $("#select_btn").attr("src");
                             var nowSrc;
                             // var timer = setInterval(function () {
                             //     //判断src内容是否改变，若改变则发送请求

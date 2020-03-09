@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Api(tags = "只做跳转页面的操作")
 @Controller
-public class PageJump {
+public class PageJumpController {
 
     /**
      * 企业用户点击 我的公司，进入到公司页面
@@ -29,6 +29,14 @@ public class PageJump {
     @GetMapping("/index")
     public String toIndex(){
         return "index";
+    }
+
+    /**
+     * 企业用户进行公司认证时，跳转到第三步，创始人页面founder
+     */
+    @GetMapping("/founder")
+    public String founder(){
+        return "founder";
     }
 
 
