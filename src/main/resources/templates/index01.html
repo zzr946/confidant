@@ -7,7 +7,6 @@
     <script type="text/javascript">
         var ctx = "http://www.lagou.com";
     </script>
-    <link href="http://www.lagou.com/images/favicon.ico" rel="Shortcut Icon">
     <link href="style/css/style.css" type="text/css" rel="stylesheet">
     <link href="style/css/external.min.css" type="text/css" rel="stylesheet">
     <link href="style/css/popup.css" type="text/css" rel="stylesheet">
@@ -37,8 +36,7 @@
                     <h2><em></em>填写公司信息</h2>
                 </dt>
                 <dd>
-
-                    <form id="stepForm">
+                    <form method="post" action="/savePic" enctype="multipart/form-data">
                         <div class="c_text_1">基本信息为必填项，是求职者加速了解公司的窗口，认真填写吧！</div>
                         <img width="668" height="56" class="c_steps" alt="第一步" src="style/images/step1.png">
 
@@ -47,28 +45,76 @@
                         <h3>公司名称</h3>
                         <input type="text" placeholder="请输入公司名称" value="" name="name" id="name" class="valid">
 
+
                         <h3>公司LOGO</h3>
-                        <div class="c_logo c_logo_pos">
-                            <a title="上传公司LOGO" class="inline cboxElement" href="#logoUploader">
-                                <div id="logoNo">
-                                    <span>上传公司LOGO</span> <br> 尺寸：190*190px <br> 大小：小于5M
-                                </div>
-                                <div class="dn" id="logoShow">
-                                    <img width="190" height="190" alt="公司logo" src="">
-                                    <span>更换公司LOGO<br>190px*190px 小于5M</span>
-                                </div>
-                            </a>
+
+                        <div class="c_logo c_logo_pos" id="PicDiv">
+                            <input id="btn_file" type="file" name="companyPhoto" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" value="">
+                            <img id="select_btn" style="width:190px;height: 190px" src="style/images/upload.png"/>
                         </div>
+<!--                        <span type="hidden" th:text="${session.notSetLogo}" style="font-size: 16px;color: red;margin-left: 25px;"></span>-->
+                        <script type="text/javascript">
+                            //头像效果预览
+                            $(function(){
+                                $('#select_btn').click(function(){
+                                    $('#btn_file').click();
+                                })
+                                $('#btn_file').change(function(event){
+                                    var file=event.currentTarget.files[0];
+
+                                    var reader=new FileReader();
+
+                                    reader.onload=function(e){
+                                        document.getElementById('select_btn').src=e.target.result;
+                                    }
+                                    reader.readAsDataURL(file);
+                                })
+                            })
+
+                            //页面加载完，获取img的src
+                            var oldSrc=$("#select_btn").attr("src");
+                            var nowSrc;
+                            // var timer = setInterval(function () {
+                            //     //判断src内容是否改变，若改变则发送请求
+                            //     nowSrc=$("#select_btn").attr("src");
+                            //     if(oldSrc!=nowSrc){
+                            //         //图片发生改变
+                            //         oldSrc=nowSrc;
+                            //     }
+                            // },500);
+
+                            //点击上传按钮，触发的事件
+                            // function upload(){
+                            //     //var formData = new FormData($("#uploadForm")[0])  //创建一个forData
+                            //     //formData.append('img', $('#btn_file')[0].files[0]) //把file添加进去  name命名为img
+                            //     $.ajax({
+                            //         url: "/savePic",
+                            //         //data: "formData",
+                            //         type: "POST",
+                            //         async: false,
+                            //         cache: false,
+                            //         contentType: false,
+                            //         processData: false,
+                            //         success: function(data) {
+                            //         //成功
+                            //     },
+                            //     error: function() {
+                            //         //失败
+                            //     }
+                            // })
+                            // }
+                        </script>
+
 
                         <h3>公司网址</h3>
-                        <input type="text" placeholder="请输入公司网址" value="" name="website" id="website">
+                        <input type="text" placeholder="请输入公司网址" value="" name="companyUrl" id="website">
 
                         <h3>所在城市</h3>
-                        <input type="text" placeholder="请输入工作城市，如：北京" name="city" id="city">
+                        <input type="text" placeholder="请输入工作城市，如：北京" name="companyCity" id="city">
 
                         <h3>行业领域</h3>
                         <div>
-                            <input type="hidden" value="" name="select_industry_hidden" id="select_industry_hidden">
+                            <input type="hidden" value="" name="companyField" id="select_industry_hidden">
                             <input type="button" value="请选择行业领域" name="select_industry" id="select_industry"
                                    class="select">
                             <div class="dn" id="box_industry" style="display: none;">
@@ -105,7 +151,7 @@
                         <h3>公司规模</h3>
                         <div>
                             <!--隐藏于用于存储选择的内容-->
-                            <input type="hidden" value="" name="select_scale_hidden" id="select_scale_hidden">
+                            <input type="hidden" value="" name="companyScale" id="select_scale_hidden">
                             <input type="button" value="请选择公司规模" id="select_scale" class="select">
                             <div class="dn" id="box_scale" style="display: none;">
                                 <ul class="reset">
@@ -122,7 +168,7 @@
                         <h3>发展阶段</h3>
                         <div>
                             <!--隐藏于用于存储选择的内容-->
-                            <input type="hidden" id="s_radio_hidden" name="s_radio_hidden" value="">
+                            <input type="hidden" id="s_radio_hidden" name="companyStage" value="">
                             <ul class="s_radio clearfix s_radio_ex">
                                 <li>未融资</li>
                                 <li>天使轮</li>
@@ -134,82 +180,16 @@
                             </ul>
                         </div>
 
-
-                        <div class="dn" id="cloneInvest">
-                            <input type="hidden" class="select_invest_hidden" name="select_invest_hidden">
-                            <input type="button" value="请选择发展阶段" class="select_short select_invest">
-                            <div class="box_invest dn">
-                                <ul class="reset">
-                                    <li>天使轮</li>
-                                    <li>A轮</li>
-                                    <li>B轮</li>
-                                    <li>C轮</li>
-                                    <li>D轮及以上</li>
-                                    <li>上市公司</li>
-                                </ul>
-                            </div>
-<!--                            <input type="text" placeholder="请输入投资机构，如真格基金，创新工场" name="stageorg">-->
-                        </div>
-
                         <span style="display:none;" class="error" id="beError"></span>
-                        <input type="button" value="保存，下一步" id="stepBtn" class="btn_big fr">
+                        <input type="submit" value="保存，下一步" id="stepBtn" class="btn_big fr" hidden>
                     </form>
+                    <input type="button" value="保存，下一步" id="hidden_submit" class="btn_big fr">
                 </dd>
             </dl>
         </div>
 
-        <!-------------------------------------弹窗lightbox  ----------------------------------------->
-        <div style="display:none;">
-            <!--图片上传-->
-            <div style="width:650px;height:470px;" class="popup" id="logoUploader">
-                <object width="650" height="470" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="FlashID">
-                    <param value="../../flash/avatar.swf?url=http://www.lagou.com/cd/saveProfileLogo.json" name="movie">
-                    <param value="high" name="quality">
-                    <param value="opaque" name="wmode">
-                    <param value="111.0.0.0" name="swfversion">
-                    <!-- 此 param 标签提示使用 Flash Player 6.0 r65 和更高版本的用户下载最新版本的 Flash Player。如果您不想让用户看到该提示，请将其删除。 -->
-                    <param value="../../Scripts/expressInstall.swf" name="expressinstall">
-                    <!-- 下一个对象标签用于非 IE 浏览器。所以使用 IECC 将其从 IE 隐藏。 -->
-                    <!--[if !IE]>-->
-                    <object width="650" height="470"
-                            data="../../flash/avatar.swf?url=http://www.lagou.com/cd/saveProfileLogo.json"
-                            type="application/x-shockwave-flash">
-                        <!--<![endif]-->
-                        <param value="high" name="quality">
-                        <param value="opaque" name="wmode">
-                        <param value="111.0.0.0" name="swfversion">
-                        <param value="../../Scripts/expressInstall.swf" name="expressinstall">
-                        <!-- 浏览器将以下替代内容显示给使用 Flash Player 6.0 和更低版本的用户。 -->
-                        <div>
-                            <h4>此页面上的内容需要较新版本的 Adobe Flash Player。</h4>
-                            <p><a href="http://www.adobe.com/go/getflashplayer"><img width="112" height="33"
-                                                                                     src="style/images/get_flash_player.gif"
-                                                                                     alt="获取 Adobe Flash Player"></a>
-                            </p>
-                        </div>
-                        <!--[if !IE]>-->
-                    </object>
-                    <!--<![endif]-->
-                </object>
-            </div>
-            <!-- #logoUploader -->
-        </div>
-        <!------------------------------------- end ----------------------------------------->
-
         <!--点击下一步按钮后出发的事件-->
         <script src="style/js/step1.min.js" type="text/javascript"></script>
-        <script>
-            var avatar = {};
-            avatar.uploadComplate = function (data) {
-                var result = eval('(' + data + ')');
-                if (result.success) {
-                    jQuery('#logoShow img').attr("src", ctx + '/' + result.content);
-                    jQuery.colorbox.close();
-                    jQuery('#logoNo').hide();
-                    jQuery('#logoShow').show();
-                }
-            };
-        </script>
         <div class="clear"></div>
         <input type="hidden" value="13ae35fedd9e45cdb66fb712318d7369" id="resubmitToken">
         <a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>

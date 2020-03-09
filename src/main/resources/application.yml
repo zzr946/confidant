@@ -23,6 +23,12 @@ spring:
     prefix:
       classpath: /templates   # 访问template下的html文件需要配置模板，映射
     cache: false # 开发时关闭缓存,不然没法看到实时页面
+  #设置文件上传大小限制 30MB
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 30MB
+      max-request-size: 30MB
 
 #mapper 文件日志输出级别
 logging:
@@ -34,3 +40,11 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   #配置映射类所在位置
   type-aliases-package: com.zzr.confidant.mapper
+
+#配置文件上传路径
+file:
+  upload:
+    path: /Users/zzr/images/
+    path.relative: /images/**
+
+
