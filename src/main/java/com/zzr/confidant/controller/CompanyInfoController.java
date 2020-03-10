@@ -45,6 +45,7 @@ public class CompanyInfoController {
                          @ApiParam(value = "公司所属行业领域") String companyField,
                          @ApiParam(value = "公司规模") String companyScale,
                          @ApiParam(value = "公司发展阶段") String companyStage,
+                         @ApiParam(value = "当前登陆的用户ID") String userId,
                          HttpServletRequest request,HttpServletResponse response) {
         System.out.println("文件上传请求进来了！！");
 //        System.out.println("公司名称："+name);
@@ -54,6 +55,7 @@ public class CompanyInfoController {
 //        System.out.println("公司所属行业领域："+companyField);
 //        System.out.println("公司规模："+companyScale);
 //        System.out.println("公司发展阶段："+companyStage);
+//        System.out.println("当前登陆的用户ID："+userId);
         //获取session
         HttpSession session = request.getSession();
         if (companyPhoto.isEmpty()) {
@@ -86,7 +88,7 @@ public class CompanyInfoController {
             // 写入文件
             companyPhoto.transferTo(new File(path + File.separator + filename));
             //调用service，将公司基本信息存入数据库
-            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage);
+            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage,userId);
             if(result.getCode()==1){
                 //失败，直接返回
                 try {

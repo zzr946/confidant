@@ -130,6 +130,9 @@
                         </script>
 
                         <div class="clear"></div>
+
+                        <!--隐藏域存放用户的id-->
+                        <input type="hidden" id="userId" th:value="${session.user.id}">
                         <input type="submit" value="保存，下一步" id="step3Submit" class="btn_big fr" hidden>
                         <input type="button" value="保存，下一步" id="hiddenSubmit" class="btn_big fr" >
                     </form>

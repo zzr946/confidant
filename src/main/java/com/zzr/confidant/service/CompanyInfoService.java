@@ -31,7 +31,7 @@ public class CompanyInfoService {
      */
     @Transactional
     public ResultDTO saveCompanyInfo(String companyName, String companyLogo, String companyUrl, String companyCity,
-                                     String companyField, String companyScale, String companyStage) {
+                                     String companyField, String companyScale, String companyStage,String userId) {
         ResultDTO resultDTO = new ResultDTO();
 //        System.out.println("公司名称："+companyName);
 //        System.out.println("公司logo文件对象："+companyLogo);
@@ -50,6 +50,8 @@ public class CompanyInfoService {
         companyInfo.setCompanyField(companyField);
         companyInfo.setCompanyScale(companyScale);
         companyInfo.setCompanyStage(companyStage);
+        //设置当前登陆的用户id，将用户与公司绑定起来
+        companyInfo.setReserved1(userId);
         //调用mpper 层将数据写入数据库
         int count = companyInfoMapper.insert(companyInfo);
         if(count==1){
