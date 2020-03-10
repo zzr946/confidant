@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,14 +38,14 @@ public class CompanyInfoController {
     @ApiOperation(value = "公司logo上传", notes = "开发：赵志然")
     @PostMapping("/savePic")
     //@ResponseBody
-    public String upload(@ApiParam(value = "公司名称") String name,
+    public void upload(@ApiParam(value = "公司名称") String name,
                          @ApiParam(value = "公司logo文件对象") MultipartFile companyPhoto,
                          @ApiParam(value = "公司网址") String companyUrl,
                          @ApiParam(value = "公司所在城市") String companyCity,
                          @ApiParam(value = "公司所属行业领域") String companyField,
                          @ApiParam(value = "公司规模") String companyScale,
                          @ApiParam(value = "公司发展阶段") String companyStage,
-                         HttpServletRequest request) {
+                         HttpServletRequest request,HttpServletResponse response) {
         System.out.println("文件上传请求进来了！！");
 //        System.out.println("公司名称："+name);
 //        System.out.println("公司logo文件对象："+companyPhoto);
@@ -57,7 +59,13 @@ public class CompanyInfoController {
         if (companyPhoto.isEmpty()) {
             //未设置公司logo则设置默认logo
             session.setAttribute("notSetLogo","未设置logo");
-            return "index01";
+            //重定向到原来页面
+            try {
+                response.sendRedirect("index01");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //return "index01";
         }
 
         // 获取上传文件名
@@ -81,7 +89,11 @@ public class CompanyInfoController {
             ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage);
             if(result.getCode()==1){
                 //失败，直接返回
-                return "index01";
+                try {
+                    response.sendRedirect("index01");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if(result.getCode()==0){
                 //成功，将公司基本信息存入session
@@ -90,7 +102,12 @@ public class CompanyInfoController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "tag";
+        //成功则重定向到设置标签页面
+        try {
+            response.sendRedirect("tag");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

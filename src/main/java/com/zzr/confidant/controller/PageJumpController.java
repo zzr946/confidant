@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * @description: 跳转页面的请求
+ * @description: 跳转页面的请求 作为服务端重定项到指定页面
  * @version: 1.0
  * @author: 赵志然
  * @date: 2020/3/7
@@ -32,12 +32,29 @@ public class PageJumpController {
     }
 
     /**
+     * 企业用户进行公司认证时，跳转到第二步，公司标签
+     */
+    @GetMapping("/tag")
+    public String tag(){
+        return "tag";
+    }
+
+    /**
      * 企业用户进行公司认证时，跳转到第三步，创始人页面founder
      */
     @GetMapping("/founder")
     public String founder(){
         return "founder";
     }
+
+    /**
+     * 企业用户进行公司认证时，跳转到第四步，公司产品
+     */
+    @GetMapping("/index02")
+    public String index02(){
+        return "index02";
+    }
+
 
 
 }

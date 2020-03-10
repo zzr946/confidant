@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,7 +53,7 @@ public class CompanyInitController {
     @ApiOperation(value = "公司创始人头像上传", notes = "开发：赵志然")
     @PostMapping("/saveFounder")
     @Transactional
-    public String uploadFounder(@ApiParam(value = "公司id") String companyId,
+    public void uploadFounder(@ApiParam(value = "公司id") String companyId,
                                 @ApiParam(value = "添加的创始人人数") String count,
                                 @ApiParam(value = "创始人头像0") MultipartFile founderPhoto0,
                                 @ApiParam(value = "创始人名字0") String founderName0,
@@ -65,7 +66,8 @@ public class CompanyInitController {
                                 @ApiParam(value = "创始人头像2") MultipartFile founderPhoto2,
                                 @ApiParam(value = "创始人名字2") String founderName2,
                                 @ApiParam(value = "创始人职位2") String founderPosition2,
-                                @ApiParam(value = "创始人介绍2") String founderDescribe2) {
+                                @ApiParam(value = "创始人介绍2") String founderDescribe2,
+                                HttpServletResponse response) {
 //        System.out.println("公司id:"+companyId);
 //        System.out.println("添加的创始人人数:"+count);
 //
@@ -148,7 +150,12 @@ public class CompanyInitController {
                 e.printStackTrace();
             }
         }
-        return "index02";
+        try {
+            response.sendRedirect("index02");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //return "index02";
     }
 
 }
