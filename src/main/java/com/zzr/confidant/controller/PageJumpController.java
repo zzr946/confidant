@@ -55,6 +55,14 @@ public class PageJumpController {
         return "index02";
     }
 
+    /**
+     * 企业用户进行公司认证时，跳转到第五步，公司介绍
+     */
+    @GetMapping("/index03")
+    public String index03(){
+        return "index03";
+    }
+
 
 
 }

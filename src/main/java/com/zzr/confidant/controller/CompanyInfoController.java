@@ -24,7 +24,7 @@ import java.io.IOException;
  * @author 赵志然
  * @date 2020-03-05 22:50:36
  */
-@Api(tags = "处理文件上传操作")
+@Api(tags = "公司基本信息上传操作")
 @Controller
 public class CompanyInfoController {
 
