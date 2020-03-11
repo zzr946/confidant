@@ -1,7 +1,7 @@
 package com.zzr.confidant.mapper;
 
-import com.zzr.confidant.model.CompanyInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zzr.confidant.model.CompanyInfo;
 
 /**
  * @description 公司表基本信息表(Companyinfo)表Mapper接口
@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 
+    int saveCompanyDescribe(String companyId, String companyDescribe);
 }

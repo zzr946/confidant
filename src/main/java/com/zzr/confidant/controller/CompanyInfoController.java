@@ -20,8 +20,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @description 公司表基本信息表(Companyinfo)表控制层
  * @author 赵志然
+ * @description 公司表基本信息表(Companyinfo)表控制层
  * @date 2020-03-05 22:50:36
  */
 @Api(tags = "公司基本信息上传操作")
@@ -39,14 +39,14 @@ public class CompanyInfoController {
     @PostMapping("/savePic")
     //@ResponseBody
     public void upload(@ApiParam(value = "公司名称") String name,
-                         @ApiParam(value = "公司logo文件对象") MultipartFile companyPhoto,
-                         @ApiParam(value = "公司网址") String companyUrl,
-                         @ApiParam(value = "公司所在城市") String companyCity,
-                         @ApiParam(value = "公司所属行业领域") String companyField,
-                         @ApiParam(value = "公司规模") String companyScale,
-                         @ApiParam(value = "公司发展阶段") String companyStage,
-                         @ApiParam(value = "当前登陆的用户ID") String userId,
-                         HttpServletRequest request,HttpServletResponse response) {
+                       @ApiParam(value = "公司logo文件对象") MultipartFile companyPhoto,
+                       @ApiParam(value = "公司网址") String companyUrl,
+                       @ApiParam(value = "公司所在城市") String companyCity,
+                       @ApiParam(value = "公司所属行业领域") String companyField,
+                       @ApiParam(value = "公司规模") String companyScale,
+                       @ApiParam(value = "公司发展阶段") String companyStage,
+                       @ApiParam(value = "当前登陆的用户ID") String userId,
+                       HttpServletRequest request, HttpServletResponse response) {
         System.out.println("文件上传请求进来了！！");
 //        System.out.println("公司名称："+name);
 //        System.out.println("公司logo文件对象："+companyPhoto);
@@ -60,7 +60,7 @@ public class CompanyInfoController {
         HttpSession session = request.getSession();
         if (companyPhoto.isEmpty()) {
             //未设置公司logo则设置默认logo
-            session.setAttribute("notSetLogo","未设置logo");
+            session.setAttribute("notSetLogo", "未设置logo");
             //重定向到原来页面
             try {
                 response.sendRedirect("index01");
@@ -73,7 +73,7 @@ public class CompanyInfoController {
         // 获取上传文件名
         String filename = companyPhoto.getOriginalFilename();
         //生成新文件名
-        filename= Tools.getUUID()+filename.substring(filename.lastIndexOf("."));
+        filename = Tools.getUUID() + filename.substring(filename.lastIndexOf("."));
         //System.out.println("新文件名："+filename);
 
         // 定义上传文件保存路径 images/
@@ -88,8 +88,8 @@ public class CompanyInfoController {
             // 写入文件
             companyPhoto.transferTo(new File(path + File.separator + filename));
             //调用service，将公司基本信息存入数据库
-            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage,userId);
-            if(result.getCode()==1){
+            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage, userId);
+            if (result.getCode() == 1) {
                 //失败，直接返回
                 try {
                     response.sendRedirect("index01");
@@ -97,9 +97,9 @@ public class CompanyInfoController {
                     e.printStackTrace();
                 }
             }
-            if(result.getCode()==0){
+            if (result.getCode() == 0) {
                 //成功，将公司基本信息存入session
-                session.setAttribute("reg_companyInfo",result.getData());
+                session.setAttribute("reg_companyInfo", result.getData());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,5 +111,25 @@ public class CompanyInfoController {
             e.printStackTrace();
         }
     }
+
+
+    @ApiOperation(value = "公司简介上传", notes = "开发：赵志然")
+    @PostMapping("/saveCompanyDescribe/{companyId}/{userId}/{companyDescribe}")
+    @ResponseBody
+    public ResultDTO saveCompanyDescribe(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
+                                         @ApiParam(value = "当前登陆人Id") @PathVariable("userId") String userId,
+                                         @ApiParam(value = "公司介绍") @PathVariable("companyDescribe") String companyDescribe,
+                                         HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        ResultDTO resultDTO = companyInfoService.saveCompanyDescribe(companyId, userId, companyDescribe);
+
+        if(resultDTO.getCode()==0){
+            //插入成功则将所有公司信息存入session
+            session.setAttribute("company",resultDTO.getData());
+        }
+
+        return resultDTO;
+    }
+
 
 }

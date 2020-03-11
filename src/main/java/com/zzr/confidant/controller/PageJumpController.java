@@ -63,6 +63,15 @@ public class PageJumpController {
         return "index03";
     }
 
+    /**
+     * 企业用户进行公司认证时，认证成功，跳转到成功页面
+     */
+    @GetMapping("/success")
+    public String success(){
+        return "success";
+    }
+
+
 
 
 }
