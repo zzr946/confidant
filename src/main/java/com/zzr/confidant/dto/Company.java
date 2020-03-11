@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @description: 公司相关的所有信息
  * @version: 1.0
@@ -19,12 +21,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Company {
 
+    /**
+     * 公司基本信息
+     */
     private CompanyInfo companyInfo;
 
+    /**
+     * 标签
+     */
     private CompanyTags companyTags;
 
-    private CompanyInit companyInit;
+    /**
+     * 创始人集合
+     */
+    private List<CompanyInit> companyInitList;
 
+    /**
+     * 产品
+     */
     private CompanyProduct companyProduct;
 
 }

@@ -5,4 +5,8 @@
     <update id="resetPassword" parameterType="java.lang.String" >
         update user set password=#{pwd} where phone=#{phone}
     </update>
+
+    <update id="updateAuthentiction" parameterType="java.lang.String">
+        update user set authentication=1 where id=#{userId}
+    </update>
 </mapper>

@@ -3,10 +3,7 @@ package com.zzr.confidant.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zzr.confidant.dto.Company;
 import com.zzr.confidant.dto.ResultDTO;
-import com.zzr.confidant.mapper.CompanyInfoMapper;
-import com.zzr.confidant.mapper.CompanyInitMapper;
-import com.zzr.confidant.mapper.CompanyProductMapper;
-import com.zzr.confidant.mapper.CompanyTagsMapper;
+import com.zzr.confidant.mapper.*;
 import com.zzr.confidant.model.CompanyInfo;
 import com.zzr.confidant.model.CompanyInit;
 import com.zzr.confidant.model.CompanyProduct;
@@ -14,6 +11,7 @@ import com.zzr.confidant.model.CompanyTags;
 import com.zzr.confidant.tool.Tools;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.annotations.Cacheable;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
@@ -33,6 +31,8 @@ public class CompanyInfoService {
     CompanyInitMapper companyInitMapper;
     @Resource
     CompanyProductMapper companyProductMapper;
+    @Resource
+    UserMapper userMapper;
 
     /**
      * 公司注册第一步，将公司基本信息存入数据库
@@ -99,20 +99,23 @@ public class CompanyInfoService {
     public ResultDTO saveCompanyDescribe(String companyId, String userId, String companyDescribe) {
         ResultDTO resultDTO = new ResultDTO();
         //公司所有信息DTO对象
-        Company company=new Company();
+//        Company company=new Company();
         //调用mapper层，将公司介绍信息存入基本信息表中
         int i = companyInfoMapper.saveCompanyDescribe(companyId, companyDescribe);
         if (i == 1) {
-            //成功,将公司所有信息查询出来，存入公司信息对象中
-            company.setCompanyInfo(companyInfoMapper.selectById(companyId));
-            company.setCompanyTags(companyTagsMapper.selectOne(new QueryWrapper<CompanyTags>().eq("companyId",companyId)));
-            company.setCompanyInit(companyInitMapper.selectOne(new QueryWrapper<CompanyInit>().eq("companyId",companyId)));
-            company.setCompanyProduct(companyProductMapper.selectOne(new QueryWrapper<CompanyProduct>().eq("companyId",companyId)));
+            //成功
+            //将公司所有信息查询出来，存入公司信息对象中
+//            company.setCompanyInfo(companyInfoMapper.selectById(companyId));
+//            company.setCompanyTags(companyTagsMapper.selectOne(new QueryWrapper<CompanyTags>().eq("companyId",companyId)));
+//            company.setCompanyInitList(companyInitMapper.selectList(new QueryWrapper<CompanyInit>().eq("companyId",companyId)));
+//            company.setCompanyProduct(companyProductMapper.selectOne(new QueryWrapper<CompanyProduct>().eq("companyId",companyId)));
+            //将用户表中，企业用户认证状态改为已认证
+            userMapper.updateAuthentiction(userId);
 
             resultDTO.setCode(0);
             resultDTO.setMsg("插入成功");
-            //将锁哦与信息传到前端
-            resultDTO.setData(company);
+            //将所有公司信息传到前端
+            resultDTO.setData(null);
         } else {
             //失败
             resultDTO.setCode(1);
@@ -120,5 +123,24 @@ public class CompanyInfoService {
             resultDTO.setData(null);
         }
         return resultDTO;
+    }
+
+    /**
+     * 企业用户进入myhome页面，查询出所有公司相关信息
+     * @param userId 当前登陆人ID
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Cacheable(value = "company")
+    public Company selectCompanyAll(String userId) {
+        Company company=new Company();
+        //根据用户ID查询出企业ID
+        String companyId=companyInfoMapper.selectOne(new QueryWrapper<CompanyInfo>().eq("reserved1",userId)).getId();
+        //将公司所有信息查询出来，存入公司信息对象中
+        company.setCompanyInfo(companyInfoMapper.selectById(companyId));
+        company.setCompanyTags(companyTagsMapper.selectOne(new QueryWrapper<CompanyTags>().eq("companyId",companyId)));
+        company.setCompanyInitList(companyInitMapper.selectList(new QueryWrapper<CompanyInit>().eq("companyId",companyId)));
+        company.setCompanyProduct(companyProductMapper.selectOne(new QueryWrapper<CompanyProduct>().eq("companyId",companyId)));
+        return company;
     }
 }

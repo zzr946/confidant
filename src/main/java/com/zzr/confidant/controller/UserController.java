@@ -1,8 +1,10 @@
 package com.zzr.confidant.controller;
 
+import com.zzr.confidant.dto.Company;
 import com.zzr.confidant.dto.ResultDTO;
 import com.zzr.confidant.mapper.UserMapper;
 import com.zzr.confidant.model.User;
+import com.zzr.confidant.service.CompanyInfoService;
 import com.zzr.confidant.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +31,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Resource
+    CompanyInfoService companyInfoService;
 
     /**
      * 跳转到登陆页面
@@ -68,7 +73,12 @@ public class UserController {
      */
     @ApiOperation(value = "跳转到公司首页 页面", notes = "开发：赵志然")
     @GetMapping("/myhome")
-    public String tomyhomePage(){
+    public String tomyhomePage(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId,
+                               HttpServletRequest request){
+        //跳转页面之前，先将公司的所有信息查询出来，并存入session
+        HttpSession session = request.getSession();
+        Company company = companyInfoService.selectCompanyAll(userId);
+        session.setAttribute("company",company);
         return "myhome";
     }
 

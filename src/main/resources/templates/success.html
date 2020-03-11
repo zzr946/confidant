@@ -17,7 +17,7 @@
 <body>
 <div id="body">
     <!--引入顶部导航栏-->
-    <div th:replace="public/publicFragment::company_top_nav"></div>
+    <div th:replace="public/publicFragment::company_top_nav_ok"></div>
     <div id="container">
 
         <div class="content_mid">
@@ -29,9 +29,22 @@
                 </dt>
                 <dd class="c_notice">
                     <h4>恭喜你，公司信息已填写完善，你可以发布职位啦！</h4>
-                    <a class="greylink" href="javascript:void(0)">发布新职位</a>
-                    <a class="greylink" href="javascript:void(0)"> 进入我的公司主页</a>
+                    <!--隐藏域存放用户的id-->
+                    <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
+                    <!--隐藏域存放当前公司id-->
+                    <input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">
+                    <a class="greylink" id="tocreate" href="javascript:void(0)">发布新职位</a>
+                    <a class="greylink tomyhome" href="javascript:void(0)"> 进入我的公司主页</a>
                 </dd>
+                <script>
+                    $(".tomyhome").click(function(){
+                        //获取用户id
+                        var userId=$("#userId").val();
+                        location.href="/myhome?"+"userId="+userId;
+
+                    });
+
+                </script>
             </dl>
         </div>
 
@@ -39,9 +52,7 @@
         <input type="hidden" value="" id="resubmitToken">
         <a rel="nofollow" title="回到顶部" id="backtop"></a>
     </div>
-    <!-- end #container -->
 </div>
-<!-- end #body -->
 <!--引入页面底部备案号-->
 <div th:replace="public/publicFragment::footer_nav"></div>
 

@@ -131,7 +131,7 @@ public class CompanyInitController {
         }
         if(founderName2!=null&&!"".equals(founderName2)){
             // 获取上传文件名
-            String filename2 = founderPhoto1.getOriginalFilename();
+            String filename2 = founderPhoto2.getOriginalFilename();
             //生成新文件名
             filename2 = Tools.getUUID() + filename2.substring(filename2.lastIndexOf("."));
 

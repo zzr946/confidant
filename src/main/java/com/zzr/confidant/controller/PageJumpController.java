@@ -15,15 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageJumpController {
 
     /**
-     * 企业用户点击 我的公司，进入到公司页面
-     * @return
-     */
-    @GetMapping("/toMyHome")
-    public String toMyHome(){
-        return "myhome";
-    }
-
-    /**
      * 普通用户点击logo,首页，进入到index页面
      */
     @GetMapping("/index")

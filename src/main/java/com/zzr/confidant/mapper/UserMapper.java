@@ -18,4 +18,10 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     int resetPassword(String phone,String pwd);
+
+    /**
+     * 将企业用户认证状态改为已认证
+     * @param userId
+     */
+    void updateAuthentiction(String userId);
 }

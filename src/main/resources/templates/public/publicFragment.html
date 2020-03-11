@@ -5,7 +5,7 @@
     <title>公共片段</title>
 </head>
 <body>
-<!--企业用户显示的顶部导航栏-->
+<!--企业用户（未认证）显示的顶部导航栏-->
 <div id="header" th:fragment="company_top_nav">
     <div class="wrapper">
         <a class="logo" href="javascript:void(0)">
@@ -67,6 +67,64 @@
         </dl>
     </div>
 </div>
+
+<!--企业用户（已经认证）显示的顶部导航栏-->
+<div id="header" th:fragment="company_top_nav_ok">
+    <div class="wrapper">
+        <a class="logo" href="javascript:void(0)">
+            <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
+        </a>
+        <ul id="navheader" class="reset">
+            <li class="current">
+                <a class="tomyhome" href="javascript:void(0)">我的公司</a>
+            </li>
+            <li>
+                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
+            </li>
+            <li>
+                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px">发布职位</a>
+            </li>
+        </ul>
+
+        <!--未登陆显示登陆注册-->
+        <ul class="loginTop" th:if="${session.user}==null">
+            <li>
+                <a href="/loginPage" rel="nofollow">登录</a>
+            </li>
+            <li>|</li>
+            <li>
+                <a href="/registerPage" rel="nofollow">注册</a>
+            </li>
+        </ul>
+        <!--已登陆显示下列表-->
+        <dl class="collapsible_menu" th:if="${session.user}!=null">
+            <dt>
+                <span th:text="${session.user.phone}">姓名</span>
+                <span class="red dn" id="noticeDot-1"></span>
+                <i></i>
+            </dt>
+            <dd>
+                <a href="/positions.html">我发布的职位</a>
+            </dd>
+            <dd>
+                <a href="/positions.html">我收到的简历</a>
+            </dd>
+            <dd class="btm">
+                <a href="/myhome.html">我的公司主页</a>
+            </dd>
+            <dd>
+                <a href="/jianli.html">我要找工作</a>
+            </dd>
+            <dd>
+                <a href="accountBind.html">帐号设置</a>
+            </dd>
+            <dd class="logout">
+                <a rel="nofollow" href="/logout">退出</a>
+            </dd>
+        </dl>
+    </div>
+</div>
+
 
 <!--普通用户显示的顶部导航栏-->
 <div id="header" th:fragment="common_top_nav">
