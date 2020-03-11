@@ -183,7 +183,7 @@
 
                         <span style="display:none;" class="error" id="beError"></span>
                         <!--隐藏域存放用户的id-->
-                        <input type="hidden" id="userId" th:value="${session.user.id}">
+                        <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
                         <input type="submit" value="保存，下一步" id="stepBtn" class="btn_big fr" hidden>
                     </form>
                     <input type="button" value="保存，下一步" id="hidden_submit" class="btn_big fr">

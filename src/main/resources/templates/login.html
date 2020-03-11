@@ -95,7 +95,7 @@
                         var authentication=result.data.authentication;
                         if(authentication==0){
                             //未认证
-                            location.href="/index01"
+                            location.href="/index01?"+"userId="+result.data.id;
                         }else if(authentication==1){
                             //已认证
                             location.href="/myhome"

@@ -78,7 +78,12 @@ public class UserController {
      */
     @ApiOperation(value = "跳转到公司认证 页面", notes = "开发：赵志然")
     @GetMapping("/index01")
-    public String toindex01Page(){
+    public String toindex01Page(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId){
+        //判断用户上次是否有未操作完的步骤
+        //调用service层校验
+        System.out.println("*******:"+userId);
+        userService.checkAuthentication(userId);
+        //跳转到认证第一步
         return "index01";
     }
 

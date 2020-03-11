@@ -1,9 +1,10 @@
 package com.zzr.confidant.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zzr.confidant.dto.ResultDTO;
-import com.zzr.confidant.mapper.UserMapper;
-import com.zzr.confidant.model.User;
+import com.zzr.confidant.mapper.*;
+import com.zzr.confidant.model.*;
 import com.zzr.confidant.tool.PhoneCode;
 import com.zzr.confidant.tool.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,16 @@ public class UserService {
 
     @Resource
     UserMapper userMapper;
+
+    @Resource
+    CompanyInfoMapper companyInfoMapper;
+    @Resource
+    CompanyTagsMapper companyTagsMapper;
+    @Resource
+    CompanyInitMapper companyinitMapper;
+    @Resource
+    CompanyProductMapper companyProductMapper;
+
 
 
     @Qualifier("myRedisTemplate")
@@ -188,5 +199,28 @@ public class UserService {
         }
 
         return result;
+    }
+
+    /**
+     * 未认证企业用户登陆后，判断之前是否填写过认证信息
+     * @param userId 当前登陆的用户ID
+     * @return
+     */
+    public void checkAuthentication(String userId) {
+        List<CompanyInfo> list=null;
+        //根据用户ID查询公司基本信息表
+        list = companyInfoMapper.selectList(new QueryWrapper<CompanyInfo>().eq("reserved1", userId));
+        System.out.println("list:"+list);
+        if(list!=null){
+            //如果查询出来结果，就将公司信息表中相关的数据全部删除
+            //获取公司id
+            list.forEach(s->{
+                //根据ID删除
+                companyInfoMapper.deleteById(s.getId());
+                companyTagsMapper.delete(new QueryWrapper<CompanyTags>().eq("companyId",s.getId()));
+                companyinitMapper.delete(new QueryWrapper<CompanyInit>().eq("companyId",s.getId()));
+                companyProductMapper.delete(new QueryWrapper<CompanyProduct>().eq("companyId",s.getId()));
+            });
+        }
     }
 }

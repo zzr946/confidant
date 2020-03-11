@@ -31,10 +31,6 @@
                     <img width="668" height="56" class="c_steps" alt="第三步" src="style/images/step3.png">
 
                     <form method="post" action="/saveFounder" id="memberForm" enctype="multipart/form-data">
-                        <!--隐藏域存放当前公司id-->
-                        <input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">
-                        <!--隐藏域存放创始人总人数-->
-                        <input type="hidden" id="count" name="count" value="">
 
                         <div id="memberDiv">
                             <div class="formWrapper">
@@ -130,9 +126,12 @@
                         </script>
 
                         <div class="clear"></div>
-
+                        <!--隐藏域存放当前公司id-->
+                        <input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">
+                        <!--隐藏域存放创始人总人数，JS赋值-->
+                        <input type="hidden" id="count" name="count" value="">
                         <!--隐藏域存放用户的id-->
-                        <input type="hidden" id="userId" th:value="${session.user.id}">
+                        <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
                         <input type="submit" value="保存，下一步" id="step3Submit" class="btn_big fr" hidden>
                         <input type="button" value="保存，下一步" id="hiddenSubmit" class="btn_big fr" >
                     </form>

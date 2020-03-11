@@ -32,8 +32,6 @@
                     <img width="668" height="56" class="c_steps" alt="第四步" src="style/images/step4.png">
 
                     <form method="post" action="" id="productForm">
-						<!--隐藏域存放当前公司id-->
-<!--						<input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">-->
                         <div id="productDiv">
                             <div class="formWrapper">
                                 <h3>产品海报</h3>
@@ -69,7 +67,11 @@
                                 <div class="word_count">你还可以输入 <span>500</span> 字</div>
                             </div>
                         </div>
-                        <a id="addMember" class="add_member" href="javascript:void(0)"><i></i>继续添加公司产品</a>
+                        <!--隐藏域存放用户的id-->
+                        <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
+                        <!--隐藏域存放当前公司id-->
+                        <input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">
+<!--                        <a id="addMember" class="add_member" href="javascript:void(0)"><i></i>继续添加公司产品</a>-->
                         <div class="clear"></div>
                         <input type="submit" value="保存，下一步" id="step4Submit" class="btn_big fr">
                     </form>
@@ -79,7 +81,6 @@
 
         <script src="style/js/step4.min.js" type="text/javascript"></script>
         <div class="clear"></div>
-        <input type="hidden" value="8f79f658e49846ae89d90a3f1590f12e" id="resubmitToken">
         <a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>
     </div>
 </div>
