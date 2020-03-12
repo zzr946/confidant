@@ -9,12 +9,11 @@ import com.zzr.confidant.model.CompanyInit;
 import com.zzr.confidant.model.CompanyProduct;
 import com.zzr.confidant.model.CompanyTags;
 import com.zzr.confidant.tool.Tools;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.annotations.Cacheable;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
 
 /**
  * @author 赵志然
@@ -48,7 +47,7 @@ public class CompanyInfoService {
      */
     @Transactional
     public ResultDTO saveCompanyInfo(String companyName, String companyLogo, String companyUrl, String companyCity,
-                                     String companyField, String companyScale, String companyStage, String userId) {
+                                     String companyField, String companyScale, String companyStage,String reserved2, String userId) {
         ResultDTO resultDTO = new ResultDTO();
 //        System.out.println("公司名称："+companyName);
 //        System.out.println("公司logo文件对象："+companyLogo);
@@ -67,6 +66,8 @@ public class CompanyInfoService {
         companyInfo.setCompanyField(companyField);
         companyInfo.setCompanyScale(companyScale);
         companyInfo.setCompanyStage(companyStage);
+        //设置公司愿景
+        companyInfo.setReserved2(reserved2);
         //设置当前登陆的用户id，将用户与公司绑定起来
         companyInfo.setReserved1(userId);
         //调用mpper 层将数据写入数据库
@@ -130,8 +131,9 @@ public class CompanyInfoService {
      * @param userId 当前登陆人ID
      * @return
      */
-    @Transactional(readOnly = true)
-    @Cacheable(value = "company")
+    @Cacheable(cacheNames = "company",key = "'companyAll['+#userId+']'")
+    //@Cacheable(value = "user",key = "'userlogin['+#phone+']'")
+    @Transactional
     public Company selectCompanyAll(String userId) {
         Company company=new Company();
         //根据用户ID查询出企业ID
@@ -142,5 +144,58 @@ public class CompanyInfoService {
         company.setCompanyInitList(companyInitMapper.selectList(new QueryWrapper<CompanyInit>().eq("companyId",companyId)));
         company.setCompanyProduct(companyProductMapper.selectOne(new QueryWrapper<CompanyProduct>().eq("companyId",companyId)));
         return company;
+    }
+
+    /**
+     * 修改公司名称、愿景
+     * @param companyId 公司ID
+     * @param newCompanyName 修改后的公司名
+     * @param newReserved2 修改后的公司愿景
+     * @return
+     */
+    @CacheEvict(cacheNames = "company",key = "'companyAll['+#userId+']'")
+    @Transactional
+    public ResultDTO resetCompanyName(String companyId,String userId, String newCompanyName, String newReserved2) {
+        ResultDTO resultDTO = new ResultDTO();
+        //调用mapper层修改
+        int i = companyInfoMapper.resetCompanyName(companyId,newCompanyName,newReserved2);
+        if(i==1){
+            //修改成功
+            resultDTO.setCode(0);
+            resultDTO.setMsg("修改成功");
+            resultDTO.setData(null);
+        }else{
+            //修改失败
+            resultDTO.setCode(1);
+            resultDTO.setMsg("修改失败");
+            resultDTO.setData(null);
+        }
+        return resultDTO;
+    }
+
+    /**
+     * 修改公司介绍
+     * @param companyId 公司id
+     * @param userId 当前登陆人id
+     * @param newCompanyDescribe 修改后的公司介绍
+     * @return
+     */
+    @CacheEvict(cacheNames = "company",key = "'companyAll['+#userId+']'")
+    @Transactional
+    public ResultDTO resetCompanyDescribe(String companyId, String userId, String newCompanyDescribe) {
+        ResultDTO resultDTO = new ResultDTO();
+        int i = companyInfoMapper.resetCompanyDescribe(companyId,newCompanyDescribe);
+        if(i==1){
+            //修改成功
+            resultDTO.setCode(0);
+            resultDTO.setMsg("修改成功");
+            resultDTO.setData(null);
+        }else{
+            //修改失败
+            resultDTO.setCode(1);
+            resultDTO.setMsg("修改失败");
+            resultDTO.setData(null);
+        }
+        return resultDTO;
     }
 }

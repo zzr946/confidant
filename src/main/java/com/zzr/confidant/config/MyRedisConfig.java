@@ -27,32 +27,32 @@ public class MyRedisConfig {
     /**
      * 自己指定，将所有对象转化为json格式
      */
-//    @Bean
-//    public CacheManager MyCacheManager(RedisConnectionFactory factory) {
-//        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-//                .entryTtl(Duration.ofDays(1))
-//                .disableCachingNullValues()
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-//        return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
+    @Bean
+    public CacheManager employeeCacheManager(RedisConnectionFactory factory) {
+        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofDays(1))
+                .disableCachingNullValues()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+        return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
+    }
+//
+//
+//    @Bean(name="genericJackson2JsonRedisSerializer")
+//    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {
+//        return new GenericJackson2JsonRedisSerializer();
 //    }
-
-
-    @Bean(name="genericJackson2JsonRedisSerializer")
-    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer();
-    }
-
-    @Bean(name = "myRedisTemplate")
-    public RedisTemplate<Object, Object> myRedisTemplate(RedisConnectionFactory redisConnectionFactory,
-                                                         GenericJackson2JsonRedisSerializer ser) throws UnknownHostException {
-        RedisTemplate<Object, Object> template = new RedisTemplate();
-        template.setConnectionFactory(redisConnectionFactory);
-        //设置序列化方法
-        template.setDefaultSerializer(ser);
-        return template;
-    }
-
-
-
+//
+//    @Bean(name = "myRedisTemplate")
+//    public RedisTemplate<Object, Object> myRedisTemplate(RedisConnectionFactory redisConnectionFactory,
+//                                                         GenericJackson2JsonRedisSerializer ser) throws UnknownHostException {
+//        RedisTemplate<Object, Object> template = new RedisTemplate();
+//        template.setConnectionFactory(redisConnectionFactory);
+//        //设置序列化方法
+//        template.setDefaultSerializer(ser);
+//        return template;
+//    }
+//
+//
+//
 
 }

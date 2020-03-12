@@ -148,7 +148,11 @@
                             </ul>
                         </div>
 
+
+                        <h3>一句话介绍</h3>
+                        <input type="text" placeholder="一句话概括公司亮点，如公司愿景、领导团队等，限50字" maxlength="50" name="reserved2" id="temptation">
                         <span style="display:none;" class="error" id="beError"></span>
+
                         <!--隐藏域存放用户的id-->
                         <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
                         <input type="submit" value="保存，下一步" id="stepBtn" class="btn_big fr" hidden>

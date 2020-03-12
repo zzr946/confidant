@@ -1,15 +1,11 @@
 package com.zzr.confidant.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zzr.confidant.dto.ResultDTO;
 import com.zzr.confidant.mapper.*;
 import com.zzr.confidant.model.*;
 import com.zzr.confidant.tool.PhoneCode;
 import com.zzr.confidant.tool.Tools;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -38,14 +34,6 @@ public class UserService {
     CompanyInitMapper companyinitMapper;
     @Resource
     CompanyProductMapper companyProductMapper;
-
-
-
-    @Qualifier("myRedisTemplate")
-    @Autowired
-    RedisTemplate<Object, Object> myRedisTemplate;
-
-
 
 
     /**

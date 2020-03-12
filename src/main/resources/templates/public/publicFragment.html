@@ -71,7 +71,8 @@
 <!--企业用户（已经认证）显示的顶部导航栏-->
 <div id="header" th:fragment="company_top_nav_ok">
     <div class="wrapper">
-        <a class="logo" href="javascript:void(0)">
+        <input type="hidden" id="userId" th:value="${session.user.id}">
+        <a class="logo tomyhome" href="javascript:void(0)">
             <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
         </a>
         <ul id="navheader" class="reset">
@@ -122,6 +123,14 @@
                 <a rel="nofollow" href="/logout">退出</a>
             </dd>
         </dl>
+        <script>
+            //进入到公司主页
+            $(".tomyhome").click(function(){
+                //获取用户id
+                var userId=$("#userId").val();
+                location.href="/myhome?"+"userId="+userId;
+            });
+        </script>
     </div>
 </div>
 

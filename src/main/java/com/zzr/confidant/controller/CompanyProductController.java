@@ -33,6 +33,15 @@ public class CompanyProductController {
     @Value("${file.upload.path}")
     private String filePath;//路径： /Users/zzr/images/
 
+    /**
+     * 新增产品信息
+     * @param companyId 公司ID
+     * @param userId 当前登陆人ID
+     * @param productLogo 产品logo
+     * @param productName 产品名称
+     * @param productUrl 产品URL
+     * @param productDescribe 产品介绍
+     */
     @ApiOperation(value = "产品信息上传", notes = "开发：赵志然")
     @PostMapping("/saveProduct")
     public void saveProduct(@ApiParam(value = "公司ID") String companyId,
@@ -87,4 +96,28 @@ public class CompanyProductController {
 
     }
 
+
+    @ApiOperation(value = "修改产品信息", notes = "开发：赵志然")
+    @PostMapping("/resetProduct/{companyId}/{userId}/{newProductName}/{newProductUrl}/{newProductDescribe}")
+    @ResponseBody
+    public ResultDTO resetProduct(@ApiParam(value = "公司ID") @PathVariable("companyId") String companyId,
+                                  @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                  @ApiParam(value = "修改后的产品名") @PathVariable("newProductName")  String newProductName,
+                                  @ApiParam(value = "修改后的产品网址") @PathVariable("newProductUrl")  String newProductUrl,
+                                  @ApiParam(value = "修改后的产品介绍") @PathVariable("newProductDescribe")  String newProductDescribe){
+        newProductUrl="'"+newProductUrl+"'";
+        return companyproductService.resetProduct(companyId,userId,newProductName,newProductUrl,newProductDescribe);
+    }
+
+
+//    @ApiOperation(value = "修改产品信息", notes = "开发：赵志然")
+//    @PostMapping("/resetProduct/{companyId}/{userId}/{newProductName}/{newProductUrl}")
+//    @ResponseBody
+//    public ResultDTO resetProduct(@ApiParam(value = "公司ID") @PathVariable("companyId") String companyId,
+//                                  @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+//                                  @ApiParam(value = "产品吗") @PathVariable("newProductName") String newProductName,
+//                                  @ApiParam(value = "产品吗") @PathVariable("newProductUrl") String newProductUrl){
+//        System.out.println("进入请求！！！！"+companyId+"         "+userId+"       "+newProductName+"   "+newProductUrl);
+//        return null;
+//    }
 }

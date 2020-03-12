@@ -12,6 +12,9 @@ spring:
       maximum-pool-size: 10
       max-lifetime: 30000 # 不能小于30秒，否则默认回到1800秒
       connection-test-query: SELECT 1
+  #缓存设置
+  cache:
+    type: redis
   #redis配置
   redis:
     host: 49.235.20.164
@@ -46,5 +49,6 @@ file:
   upload:
     path: /Users/zzr/images/
     path.relative: /images/**
+
 
 
