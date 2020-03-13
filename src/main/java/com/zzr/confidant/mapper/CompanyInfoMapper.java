@@ -18,4 +18,10 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 
     @Update("update companyinfo set companyDescribe=#{newCompanyDescribe} where id=#{companyId}")
     int resetCompanyDescribe(String companyId, String newCompanyDescribe);
+
+    @Update("update companyinfo set companyCity=#{newCompanyCity},companyScale=#{newCompanyScale},companyUrl=#{newCompanyUrl} where id=#{companyId}")
+    int resetAddress(String companyId, String newCompanyCity, String newCompanyScale, String newCompanyUrl);
+
+    @Update("update companyinfo set companyStage=#{newCompanyStage} where id=#{companyId}")
+    int resetCompanyStage(String companyId, String newCompanyStage);
 }

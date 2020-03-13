@@ -35,7 +35,7 @@
                             <img id="logo" width="190" height="190" alt="公司logo" src="style/images/logo_default.png">
                             <script>
                                 $(function () {
-                                    //设置logo  /Users/zzr/images/comanyPhoto/
+                                    //设置logo  /Users/zzr/images/companyPhoto/
                                     $("#logo").attr("src", "companyLogo/" + $("#hiddenLogo").val());
                                 })
                             </script>
@@ -85,6 +85,15 @@
                                         $("#cancelDetail").click();
                                         return false;
                                     }
+                                    if (newCompanyName == "" || newCompanyName == null) {
+                                        layer.alert("请输入公司名称！", {icon: 2});
+                                        return false;
+                                    }
+                                    if (newReserved2 == "" || newReserved2 == null) {
+                                        layer.alert("请输入公司愿景！", {icon: 2});
+                                        return false;
+                                    }
+
                                     //如果作出修改，则将修改的内容显示到页面上并关闭输入框
                                     //向后台的送请求
                                     $.ajax({
@@ -96,6 +105,8 @@
                                                 //修改成功，将修改后的值设置到页面上
                                                 $("#oldName").text(newCompanyName);
                                                 $("#oldReserved").text(newReserved2);
+                                                //显示展示框
+                                                $("#cancelDetail").click();
                                                 return false;
                                             } else {
                                                 //修改失败
@@ -252,8 +263,20 @@
                                             $("#qx").click();
                                             return false;
                                         }
+                                        if (newProductName == "" || newProductName == null) {
+                                            layer.alert("请输入产品名称！", {icon: 2});
+                                            return false;
+                                        }
+                                        if (newProductUrl == "" || newProductUrl == null) {
+                                            layer.alert("请输入产品网址！", {icon: 2});
+                                            return false;
+                                        }
                                         if (!isURL(newProductUrl) || newProductUrl.substring(0, 7) == "http://" || newProductUrl.substring(0, 8) == "https://") {
                                             layer.alert("输入的网址格式不正确！", {icon: 2});
+                                            return false;
+                                        }
+                                        if (newProductDescribe == "" || newProductDescribe == null) {
+                                            layer.alert("请输入产品简介！", {icon: 2});
                                             return false;
                                         }
                                         //内容作出改变则发送请求，并将修改后的内容显示在页面上
@@ -293,7 +316,7 @@
                                 <img width="380" height="220" id="productLogo" src="style/images/product_default.png">
                                 <script>
                                     $(function () {
-                                        //设置产品logo  /Users/zzr/images/comanyPhoto/
+                                        //设置产品logo  /Users/zzr/images/companyPhoto/
                                         $("#productLogo").attr("src", "productLogo/" + $("#hiddenProductLogo").val());
                                         $("#resetProductLogo").attr("src", "productLogo/" + $("#hiddenProductLogo").val());
                                     })
@@ -382,11 +405,15 @@
                             var newCompanyDescribe = $("#newCompanyDescribe").val().trim();
                             //获取修改前的介绍
                             var oldCompanyDescribe = $("#oldCompanyDescribe").text();
-                            console.log("修改前：" + oldCompanyDescribe);
-                            console.log("修改后:" + newCompanyDescribe);
+                            // console.log("修改前：" + oldCompanyDescribe);
+                            // console.log("修改后:" + newCompanyDescribe);
                             if (oldCompanyDescribe == newCompanyDescribe) {
                                 //未作出该改变，直接返回
                                 $("#qx_Describe").click();
+                                return false;
+                            }
+                            if (newCompanyDescribe == "" || newCompanyDescribe == null) {
+                                layer.alert("请输入公司简介！", {icon: 5});
                                 return false;
                             }
                             //成功发送请求
@@ -423,13 +450,13 @@
                     <dd>
                         <div class="addnew">
                             发布需要的人才信息，让伯乐和千里马尽快相遇……<br>
-                            <a href="create.html">+添加招聘职位</a>
+                            <a th:href="'/createJob?companyId='+${session.company.companyInfo.id}" id="createJob">+添加招聘职位</a>
                         </div>
                     </dd>
                 </dl>
                 <div id="flag"></div>
             </div>
-            <!-- end .content_l -->
+
             <div class="content_r">
 
                 <!--地点等模块-->
@@ -440,22 +467,26 @@
                             <tbody>
                             <tr>
                                 <td width="45">地点</td>
-                                <td>上海</td>
+                                <td id="oldCompanyCity" th:text="${session.company.companyInfo.companyCity}">上海</td>
                             </tr>
                             <tr>
                                 <td>领域</td>
                                 <!-- 支持多选 -->
-                                <td title="移动互联网">移动互联网</td>
+                                <td id="oldCompanyFiels" th:text="${session.company.companyInfo.companyField}">移动互联网
+                                </td>
                             </tr>
                             <tr>
                                 <td>规模</td>
-                                <td>150-500人</td>
+                                <td id="oldCompanyScale" th:text="${session.company.companyInfo.companyScale}">
+                                    150-500人
+                                </td>
                             </tr>
                             <tr>
                                 <td>主页</td>
                                 <td>
-                                    <a rel="nofollow" title="http://www.weimob.com" target="_blank"
-                                       href="http://www.weimob.com">http://www.weim...</a>
+                                    <a rel="nofollow" target="_blank" id="oldCompanyUrl"
+                                       th:href="${session.company.companyInfo.companyUrl}"
+                                       th:text="${session.company.companyInfo.companyUrl}">www.zzr666.cn</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -464,109 +495,155 @@
                     </div>
                     <!--编辑数据-->
                     <div id="c_tags_edit" class="c_tags editTags dn">
-                        <form id="tagForms">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td>地点</td>
-                                    <td>
-                                        <input type="text" placeholder="请输入地点" value="上海" name="city" id="city">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>领域</td>
-                                    <!-- 支持多选 -->
-                                    <td>
-                                        <input type="hidden" value="移动互联网" id="industryField" name="industryField">
-                                        <input type="button"
-                                               style="background:none;cursor:default;border:none !important;"
-                                               disable="disable" value="移动互联网" id="select_ind" class="select_tags">
-                                        <!-- <div id="box_ind" class="selectBox dn">
-                                <ul class="reset">
-                                                                                                                                                <li class="current">移动互联网</li>
-                                                                                                                                    </ul>
-                            </div>	 -->
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>规模</td>
-                                    <td>
-                                        <input type="hidden" value="150-500人" id="companySize" name="companySize">
-                                        <input type="button" value="150-500人" id="select_sca" class="select_tags">
-                                        <div class="selectBox dn" id="box_sca" style="display: none;">
-                                            <ul class="reset">
-                                                <li>少于15人</li>
-                                                <li>15-50人</li>
-                                                <li>50-150人</li>
-                                                <li class="current">150-500人</li>
-                                                <li>500-2000人</li>
-                                                <li>2000人以上</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>主页</td>
-                                    <td>
-                                        <input type="text" placeholder="请输入网址" value="http://www.weimob.com"
-                                               name="companyUrl" id="companyUrl">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <input type="hidden" id="comCity" value="上海">
-                            <input type="hidden" id="comInd" value="移动互联网">
-                            <input type="hidden" id="comSize" value="150-500人">
-                            <input type="hidden" id="comUrl" value="http://www.zmtpost.com">
-                            <input type="submit" value="保存" id="submitFeatures" class="btn_small">
-                            <a id="cancelFeatures" class="btn_cancel_s" href="javascript:void(0)">取消</a>
-                            <div class="clear"></div>
-                        </form>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>地点</td>
+                                <td>
+                                    <input type="text" placeholder="请输入地点"
+                                           th:value="${session.company.companyInfo.companyCity}" name="companyCity"
+                                           id="companyCity">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>领域</td>
+                                <td>
+                                    <input type="button"
+                                           style="background:none;cursor:default;border:none !important;"
+                                           th:value="${session.company.companyInfo.companyField}"
+                                           disable="disable" id="" class="select_tags">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>规模</td>
+                                <td>
+                                    <input type="hidden" th:value="${session.company.companyInfo.companyScale}"
+                                           id="companySize" name="companySize">
+                                    <input type="button" id="select_sca"
+                                           th:value="${session.company.companyInfo.companyScale}" class="select_tags">
+                                    <div class="selectBox dn" id="box_sca" style="display: none;">
+                                        <ul class="reset">
+                                            <li>少于15人</li>
+                                            <li>15-50人</li>
+                                            <li>50-150人</li>
+                                            <li class="current">150-500人</li>
+                                            <li>500-2000人</li>
+                                            <li>2000人以上</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>主页</td>
+                                <td>
+                                    <input type="text" placeholder="请输入网址"
+                                           th:value="${session.company.companyInfo.companyUrl}"
+                                           name="url" id="url">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="button" value="保存" id="submitFeatures" class="btn_small">
+                        <a id="qx_info_address" class="btn_cancel_s" href="javascript:void(0)">取消</a>
+                        <div class="clear"></div>
                     </div>
+                    <script>
+                        //点击取消按钮
+                        $("#qx_info_address").click(function () {
+                            $("#c_tags_show").attr("style", "display:block;");
+                            $("#c_tags_edit").attr("style", "display:none;");
+                        });
+                        //点击保存按钮
+                        $("#submitFeatures").click(function () {
+                            //获取公司id
+                            var companyId = $("#companyId").val().trim();
+                            //获取当前登陆人id
+                            var userId = $("#userId").val().trim();
+                            //获取新的地点
+                            var newCompanyCity = $("#companyCity").val().trim();
+                            //获取新的规模
+                            var newCompanyScale = $("#companySize").val().trim();
+                            //获取新的网址
+                            var newCompanyUrl = $("#url").val().trim();
+
+                            //获取原来的地点
+                            var oldCompanyCity = $("#oldCompanyCity").text();
+                            //获取原来的规模
+                            var oldCompanyScale = $("#oldCompanyScale").text();
+                            //获取原来的网址
+                            var oldCompanyUrl = $("#oldCompanyUrl").text();
+
+                            // console.log("原来的地点:"+oldCompanyCity);
+                            // console.log("现在的地点:"+newCompanyCity);
+                            // console.log("原来的规模:"+oldCompanyScale);
+                            // console.log("现在的规模:"+newCompanyScale);
+                            // console.log("原来的网址:"+oldCompanyUrl);
+                            // console.log("现在的网址:"+newCompanyUrl);
+
+                            if (oldCompanyCity == newCompanyCity && oldCompanyScale == newCompanyScale && oldCompanyUrl == newCompanyUrl) {
+                                //未作出改变
+                                $("#qx_info_address").click();
+                                return false;
+                            }
+                            if(newCompanyCity==""||newCompanyCity==null){
+                                layer.alert("请输入公司所在地！", {icon: 2});
+                                return false;
+                            }
+                            if(newCompanyUrl==""||newCompanyUrl==null){
+                                layer.alert("请输入公司网址！", {icon: 2});
+                                return false;
+                            }
+
+                            if (!isURL(newCompanyUrl) || newCompanyUrl.substring(0, 7) == "http://" || newCompanyUrl.substring(0, 8) == "https://") {
+                                layer.alert("输入的网址格式不正确！", {icon: 2});
+                                return false;
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: "/resetAddress/" + companyId + "/" + userId + "/" + newCompanyCity + "/" + newCompanyScale + "/" + newCompanyUrl,
+                                success: function (result) {
+                                    //成功的回调函数
+                                    if (result.code == 0) {
+                                        //修改成功，将修改后的数据展示到页面上
+                                        $("#oldCompanyCity").text(newCompanyCity);
+                                        $("#oldCompanyScale").text(newCompanyScale);
+                                        $("#oldCompanyUrl").text(newCompanyUrl);
+                                        //显示展示框
+                                        $("#qx_info_address").click();
+                                    } else {
+                                        layer.alert("系统繁忙,请稍后再试！", {icon: 5});
+                                    }
+                                }
+                            });
+
+
+                        });
+
+
+                    </script>
                 </div>
                 <!-- 地点等模块 end -->
 
-                
+                <!--融资模块-->
                 <dl class="c_section c_stages">
                     <dt>
                         <h2><em></em>融资阶段</h2>
-                        <a title="编辑融资阶段" class="c_edit" href="javascript:void(0)"></a>
+                        <a title="编辑融资阶段" id="editStageButton" class="c_edit" href="javascript:void(0)"></a>
                     </dt>
                     <dd>
-                        <ul class="reset stageshow">
-                            <li>目前阶段：<span class="c5">天使轮</span></li>
+                        <ul class="reset stageshow" id="showCompanyStage">
+                            <li>目前阶段：<span class="c5" id="oldCompanyStage"
+                                           th:text="${session.company.companyInfo.companyStage}">发展阶段</span></li>
                         </ul>
                         <form class="dn" id="stageform">
-                            <div class="stageSelect">
-                                <label>目前阶段</label>
-                                <input type="hidden" value="天使轮" id="financeStage" name="financeStage">
-                                <input type="button" value="天使轮" id="select_fin" class="select_tags_short fl">
-                                <div class="selectBoxShort dn" id="box_fin" style="display: none;">
-                                    <ul class="reset">
-
-                                        <li>未融资</li>
-
-                                        <li class="current">天使轮</li>
-
-                                        <li>A轮</li>
-
-                                        <li>B轮</li>
-
-                                        <li>C轮</li>
-
-                                        <li>D轮及以上</li>
-
-                                        <li>上市公司</li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                            <ul id="stagesList" class="reset">
+                            <ul class="reset">
                                 <li>
                                     <label>融资阶段</label>
                                     <input type="hidden" class="select_invest_hidden" name="select_invest_hidden">
-                                    <input type="button" value="融资阶段" class="select_tags_short select_invest">
-                                    <div class="selectBoxShort dn" style="display: none;">
+                                    <input type="button" id="newCompanyStage"
+                                           th:value="${session.company.companyInfo.companyStage}"
+                                           class="select_tags_short select_invest">
+                                    <div class="selectBoxShort dn" style="display: none;margin-top: -2px;">
                                         <ul class="reset">
                                             <li>天使轮</li>
                                             <li>A轮</li>
@@ -576,55 +653,64 @@
                                             <li>上市公司</li>
                                         </ul>
                                     </div>
-                                    <label>投资机构</label>
-                                    <input type="text" placeholder="如真格基金" name="stageorg" value="">
                                 </li>
                             </ul>
-                            <input type="submit" value="保存" class="btn_small">
-                            <a id="cancelStages" class="btn_cancel_s" href="javascript:void(0)">取消</a>
+                            <input type="button" id="save_companyStage" value="保存" class="btn_small">
+                            <a id="qx_CompanyStage" class="btn_cancel_s" href="javascript:void(0)">取消</a>
                             <div class="clear"></div>
-
-                            <div class="dn" id="cloneInvest">
-                                <label>融资阶段</label>
-                                <input type="hidden" class="select_invest_hidden" name="select_invest_hidden">
-                                <input type="button" value="发展阶段" class="select_tags_short select_invest">
-                                <div class="selectBoxShort dn" style="display: none;">
-                                    <ul class="reset">
-                                        <li>天使轮</li>
-                                        <li>A轮</li>
-                                        <li>B轮</li>
-                                        <li>C轮</li>
-                                        <li>D轮及以上</li>
-                                        <li>上市公司</li>
-                                    </ul>
-                                </div>
-                                <label>投资机构</label>
-                                <input type="text" placeholder="如真格基金" name="stageorg">
-                            </div>
                         </form>
+                        <script>
+                            //点击取消按钮
+                            $("#qx_CompanyStage").click(function () {
+                                //显示展示框，隐藏编辑框
+                                $("#stageform").attr("style", "display:none");
+                                $("#showCompanyStage").attr("style", "display:block");
+                                $("#editStageButton").attr("style", "display:block");
+
+                            });
+                            //点击保存按钮
+                            $("#save_companyStage").click(function () {
+                                //获取公司ID
+                                var companyId = $("#companyId").val().trim();
+                                //获取当前登陆人ID
+                                var userId = $("#userId").val().trim();
+                                //获取发展阶段
+                                var newCompanyStage = $("#newCompanyStage").val();
+                                $.ajax({
+                                    type: "post",
+                                    url: "/resetCompanyStage/" + companyId + "/" + userId + "/" + newCompanyStage,
+                                    success: function (result) {
+                                        //成功的回调函数
+                                        if (result.code == 0) {
+                                            //成功则将修改后的信息显示在页面上
+                                            $("#oldCompanyStage").text(newCompanyStage);
+                                            //返回
+                                            $("#qx_CompanyStage").click();
+                                        } else {
+                                            layer.alert("系统异常,请稍后再试！", {icon: 5});
+                                        }
+                                    }
+                                });
+
+                            });
+                        </script>
                     </dd>
                 </dl>
                 <!-- end .c_stages -->
 
+                <!--创始团队模块-->
                 <div id="Member">
                     <!--有创始团队-->
                     <dl class="c_section c_member">
                         <dt>
                             <h2><em></em>创始团队</h2>
-                            <a title="添加创始人" class="c_add" href="javascript:void(0)"></a>
+<!--                            <a title="添加创始人" class="c_add" href="javascript:void(0)"></a>-->
                         </dt>
                         <dd>
-
-                            <div class="member_wrap">
-
-                                <!-- 无创始人 -->
-                                <div class="member_info addnew_right dn">
-                                    展示公司的领导班子，<br>提升诱人指数！<br>
-                                    <a class="member_edit" href="javascript:void(0)">+添加成员</a>
-                                </div>
-
-                                <!-- 编辑创始人 -->
-                                <div class="member_info newMember dn">
+                            <!--一个完整的创始人展示框、编辑框-->
+                            <div class="member_wrap" th:each="founder : ${session.company.companyInitList}">
+                                <!-- 编辑创始人 edit框 -->
+                                <!--   <div class="member_info newMember dn">
                                     <form class="memberForm">
                                         <div class="new_portrait">
                                             <div class="portrait_upload dn portraitNo">
@@ -657,96 +743,43 @@
                                         <a class="btn_cancel_s member_delete" href="javascript:void(0)">删除</a>
                                         <input type="hidden" value="11493" class="leader_id">
                                     </form>
-                                </div>
+                                </div>-->
 
                                 <!-- 显示创始人 -->
                                 <div class="member_info">
-                                    <a title="编辑创始人" class="c_edit member_edit" href="javascript:void(0)"></a>
+<!--                                    <a title="编辑创始人" onclick="editFounder(this)" class=" member_edit" href="javascript:void(0)"></a>-->
                                     <div class="m_portrait">
                                         <div></div>
-                                        <img width="120" height="120" alt="孙泰英" src="style/images/leader_default.png">
+                                        <!--隐藏于存放头像-->
+                                        <input type="hidden" id="hiddenFounderPhoto" th:value="${founder.founderPhoto}">
+                                        <img width="120" height="120" th:src="'founderPhoto/'+${founder.founderPhoto}">
                                     </div>
-                                    <div class="m_name">
-                                        孙泰英
-                                        <a target="_blank" class="weibo" href="http://weimob.weibo.com"></a>
-                                    </div>
-                                    <div class="m_position">ceo</div>
-                                    <div class="m_intro">发放的发达范德萨范德萨范德萨发的复大发大水发生的</div>
+                                    <div class="m_name" th:text="${founder.founderName}" style="margin-top:35px">创始人姓名</div>
+
+                                    <div class="m_position" th:text="${founder.founderPosition}">创始人职位</div>
+                                    <div class="m_intro" th:text="${founder.founderDescribe}">创始人简介</div>
+                                    <!--隐藏域存放创始人ID-->
+                                    <input type="hidden"  th:value="${founder.id}">
+                                    <!--隐藏域存放公司ID-->
+                                    <input type="hidden"  th:value="${founder.companyId}">
+                                    <!--隐藏域存放公司名称-->
+                                    <input type="hidden"  th:value="${founder.companyName}">
                                 </div>
-
                             </div>
-                            <!-- end .member_wrap -->
+                            <script>
+                                //点击编辑按钮触发的函数
+                                function editForm(t){
+                                    alert($(t).next().next().text());
+                                }
+
+                            </script>
+
+
                         </dd>
+
                     </dl>
                 </div>
-                <!-- end #Member -->
-
-                <!--公司深度报道-->
-                <div id="Reported">
-                    <!--无报道-->
-                    <dl class="c_section c_reported">
-                        <dt>
-                            <h2><em></em>公司深度报道</h2>
-                            <a title="添加报道" class="c_add" href="javascript:void(0)"></a>
-                        </dt>
-                        <dd>
-                            <!-- 编辑报道 -->
-                            <ul class="reset">
-                                <li>
-                                    <a style="" class="article" title="随便写" target="_blank"
-                                       href="http://www.baidu.com">随便写</a>
-                                    <a title="编辑报道" class="c_edit dn" href="javascript:;" style="display: inline;"></a>
-                                    <form class="reportForm dn">
-                                        <input type="text" placeholder="请输入文章标题" value="" name="articleTitle"
-                                               class="valid">
-                                        <input type="text" placeholder="请输入文章链接" value="" name="articleUrl"
-                                               class="valid"><span for="articleUrl" generated="true" class="error"
-                                                                   style="display: none;">请输入有效的文章链接</span>
-                                        <input type="submit" value="保存" class="btn_small">
-                                        <a class="btn_cancel_s report_delete" href="javascript:;">删除</a>
-                                        <input type="hidden" value="5235" class="article_id">
-                                    </form>
-                                </li>
-                                <li>
-                                    <a style="" class="article" title="随便写" target="_blank"
-                                       href="http://www.baidu.com">随便写</a>
-                                    <a title="编辑报道" class="c_edit dn" href="javascript:;" style="display: inline;"></a>
-                                    <form class="reportForm dn">
-                                        <input type="text" placeholder="请输入文章标题" value="" name="articleTitle"
-                                               class="valid">
-                                        <input type="text" placeholder="请输入文章链接" value="" name="articleUrl"
-                                               class="valid">
-                                        <input type="submit" value="保存" class="btn_small">
-                                        <a class="btn_cancel_s report_delete" href="javascript:;">删除</a>
-                                        <input type="hidden" value="5236" class="article_id">
-                                    </form>
-                                </li>
-                            </ul>
-
-                            <!-- 无报道 -->
-                            <div class="addnew_right reported_info dn">
-                                展示外界对公司的深度报道，<br>便于求职者了解公司！<br>
-                                <a class="report_edit" href="javascript:void(0)">+添加报道</a>
-                            </div>
-
-                            <ul class="newReport dn">
-                                <li>
-                                    <a style="display:none;" class="article" title="" target="_blank"></a>
-                                    <a title="编辑报道" class="c_edit dn" href="javascript:;"></a>
-                                    <form class="reportForm">
-                                        <input type="text" placeholder="请输入文章标题" value="" name="articleTitle">
-                                        <input type="text" placeholder="请输入文章链接" value="" name="articleUrl">
-                                        <input type="submit" value="保存" class="btn_small">
-                                        <a class="btn_cancel_s report_cancel" href="javascript:;">取消</a>
-                                        <input type="hidden" value="" class="article_id">
-                                    </form>
-                                </li>
-                            </ul>
-                        </dd>
-                    </dl>
-                    <!-- end .c_reported -->
-                </div>
-                <!-- end #Reported -->
+                <!-- 创始团队模块 end -->
 
             </div>
         </div>

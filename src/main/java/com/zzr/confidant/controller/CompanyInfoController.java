@@ -78,7 +78,7 @@ public class CompanyInfoController {
         //System.out.println("新文件名："+filename);
 
         // 定义上传文件保存路径 images/
-        String path = filePath + "comanyPhoto/";
+        String path = filePath + "companyPhoto/";
         // 新建文件
         File filepath = new File(path, filename);
         // 判断路径是否存在，如果不存在就创建一个
@@ -89,7 +89,7 @@ public class CompanyInfoController {
             // 写入文件
             companyPhoto.transferTo(new File(path + File.separator + filename));
             //调用service，将公司基本信息存入数据库
-            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage,reserved2, userId);
+            ResultDTO result = companyInfoService.saveCompanyInfo(name, filename, companyUrl, companyCity, companyField, companyScale, companyStage, reserved2, userId);
             if (result.getCode() == 1) {
                 //失败，直接返回
                 try {
@@ -124,9 +124,9 @@ public class CompanyInfoController {
         HttpSession session = request.getSession();
         ResultDTO resultDTO = companyInfoService.saveCompanyDescribe(companyId, userId, companyDescribe);
 
-        if(resultDTO.getCode()==0){
+        if (resultDTO.getCode() == 0) {
             //插入成功则将所有公司信息存入session
-            session.setAttribute("company",resultDTO.getData());
+            session.setAttribute("company", resultDTO.getData());
         }
 
         return resultDTO;
@@ -137,10 +137,10 @@ public class CompanyInfoController {
     @PostMapping("/resetCompanyName/{companyId}/{userId}/{newCompanyName}/{newReserved2}")
     @ResponseBody
     public ResultDTO resetCompanyName(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
-                                         @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
-                                         @ApiParam(value = "修改后的公司名") @PathVariable("newCompanyName") String newCompanyName,
-                                         @ApiParam(value = "修改后的公司愿景") @PathVariable("newReserved2") String newReserved2){
-        return companyInfoService.resetCompanyName(companyId,userId,newCompanyName,newReserved2);
+                                      @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                      @ApiParam(value = "修改后的公司名") @PathVariable("newCompanyName") String newCompanyName,
+                                      @ApiParam(value = "修改后的公司愿景") @PathVariable("newReserved2") String newReserved2) {
+        return companyInfoService.resetCompanyName(companyId, userId, newCompanyName, newReserved2);
     }
 
 
@@ -148,9 +148,28 @@ public class CompanyInfoController {
     @PostMapping("/resetCompanyDescribe/{companyId}/{userId}/{newCompanyDescribe}")
     @ResponseBody
     public ResultDTO resetCompanyDescribe(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
-                                      @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
-                                      @ApiParam(value = "修改后的公司介绍") @PathVariable("newCompanyDescribe") String newCompanyDescribe){
-        System.out.println("修改公司简介："+newCompanyDescribe);
-        return companyInfoService.resetCompanyDescribe(companyId,userId,newCompanyDescribe);
+                                          @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                          @ApiParam(value = "修改后的公司介绍") @PathVariable("newCompanyDescribe") String newCompanyDescribe) {
+        return companyInfoService.resetCompanyDescribe(companyId, userId, newCompanyDescribe);
+    }
+
+    @ApiOperation(value = "修改公司地点、领域、规模、网址", notes = "开发：赵志然")
+    @PostMapping("/resetAddress/{companyId}/{userId}/{newCompanyCity}/{newCompanyScale}/{newCompanyUrl}")
+    @ResponseBody
+    public ResultDTO resetAddress(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
+                                  @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                  @ApiParam(value = "修改后的公司所在城市") @PathVariable("newCompanyCity") String newCompanyCity,
+                                  @ApiParam(value = "修改后的公司规模") @PathVariable("newCompanyScale") String newCompanyScale,
+                                  @ApiParam(value = "修改后的公司网址") @PathVariable("newCompanyUrl") String newCompanyUrl) {
+        return companyInfoService.resetAddress(companyId, userId, newCompanyCity,newCompanyScale,newCompanyUrl);
+    }
+
+    @ApiOperation(value = "修改公司发展阶段", notes = "开发：赵志然")
+    @PostMapping("/resetCompanyStage/{companyId}/{userId}/{newCompanyStage}")
+    @ResponseBody
+    public ResultDTO resetCompanyStage(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
+                                  @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                  @ApiParam(value = "修改后的公司发展阶段") @PathVariable("newCompanyStage") String newCompanyStage) {
+        return companyInfoService.resetCompanyStage(companyId, userId, newCompanyStage);
     }
 }

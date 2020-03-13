@@ -198,4 +198,58 @@ public class CompanyInfoService {
         }
         return resultDTO;
     }
+
+    /**
+     * 修改公司地点、领域、规模、网址
+     * @param companyId 公司ID
+     * @param userId 当前登陆人ID
+     * @param newCompanyCity 修改后的公司所在城市
+     * @param newCompanyScale 修改后的公司规模
+     * @param newCompanyUrl 修改后的公司网址
+     * @return
+     */
+    @CacheEvict(cacheNames = "company",key = "'companyAll['+#userId+']'")
+    @Transactional
+    public ResultDTO resetAddress(String companyId, String userId, String newCompanyCity, String newCompanyScale, String newCompanyUrl) {
+        ResultDTO resultDTO = new ResultDTO();
+        int i = companyInfoMapper.resetAddress(companyId,newCompanyCity,newCompanyScale,newCompanyUrl);
+        if(i==1){
+            //修改成功
+            resultDTO.setCode(0);
+            resultDTO.setMsg("修改成功");
+            resultDTO.setData(null);
+        }else{
+            //修改失败
+            resultDTO.setCode(1);
+            resultDTO.setMsg("修改失败");
+            resultDTO.setData(null);
+        }
+        return resultDTO;
+    }
+
+    /**
+     * 修改公司发展阶段
+     * @param companyId 公司ID
+     * @param userId 当前登陆人ID
+     * @param newCompanyStage 修改后的公司发展阶段
+     * @return
+     */
+    @CacheEvict(cacheNames = "company",key = "'companyAll['+#userId+']'")
+    @Transactional
+    public ResultDTO resetCompanyStage(String companyId, String userId, String newCompanyStage) {
+        ResultDTO resultDTO = new ResultDTO();
+        int i = companyInfoMapper.resetCompanyStage(companyId,newCompanyStage);
+        if(i==1){
+            //修改成功
+            resultDTO.setCode(0);
+            resultDTO.setMsg("修改成功");
+            resultDTO.setData(null);
+        }else{
+            //修改失败
+            resultDTO.setCode(1);
+            resultDTO.setMsg("修改失败");
+            resultDTO.setData(null);
+        }
+        return resultDTO;
+    }
 }
