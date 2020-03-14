@@ -68,9 +68,10 @@
     </div>
 </div>
 
-<!--企业用户（已经认证）显示的顶部导航栏-->
+<!--企业用户（已经认证）显示的顶部导航栏 选中我的公司-->
 <div id="header" th:fragment="company_top_nav_ok">
     <div class="wrapper">
+        <!--隐藏域存放当前登陆人ID-->
         <input type="hidden" id="userId" th:value="${session.user.id}">
         <a class="logo tomyhome" href="javascript:void(0)">
             <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
@@ -105,16 +106,13 @@
                 <i></i>
             </dt>
             <dd>
-                <a href="/positions.html">我发布的职位</a>
+                <a href="/positions">我发布的职位</a>
             </dd>
             <dd>
                 <a href="/positions.html">我收到的简历</a>
             </dd>
-            <dd class="btm">
-                <a href="/myhome.html">我的公司主页</a>
-            </dd>
-            <dd>
-                <a href="/jianli.html">我要找工作</a>
+            <dd class="btm tomyhome">
+                <a href="javascript:void(0)">我的公司主页</a>
             </dd>
             <dd>
                 <a href="accountBind.html">帐号设置</a>
@@ -133,6 +131,82 @@
         </script>
     </div>
 </div>
+
+<!--企业用户 顶部导航 选中发布职位-->
+<div id="header" th:fragment="top_nav_publishJob">
+    <div class="wrapper">
+        <!--隐藏域存放当前登陆人ID-->
+        <input type="hidden" id="userId" th:value="${session.user.id}">
+        <a class="logo tomyhome" href="javascript:void(0)">
+            <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
+        </a>
+        <ul id="navheader" class="reset">
+            <li >
+                <a class="tomyhome" href="javascript:void(0)">我的公司</a>
+            </li>
+            <li>
+                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
+            </li>
+            <li class="current">
+                <a rel="nofollow" href="/create" style="margin-left: 50px">发布职位</a>
+            </li>
+        </ul>
+
+        <!--未登陆显示登陆注册-->
+        <ul class="loginTop" th:if="${session.user}==null">
+            <li>
+                <a href="/loginPage" rel="nofollow">登录</a>
+            </li>
+            <li>|</li>
+            <li>
+                <a href="/registerPage" rel="nofollow">注册</a>
+            </li>
+        </ul>
+        <!--已登陆显示下列表-->
+        <dl class="collapsible_menu" th:if="${session.user}!=null">
+            <dt>
+                <span th:text="${session.user.phone}">姓名</span>
+                <span class="red dn" id="noticeDot-1"></span>
+                <i></i>
+            </dt>
+            <dd id="effective">
+                <a href="javascript:void(0)">我发布的职位</a>
+            </dd>
+            <dd>
+                <a href="/positions.html">我收到的简历</a>
+            </dd>
+            <dd class="btm tomyhome">
+                <a href="javascript:void(0)">我的公司主页</a>
+            </dd>
+            <dd>
+                <a href="/accountSetting">帐号设置</a>
+            </dd>
+            <dd class="logout">
+                <a rel="nofollow" href="/logout">退出</a>
+            </dd>
+        </dl>
+        <script>
+            //点击 "我发布的职位"
+            $("#effective").click(function () {
+                //获取公司ID
+                var companyId=$("#companyId").val();
+                //跳转到有效职位页面
+                location.href="/effective?companyId="+companyId;
+                return false;
+            });
+            //点击 "我的公司主页"
+            $(".tomyhome").click(function(){
+                //获取用户id
+                var userId=$("#userId").val();
+                location.href="/myhome?"+"userId="+userId;
+            });
+        </script>
+    </div>
+</div>
+
+
+
+
 
 
 <!--普通用户显示的顶部导航栏-->

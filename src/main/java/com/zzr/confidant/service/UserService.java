@@ -191,24 +191,64 @@ public class UserService {
 
     /**
      * 未认证企业用户登陆后，判断之前是否填写过认证信息
+     *
      * @param userId 当前登陆的用户ID
      * @return
      */
     public void checkAuthentication(String userId) {
-        List<CompanyInfo> list=null;
+        List<CompanyInfo> list = null;
         //根据用户ID查询公司基本信息表
         list = companyInfoMapper.selectList(new QueryWrapper<CompanyInfo>().eq("reserved1", userId));
-        System.out.println("list:"+list);
-        if(list!=null){
+        System.out.println("list:" + list);
+        if (list != null) {
             //如果查询出来结果，就将公司信息表中相关的数据全部删除
             //获取公司id
-            list.forEach(s->{
+            list.forEach(s -> {
                 //根据ID删除
                 companyInfoMapper.deleteById(s.getId());
-                companyTagsMapper.delete(new QueryWrapper<CompanyTags>().eq("companyId",s.getId()));
-                companyinitMapper.delete(new QueryWrapper<CompanyInit>().eq("companyId",s.getId()));
-                companyProductMapper.delete(new QueryWrapper<CompanyProduct>().eq("companyId",s.getId()));
+                companyTagsMapper.delete(new QueryWrapper<CompanyTags>().eq("companyId", s.getId()));
+                companyinitMapper.delete(new QueryWrapper<CompanyInit>().eq("companyId", s.getId()));
+                companyProductMapper.delete(new QueryWrapper<CompanyProduct>().eq("companyId", s.getId()));
             });
         }
+    }
+
+    /**
+     * 登陆后修改密码
+     *
+     * @param userId 用户ID
+     * @param phone  登陆账号
+     * @param oldPwd 原密码
+     * @param newPwd 新密码
+     * @return
+     */
+    public ResultDTO updatePwd(String userId, String phone, String oldPwd, String newPwd) {
+        ResultDTO result = new ResultDTO();
+        //首先判断原密码是否正确
+        User user = null;
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phone).eq("password", Tools.getMD5(oldPwd));
+        user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            //登陆失败
+            result.setCode(-1);
+            result.setMsg("用户名或密码错误!");
+            result.setData(null);
+            return result;
+        }
+        //用户名密码输入正确，则修改数据
+        int i = userMapper.updatePwd(userId,Tools.getMD5(newPwd));
+        if(i==1){
+            //密码修改成功
+            result.setCode(0);
+            result.setMsg("密码修改成功!");
+            result.setData(null);
+        }else{
+            //密码修改失败
+            result.setCode(1);
+            result.setMsg("密码修改失败!");
+            result.setData(null);
+        }
+        return result;
     }
 }

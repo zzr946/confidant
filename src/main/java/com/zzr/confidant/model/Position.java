@@ -69,7 +69,7 @@ public class Position {
      */
     @TableField(value = "jobType")
     @ApiModelProperty(value = "工作性质")
-    private String jobtTpe;
+    private String jobType;
 
     /**
      * 最低月薪

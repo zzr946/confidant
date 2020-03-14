@@ -18,6 +18,22 @@ spring:
   #redis配置
   redis:
     host: 49.235.20.164
+    jedis:
+      pool:
+        # 最大空闲连接
+        max-idle: 8
+        # 最小空闲链接
+        min-idle: 0
+        # 最大连接数（负数表示没有限制）
+        max-active: -1
+        # 最大阻塞等待时间（负数表示没有限制）
+        max-wait: -1
+      # 链接超时时间（毫秒）
+      timeout: 5000
+
+
+
+
   #配置css、js等静态资源访问路径
   resources:
     static-locations: classpath:/static/

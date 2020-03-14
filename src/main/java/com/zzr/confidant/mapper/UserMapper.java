@@ -3,6 +3,7 @@ package com.zzr.confidant.mapper;
 import com.zzr.confidant.model.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @description 用户表(User)表Mapper接口
@@ -24,4 +25,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userId
      */
     void updateAuthentiction(String userId);
+
+    @Update("update user set password=#{newPwd} where id=#{userId} ")
+    int updatePwd(String userId, String newPwd);
 }

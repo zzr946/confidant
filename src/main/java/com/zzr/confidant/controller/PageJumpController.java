@@ -62,6 +62,30 @@ public class PageJumpController {
         return "success";
     }
 
+    /**
+     * 创建职位成功，跳转到成功页面
+     */
+    @GetMapping("/index06")
+    public String index06(){
+        return "index06";
+    }
+
+    /**
+     * 跳转到有效职位页面
+     */
+    @GetMapping("/positions")
+    public String positions(){
+        return "positions";
+    }
+
+    /**
+     * 跳转到修改密码页面
+     */
+    @GetMapping("/accountSetting")
+    public String updatePwd(){
+        return "updatePwd";
+    }
+
 
 
 

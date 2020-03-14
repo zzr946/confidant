@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * @author 赵志然
@@ -69,35 +70,35 @@ public class UserController {
 
     /**
      * 企业用户登陆后，如果已经认证则跳转到公司首页
+     *
      * @return
      */
     @ApiOperation(value = "跳转到公司首页 页面", notes = "开发：赵志然")
     @GetMapping("/myhome")
     public String tomyhomePage(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId,
-                               HttpServletRequest request){
+                               HttpServletRequest request) {
         //跳转页面之前，先将公司的所有信息查询出来，并存入session
         HttpSession session = request.getSession();
         Company company = companyInfoService.selectCompanyAll(userId);
-        session.setAttribute("company",company);
+        session.setAttribute("company", company);
         return "myhome";
     }
 
     /**
      * 企业用户登陆后，如果未认证则跳转到认证第一步
+     *
      * @return
      */
     @ApiOperation(value = "跳转到公司认证 页面", notes = "开发：赵志然")
     @GetMapping("/index01")
-    public String toindex01Page(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId){
+    public String toindex01Page(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId) {
         //判断用户上次是否有未操作完的步骤
         //调用service层校验
-        System.out.println("*******:"+userId);
+        System.out.println("*******:" + userId);
         userService.checkAuthentication(userId);
         //跳转到认证第一步
         return "index01";
     }
-
-
 
 
     /**
@@ -127,13 +128,14 @@ public class UserController {
                               @ApiParam(value = "电话号码，登陆账号") @PathVariable(value = "phone") String phone,
                               @ApiParam(value = "用户输入的验证码") @PathVariable(value = "code") String code,
                               @ApiParam(value = "密码") @PathVariable(value = "pwd") String pwd) {
-        return userService.register(type,phone,code,pwd);
+        return userService.register(type, phone, code, pwd);
     }
 
     /**
      * 用户登陆的方法
+     *
      * @param phone 电话号码，登陆账号
-     * @param pwd 登陆密码
+     * @param pwd   登陆密码
      * @return
      */
     @ApiOperation(value = "用户登陆", notes = "开发：赵志然")
@@ -141,13 +143,13 @@ public class UserController {
     @ResponseBody
     public ResultDTO login(@ApiParam(value = "电话号码，登陆账号") @PathVariable(value = "phone") String phone,
                            @ApiParam(value = "登陆密码") @PathVariable(value = "pwd") String pwd,
-                           HttpServletRequest request){
+                           HttpServletRequest request) {
         ResultDTO result = userService.login(phone, pwd);
         //获取session
         HttpSession session = request.getSession();
-        if(result.getData()!=null){
+        if (result.getData() != null) {
             //登陆成功，将user信息存入session
-            session.setAttribute("user",result.getData());
+            session.setAttribute("user", result.getData());
         }
         //登陆失败,直接将result返回
         return result;
@@ -155,9 +157,10 @@ public class UserController {
 
     /**
      * 用户通过短信验证码修改密码
+     *
      * @param phone 手机号
-     * @param code 用户输入的验证码
-     * @param pwd 新密码
+     * @param code  用户输入的验证码
+     * @param pwd   新密码
      * @return
      */
     @ApiOperation(value = "用户通过短信验证码修改密码", notes = "开发：赵志然")
@@ -165,27 +168,59 @@ public class UserController {
     @ResponseBody
     public ResultDTO resetPassword(@ApiParam(value = "电话号码，登陆账号") @PathVariable(value = "phone") String phone,
                                    @ApiParam(value = "验证码") @PathVariable(value = "code") String code,
-                                   @ApiParam(value = "密码") @PathVariable(value = "pwd") String pwd){
-        return userService.resetPassword(phone,code,pwd);
+                                   @ApiParam(value = "密码") @PathVariable(value = "pwd") String pwd) {
+        return userService.resetPassword(phone, code, pwd);
     }
 
     /**
      * 退出登陆的方法
+     *
      * @return
      */
     @ApiOperation(value = "退出登陆", notes = "开发：赵志然")
     @GetMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response){
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
         //获取session
-        HttpSession session=request.getSession();
-        //清空session
-        session.removeAttribute("user");
+        HttpSession session = request.getSession();
+        //清空所有session
+        Enumeration em = session.getAttributeNames();
+        while (em.hasMoreElements()) {
+            session.removeAttribute(em.nextElement().toString()); //遍历删除session中的值
+        }
+        //session.removeAttribute("user");
         //重定向，返回到主页面
         try {
             response.sendRedirect("index");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 已登陆  修改密码
+     *
+     * @param userId
+     */
+    @ApiOperation(value = "跳转到公司认证 页面", notes = "开发：赵志然")
+    @PostMapping("/updatePwd")
+    @ResponseBody
+    public ResultDTO updatePwd(@ApiParam(value = "当前登陆的用户ID") @RequestParam(value = "userId") String userId,
+                               @ApiParam(value = "登陆账号") @RequestParam(value = "phone") String phone,
+                               @ApiParam(value = "原密码") @RequestParam(value = "oldPwd") String oldPwd,
+                               @ApiParam(value = "新密码") @RequestParam(value = "newPwd") String newPwd,
+                               HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        //调用service层，判断原密码是否正确。
+        ResultDTO resultDTO = userService.updatePwd(userId, phone, oldPwd, newPwd);
+        //如果修改成功，则删除session中的所有数据
+        if (resultDTO.getCode() == 0) {
+            //清空所有session
+            Enumeration em = session.getAttributeNames();
+            while (em.hasMoreElements()) {
+                session.removeAttribute(em.nextElement().toString()); //遍历删除session中的值
+            }
+        }
+        return resultDTO;
     }
 
 

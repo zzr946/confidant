@@ -43,12 +43,9 @@
                     </div>
 
                     <div class="c_box companyName" style="padding-top: 25px;">
-                        <h2 th:text="${session.company.companyInfo.companyName}" id="oldName">才华有限公司</h2>
-
-                        <em class="unvalid"></em>
-                        <span class="va dn">已认证公司</span>
+                        <h2 th:text="${session.company.companyInfo.companyName}" id="oldName" style="width: auto;">才华有限公司</h2>
+                        <img src="style/images/valid.png" width="15" height="19" alt="伯乐认证企业"/>
                         <div class="clear"></div>
-
 
                         <form class="clear editDetail dn" id="editDetailForm">
                             <input type="text" placeholder="请输入公司名称" maxlength="15"
@@ -86,11 +83,11 @@
                                         return false;
                                     }
                                     if (newCompanyName == "" || newCompanyName == null) {
-                                        layer.alert("请输入公司名称！", {icon: 2});
+                                        layer.msg("请输入公司名称！");
                                         return false;
                                     }
                                     if (newReserved2 == "" || newReserved2 == null) {
-                                        layer.alert("请输入公司愿景！", {icon: 2});
+                                        layer.msg("请输入公司愿景！");
                                         return false;
                                     }
 
@@ -264,19 +261,19 @@
                                             return false;
                                         }
                                         if (newProductName == "" || newProductName == null) {
-                                            layer.alert("请输入产品名称！", {icon: 2});
+                                            layer.msg("请输入产品名称！");
                                             return false;
                                         }
                                         if (newProductUrl == "" || newProductUrl == null) {
-                                            layer.alert("请输入产品网址！", {icon: 2});
+                                            layer.msg("请输入产品网址！");
                                             return false;
                                         }
                                         if (!isURL(newProductUrl) || newProductUrl.substring(0, 7) == "http://" || newProductUrl.substring(0, 8) == "https://") {
-                                            layer.alert("输入的网址格式不正确！", {icon: 2});
+                                            layer.msg("输入的网址格式不正确！");
                                             return false;
                                         }
                                         if (newProductDescribe == "" || newProductDescribe == null) {
-                                            layer.alert("请输入产品简介！", {icon: 2});
+                                            layer.msg("请输入产品简介！");
                                             return false;
                                         }
                                         //内容作出改变则发送请求，并将修改后的内容显示在页面上
@@ -413,7 +410,7 @@
                                 return false;
                             }
                             if (newCompanyDescribe == "" || newCompanyDescribe == null) {
-                                layer.alert("请输入公司简介！", {icon: 5});
+                                layer.msg("请输入公司简介！");
                                 return false;
                             }
                             //成功发送请求
@@ -450,7 +447,8 @@
                     <dd>
                         <div class="addnew">
                             发布需要的人才信息，让伯乐和千里马尽快相遇……<br>
-                            <a th:href="'/createJob?companyId='+${session.company.companyInfo.id}" id="createJob">+添加招聘职位</a>
+                            <!-- <a th:href="'/createJob?companyId='+${session.company.companyInfo.id}" id="createJob">+添加招聘职位</a>-->
+                            <a href="/create" id="createJob">+添加招聘职位</a>
                         </div>
                     </dd>
                 </dl>
@@ -704,50 +702,12 @@
                     <dl class="c_section c_member">
                         <dt>
                             <h2><em></em>创始团队</h2>
-                            <!--                            <a title="添加创始人" class="c_add" href="javascript:void(0)"></a>-->
                         </dt>
                         <dd>
                             <!--一个完整的创始人展示框、编辑框-->
                             <div class="member_wrap" th:each="founder : ${session.company.companyInitList}">
-                                <!-- 编辑创始人 edit框 -->
-                                <!--   <div class="member_info newMember dn">
-                                    <form class="memberForm">
-                                        <div class="new_portrait">
-                                            <div class="portrait_upload dn portraitNo">
-                                                <span>上传创始人头像</span>
-                                            </div>
-                                            <div class="portraitShow">
-                                                <img width="120" height="120" src="style/images/leader_default.png">
-                                                <span>更换头像</span>
-                                            </div>
-                                            <input type="file" value="" title="支持jpg、jpeg、gif、png格式，文件小于5M"
-                                                   onchange="member_check(this,'http://www.lagou.com/c/upload.json','portraitNo','portraitShow','type','leaderInfos');"
-                                                   name="myfiles" id="profiles0">
-                                            <input type="hidden" value="7" name="type" class="type">
-                                            <input type="hidden" value="images/leader_default.png" name="photo"
-                                                   class="leaderInfos">
-                                            <em>
-                                                尺寸：120*120px <br>
-                                                大小：小于5M
-                                            </em>
-                                        </div>
-                                        <input type="text" placeholder="请输入创始人姓名" value="孙泰英" name="name">
-                                        <input type="text" placeholder="请输入创始人当前职位" value="ceo" name="position">
-                                        <input type="text" placeholder="请输入创始人新浪微博地址" value="http://weimob.weibo.com"
-                                               name="weibo">
-                                        <textarea placeholder="请输入创始人个人简介" maxlength="500" class="s_textarea"
-                                                  name="remark">发放的发达范德萨范德萨范德萨发的复大发大水发生的</textarea>
-                                        <div class="word_count fr">你还可以输入 <span>500</span> 字</div>
-                                        <div class="clear"></div>
-                                        <input type="submit" value="保存" class="btn_small">
-                                        <a class="btn_cancel_s member_delete" href="javascript:void(0)">删除</a>
-                                        <input type="hidden" value="11493" class="leader_id">
-                                    </form>
-                                </div>-->
-
                                 <!-- 显示创始人 -->
                                 <div class="member_info">
-                                    <!--                                    <a title="编辑创始人" onclick="editFounder(this)" class=" member_edit" href="javascript:void(0)"></a>-->
                                     <div class="m_portrait">
                                         <div></div>
                                         <!--隐藏于存放头像-->
@@ -774,19 +734,12 @@
                                 }
 
                             </script>
-
-
                         </dd>
-
                     </dl>
                 </div>
                 <!-- 创始团队模块 end -->
-
             </div>
         </div>
-
-        <!-------------------------------------弹窗lightbox  ----------------------------------------->
-        <!------------------------------------- end ----------------------------------------->
 
         <script src="style/js/company.min.js" type="text/javascript"></script>
         <script>

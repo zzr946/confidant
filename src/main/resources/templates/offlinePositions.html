@@ -25,15 +25,15 @@
         <!--左侧边栏-->
         <div class="sidebar">
             <a class="btn_create" href="create.html">发布新职位</a>
-
-            <!--我发布的职位 -->
+            <!--我发布的职位-->
             <dl class="company_center_aside">
+                <!--隐藏域存放公司ID-->
                 <input type="hidden" id="companyId" th:value="${session.company.companyInfo.id}">
                 <dt>我发布的职位</dt>
-                <dd id="effectivePosition" class="current">
+                <dd id="effectivePosition">
                     <a href="javascript:void(0)">有效职位</a>
                 </dd>
-                <dd id="invalidPosition">
+                <dd id="invalidPosition" class="current">
                     <a href="javascript:void(0)">已下线职位</a>
                 </dd>
                 <script>
@@ -45,7 +45,7 @@
                         location.href="/effective?companyId="+companyId;
                         return false;
                     });
-                    //点击无效职位
+                    //点击已下线职位
                     $("#invalidPosition").click(function () {
                         //获取公司ID
                         var companyId=$("#companyId").val();
@@ -63,10 +63,10 @@
                 <dt>
                     <h1>
                         <em></em>
-                        有效职位 <span></span></h1>
+                        已下线职位 <span></span></h1>
                 </dt>
                 <dd>
-                    <form id="searchForm" th:each="position : ${session.effectivePositions}">
+                    <form id="searchForm" th:each="position : ${session.offlinePositions}">
                         <ul class="reset my_jobs">
                             <li>
                                 <h3>
@@ -80,17 +80,17 @@
                                 <div class="links">
                                     <!--隐藏域存放职位ID-->
                                     <input type="hidden" value="positionId" name="positionId" th:value="${position.id}">
-                                    <a class="" onclick="offline(this)" href="javascript:void(0)">下线</a>
+                                    <a class="" onclick="offline(this)" href="javascript:void(0)">重新上线</a>
                                     <a class="" onclick="del(this)" href="javascript:void(0)">删除</a>
                                     <script>
-                                        //点击下线
+                                        //点击重新上线
                                         function offline(t) {
-                                            layer.confirm("是否下线当前职位？", {icon: 3, title: '提示'}, function (index) {
+                                            layer.confirm("是否重新上线当前职位？", {icon: 3}, function (index) {
                                                 //获取职位ID
                                                 var positionId = $(t).prev().val().trim();
                                                 $.ajax({
                                                     type: "post",
-                                                    url: "/offline/" + positionId,
+                                                    url: "/reOnline/" + positionId,
                                                     success: function (result) {
                                                         //成功的回调函数
                                                         if (result.code == 0) {

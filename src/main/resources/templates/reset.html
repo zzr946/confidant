@@ -66,11 +66,11 @@
 				//获取电话号码
 				var phone = $(".phone").val().trim();
 				if(phone == null || phone == "") {
-					layer.alert("请输入手机号！", {icon: 2});
+					layer.msg("请输入手机号！");
 					return false;
 				}
 				if(!(/^1[3456789]\d{9}$/.test(phone))) {
-					layer.alert("手机号有误!", {icon: 2});
+					layer.msg("手机号有误!");
 					return false;
 				}
 				//设置倒计时
@@ -91,7 +91,7 @@
 					success: function (result) {
 						//成功的回调函数
 						if (result.code == 0) {
-							layer.alert("短信发送成功,请注意查收短信!", {icon: 1});
+							layer.msg("短信发送成功,请注意查收短信!");
 							phoneCode = result.data;
 							console.log(phoneCode);
 						} else {
@@ -114,46 +114,46 @@
 				var repwd = $(".repwd").val().trim();
 				
 				if(phone == null || phone == "") {
-					layer.alert("请输入手机号!", {icon: 2});
+					layer.msg("请输入手机号!");
 					return false;
 				}
 				if(!(/^1[3456789]\d{9}$/.test(phone))) {
-					layer.alert("手机号有误!", {icon: 2});
+					layer.msg("手机号有误!");
 					return false;
 				}
 
 				if(code == null || code == "") {
-					layer.alert("请输入验证码!", {icon: 2});
+					layer.msg("请输入验证码!");
 					return false;
 				}
 				if(code.length != 6) {
-					layer.alert("验证码格式错误!", {icon: 2});
+					layer.msg("验证码格式错误!");
 					return false;
 				}
 				if (code != phoneCode) {
-					layer.alert("短信验证码不正确!", {icon: 4});
+					layer.msg("短信验证码不正确!");
 					return false;
 				}
 
 				if(pwd == null || pwd == "") {
-					layer.alert("请输入密码!", {icon: 2});
+					layer.msg("请输入密码!");
 					return false;
 				}
 				if(pwd.length < 6 || pwd.length > 16) {
-					layer.alert("密码应长度介于6~16位!", {icon: 2});
+					layer.msg("密码应长度介于6~16位!");
 					return false;
 				}
 
 				if(repwd == null || repwd == "") {
-					layer.alert("请输入确认密码!", {icon: 2});
+					layer.msg("请输入确认密码!");
 					return false;
 				}
 				if(repwd.length < 6 || repwd.length > 16) {
-					layer.alert("确认密码应长度介于6~16位!", {icon: 2});
+					layer.msg("确认密码应长度介于6~16位!");
 					return false;
 				}
 				if(pwd != repwd) {
-					layer.alert("两次密码输入不一致!", {icon: 2});
+					layer.msg("两次密码输入不一致!");
 					return false;
 				}
 
