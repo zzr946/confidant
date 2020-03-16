@@ -584,16 +584,16 @@
                                 return false;
                             }
                             if (newCompanyCity == "" || newCompanyCity == null) {
-                                layer.alert("请输入公司所在地！", {icon: 2});
+                                layer.msg("请输入公司所在地！");
                                 return false;
                             }
                             if (newCompanyUrl == "" || newCompanyUrl == null) {
-                                layer.alert("请输入公司网址！", {icon: 2});
+                                layer.msg("请输入公司网址！");
                                 return false;
                             }
 
                             if (!isURL(newCompanyUrl) || newCompanyUrl.substring(0, 7) == "http://" || newCompanyUrl.substring(0, 8) == "https://") {
-                                layer.alert("输入的网址格式不正确！", {icon: 2});
+                                layer.msg("输入的网址格式不正确！");
                                 return false;
                             }
                             $.ajax({

@@ -28,35 +28,35 @@
         <!--左边部分-->
         <div class="sidebar">
             <a class="btn_create" href="create.html">发布新职位</a>
-            <!--我收到简历-->
-            <!--<dl class="company_center_aside">
-                <dt>我收到的简历</dt>
-                <dd>
-                    <a href="">待处理简历</a>
-                </dd>
-                <dd>
-                    <a href="canInterviewResumes.html">待定简历</a>
-                </dd>
-                <dd>
-                    <a href="haveNoticeResumes.html">已通知面试简历</a>
-                </dd>
-                <dd>
-                    <a href="haveRefuseResumes.html">不合适简历</a>
-                </dd>
-                <dd class="btm">
-                    <a href="autoFilterResumes.html">自动过滤简历</a>
-                </dd>
-            </dl>-->
 
             <!--我发布的职位-->
             <dl class="company_center_aside">
+                <input type="hidden" id="companyId" th:value="${session.company.companyInfo.id}">
                 <dt>我发布的职位</dt>
-                <dd>
-                    <a href="positions.html">有效职位</a>
+                <dd id="effectivePosition">
+                    <a href="javascript:void(0)">有效职位</a>
                 </dd>
-                <dd>
-                    <a href="positions.html">已下线职位</a>
+                <dd id="invalidPosition">
+                    <a href="javascript:void(0)">已下线职位</a>
                 </dd>
+                <script>
+                    //点击有效职位
+                    $("#effectivePosition").click(function () {
+                        //获取公司ID
+                        var companyId=$("#companyId").val();
+                        //跳转到有效职位页面
+                        location.href="/effective?companyId="+companyId;
+                        return false;
+                    });
+                    //点击无效职位
+                    $("#invalidPosition").click(function () {
+                        //获取公司ID
+                        var companyId=$("#companyId").val();
+                        //跳转到下线的职位页面
+                        location.href="/invalid?companyId="+companyId;
+                        return false;
+                    });
+                </script>
             </dl>
 
         </div>

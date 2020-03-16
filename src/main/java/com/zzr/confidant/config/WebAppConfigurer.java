@@ -25,6 +25,11 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
         //创始人头像 本地文件读取路径配置 /Users/zzr/images/founderPhoto/
         registry.addResourceHandler("/founderPhoto/**").addResourceLocations("file:/Users/zzr/images/founderPhoto/");
         super.addResourceHandlers(registry);
+
+        //普通用户头像 本地文件读取路径配置 /Users/zzr/images/userPhoto/
+        registry.addResourceHandler("/userPhoto/**").addResourceLocations("file:/Users/zzr/images/userPhoto/");
+        super.addResourceHandlers(registry);
     }
+
 }
 

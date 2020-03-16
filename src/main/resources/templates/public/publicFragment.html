@@ -12,19 +12,13 @@
             <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
         </a>
         <ul id="navheader" class="reset">
-            <!--<li>-->
-            <!--<a href="index.html">首页</a>-->
-            <!--</li>-->
             <li class="current">
                 <a href="#">我的公司</a>
             </li>
-            <!--<li>-->
-            <!--<a target="_blank" href="">论坛</a>-->
-            <!--</li>-->
-            <li>
+            <li class="PleaseLogin">
                 <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
             </li>
-            <li>
+            <li class="PleaseLogin">
                 <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px">发布职位</a>
             </li>
         </ul>
@@ -46,25 +40,29 @@
                 <span class="red dn" id="noticeDot-1"></span>
                 <i></i>
             </dt>
-            <dd>
-                <a href="/positions.html">我发布的职位</a>
+            <dd class="PleaseLogin">
+                <a href="javascript:void(0)">我发布的职位</a>
             </dd>
-            <dd>
-                <a href="/positions.html">我收到的简历</a>
+            <dd class="PleaseLogin">
+                <a href="javascript:void(0)">我收到的简历</a>
             </dd>
-            <dd class="btm">
-                <a href="/myhome.html">我的公司主页</a>
+            <dd class="PleaseLogin">
+                <a href="javascript:void(0)">我的公司主页</a>
             </dd>
-            <dd>
-                <a href="/jianli.html">我要找工作</a>
-            </dd>
-            <dd>
-                <a href="accountBind.html">帐号设置</a>
+            <dd class="PleaseLogin">
+                <a href="javascript:void(0)">帐号设置</a>
             </dd>
             <dd class="logout">
                 <a rel="nofollow" href="/logout">退出</a>
             </dd>
         </dl>
+        <script>
+            //未进行公司认证之前，点击其他按钮提示进行认证。
+            $(".PleaseLogin").click(function () {
+                layer.alert("请先完成公司认证！",{icon:2});
+                return false;
+            });
+        </script>
     </div>
 </div>
 
@@ -84,7 +82,7 @@
                 <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
             </li>
             <li>
-                <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px">发布职位</a>
+                <a rel="nofollow" href="/create" style="margin-left: 50px">发布职位</a>
             </li>
         </ul>
 
@@ -100,13 +98,15 @@
         </ul>
         <!--已登陆显示下列表-->
         <dl class="collapsible_menu" th:if="${session.user}!=null">
+            <!--隐藏域存放当前登陆人ID-->
+            <input type="hidden" id="userId" th:value="${session.user.id}">
             <dt>
                 <span th:text="${session.user.phone}">姓名</span>
                 <span class="red dn" id="noticeDot-1"></span>
                 <i></i>
             </dt>
-            <dd>
-                <a href="/positions">我发布的职位</a>
+            <dd id="effective">
+                <a href="javascript:void(0)">我发布的职位</a>
             </dd>
             <dd>
                 <a href="/positions.html">我收到的简历</a>
@@ -115,20 +115,28 @@
                 <a href="javascript:void(0)">我的公司主页</a>
             </dd>
             <dd>
-                <a href="accountBind.html">帐号设置</a>
+                <a href="/accountSetting">帐号设置</a>
             </dd>
             <dd class="logout">
                 <a rel="nofollow" href="/logout">退出</a>
             </dd>
+            <script>
+                //点击 "我发布的职位"
+                $("#effective").click(function () {
+                    //获取公司ID
+                    var companyId = $("#companyId").val();
+                    //跳转到有效职位页面
+                    location.href = "/effective?companyId=" + companyId;
+                    return false;
+                });
+                //点击 "我的公司主页"
+                $(".tomyhome").click(function () {
+                    //获取用户id
+                    var userId = $("#userId").val();
+                    location.href = "/myhome?" + "userId=" + userId;
+                });
+            </script>
         </dl>
-        <script>
-            //进入到公司主页
-            $(".tomyhome").click(function(){
-                //获取用户id
-                var userId=$("#userId").val();
-                location.href="/myhome?"+"userId="+userId;
-            });
-        </script>
     </div>
 </div>
 
@@ -141,7 +149,7 @@
             <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
         </a>
         <ul id="navheader" class="reset">
-            <li >
+            <li>
                 <a class="tomyhome" href="javascript:void(0)">我的公司</a>
             </li>
             <li>
@@ -184,29 +192,25 @@
             <dd class="logout">
                 <a rel="nofollow" href="/logout">退出</a>
             </dd>
+            <script>
+                //点击 "我发布的职位"
+                $("#effective").click(function () {
+                    //获取公司ID
+                    var companyId = $("#companyId").val();
+                    //跳转到有效职位页面
+                    location.href = "/effective?companyId=" + companyId;
+                    return false;
+                });
+                //点击 "我的公司主页"
+                $(".tomyhome").click(function () {
+                    //获取用户id
+                    var userId = $("#userId").val();
+                    location.href = "/myhome?" + "userId=" + userId;
+                });
+            </script>
         </dl>
-        <script>
-            //点击 "我发布的职位"
-            $("#effective").click(function () {
-                //获取公司ID
-                var companyId=$("#companyId").val();
-                //跳转到有效职位页面
-                location.href="/effective?companyId="+companyId;
-                return false;
-            });
-            //点击 "我的公司主页"
-            $(".tomyhome").click(function(){
-                //获取用户id
-                var userId=$("#userId").val();
-                location.href="/myhome?"+"userId="+userId;
-            });
-        </script>
     </div>
 </div>
-
-
-
-
 
 
 <!--普通用户显示的顶部导航栏-->
@@ -280,7 +284,8 @@
 <div id="footer" th:fragment="footer_nav">
     <div class="wrapper">
         <div class="copyright" style="margin-left: 100px;float: left;">&copy;2019-2020 BoLe
-            <a target="_blank" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">鄂ICP备19030901号-1</a>
+            <a target="_blank"
+               href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">鄂ICP备19030901号-1</a>
         </div>
     </div>
 </div>

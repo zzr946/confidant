@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>首页-伯乐网</title>
     <link rel="stylesheet" type="text/css" href="style/css/style.css" th:href="@{style/css/style.css}"/>
     <link rel="stylesheet" type="text/css" href="style/css/external.min.css"/>
@@ -54,9 +53,71 @@
 </head>
 
 <body>
+<!--隐藏域存放用户ID-->
+<input type="hidden" id="userId" th:if="${session.user != null}" th:value="${session.user.id}">
+
 <div id="body">
-	<!--引入顶部导航栏-->
-	<div th:replace="public/publicFragment::common_top_nav"></div>
+    <!--引入顶部导航栏-->
+    <div id="header" th:fragment="common_top_nav">
+        <div class="wrapper">
+            <a href="/index" class="logo">
+                <img src="style/images/logo.png" width="229" height="43" alt="伯乐网-专注互联网招聘"/>
+            </a>
+            <ul class="reset" id="navheader">
+                <li class="current">
+                    <a href="/index">首页</a>
+                </li>
+                <li>
+                    <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
+                </li>
+                <li th:if="${session.user != null}" class="jianli">
+                    <a href="javascript:void(0)" rel="nofollow" style="margin-left: 50px">我的简历</a>
+                </li>
+            </ul>
+            <!--未登陆显示登陆注册-->
+            <ul class="loginTop" th:if="${session.user}==null">
+                <li>
+                    <a href="/loginPage" rel="nofollow">登录</a>
+                </li>
+                <li>|</li>
+                <li>
+                    <a href="/registerPage" rel="nofollow">注册</a>
+                </li>
+            </ul>
+            <!--已经登陆显示下拉列表-->
+            <dl class="collapsible_menu" th:if="${session.user}!=null">
+                <dt>
+                    <span th:text="${session.user.phone}">路人甲</span>
+                    <span class="red dn" id="noticeDot-0"></span>
+                    <i></i>
+                </dt>
+                <dd class="jianli">
+                    <a rel="nofollow" href="javascript:void(0)">我的简历</a>
+                </dd>
+                <dd>
+                    <a href="javascript:void(0)">我收藏的职位</a>
+                </dd>
+                <dd>
+                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                </dd>
+                <dd>
+                    <a href="javascript:void(0)">帐号设置</a>
+                </dd>
+                <dd class="logout">
+                    <a rel="nofollow" href="/logout">退出</a>
+                </dd>
+            </dl>
+            <script>
+                //前往简历页面
+                $(".jianli").click(function () {
+                    //获取当前用户ID
+                    var userId=$("#userId").val();
+                    location.href="/jianli?userId="+userId;
+                });
+            </script>
+        </div>
+    </div>
+    <!--顶部导航栏 end-->
 
     <!--主体部分-->
     <div id="container">
@@ -487,12 +548,12 @@
             <!--					<a class="subscribe" href="subscribe.html" target="_blank">订阅职位</a>-->
         </div>
 
-        <!--				右侧具体的职位信息-->
+        <!--右侧具体的职位信息-->
         <div class="content">
-            <!--					搜索框-->
+            <!--搜索框-->
             <div id="search_box">
                 <form id="searchForm" name="searchForm" action="list.html" method="get">
-                    <!--							选择按公司搜索还是按职位搜索-->
+                    <!--选择按公司搜索还是按职位搜索-->
                     <ul id="searchType">
                         <li data-searchtype="1" class="type_selected">职位</li>
                         <li data-searchtype="4">公司</li>
@@ -1470,7 +1531,6 @@
 
             <div class="clear"></div>
         </div>
-        <input type="hidden" value="" name="userid" id="userid"/>
         <script type="text/javascript" src="style/js/Chart.min.js"></script>
         <script type="text/javascript" src="style/js/home.min.js"></script>
         <script type="text/javascript" src="style/js/count.js"></script>

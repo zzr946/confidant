@@ -33,7 +33,7 @@
                     <input type="hidden" id="userId" name="userId" th:value="${session.user.id}">
                     <!--隐藏域存放当前公司id-->
                     <input type="hidden" id="companyId" name="companyId" th:value="${session.reg_companyInfo.id}">
-                    <a class="greylink" id="tocreate" href="javascript:void(0)">发布新职位</a>
+                    <a class="greylink" id="tocreate" href="/create">发布新职位</a>
                     <a class="greylink toMyHomePage" href="javascript:void(0)"> 进入我的公司主页</a>
                 </dd>
                 <script>

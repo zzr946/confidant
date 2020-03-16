@@ -48,7 +48,7 @@ public class CompanyInfoController {
                        @ApiParam(value = "当前登陆的用户ID") String userId,
                        @ApiParam(value = "公司愿景") String reserved2,
                        HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("文件上传请求进来了！！");
+//        System.out.println("文件上传请求进来了！！");
 //        System.out.println("公司名称："+name);
 //        System.out.println("公司logo文件对象："+companyPhoto);
 //        System.out.println("公司网址："+companyUrl);
