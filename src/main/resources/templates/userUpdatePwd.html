@@ -15,29 +15,26 @@
 </head>
 
 <body>
+<!--隐藏域存放用户ID-->
+<input type="hidden" id="userId" th:value="${session.user.id}">
 <div id="body">
     <!--引入顶部导航栏-->
-    <div id="header" th:fragment="top_nav_publishJob">
+    <div id="header" th:fragment="common_top_nav">
         <div class="wrapper">
-            <!--隐藏域存放当前登陆人ID-->
-            <input type="hidden" id="userId" th:value="${session.user.id}">
-            <!--隐藏域存放公司ID-->
-            <input type="hidden" id="companyId" th:if="${session.company!=null}" th:value="${session.company.companyInfo.id}">
-            <a class="logo tomyhome" href="javascript:void(0)">
-                <img width="229" height="43" alt="伯乐网" src="../../style/images/logo.png">
+            <a href="/index" class="logo">
+                <img src="style/images/logo.png" width="229" height="43" alt="伯乐网-专注互联网招聘"/>
             </a>
-            <ul id="navheader" class="reset">
-                <li>
-                    <a class="tomyhome" href="javascript:void(0)">我的公司</a>
+            <ul class="reset" id="navheader">
+                <li >
+                    <a href="/index">首页</a>
                 </li>
                 <li>
-                    <a rel="nofollow" href="javascript:void(0)" style="margin-left: 50px;">简历管理</a>
+                    <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
                 </li>
-                <li>
-                    <a rel="nofollow" href="/create" style="margin-left: 50px">发布职位</a>
+                <li class="current">
+                    <a th:href="'/jianli?userId='+${session.user.id}" rel="nofollow" style="margin-left: 50px">我的简历</a>
                 </li>
             </ul>
-
             <!--未登陆显示登陆注册-->
             <ul class="loginTop" th:if="${session.user}==null">
                 <li>
@@ -48,49 +45,33 @@
                     <a href="/registerPage" rel="nofollow">注册</a>
                 </li>
             </ul>
-            <!--已登陆显示下列表-->
+            <!--已经登陆显示下拉列表-->
             <dl class="collapsible_menu" th:if="${session.user}!=null">
                 <dt>
-                    <span th:text="${session.user.phone}">姓名</span>
-                    <span class="red dn" id="noticeDot-1"></span>
+                    <span th:text="${session.user.phone}">路人甲</span>
+                    <span class="red dn" id="noticeDot-0"></span>
                     <i></i>
                 </dt>
-                <dd id="myPublishJobs">
-                    <a href="javascript:void(0)">我发布的职位</a>
+                <dd>
+                    <a rel="nofollow" th:href="'/jianli?userId='+${session.user.id}">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="/positions.html">我收到的简历</a>
-                </dd>
-                <dd class="btm tomyhome">
-                    <a href="javascript:void(0)">我的公司主页</a>
+                    <a href="javascript:void(0)">我收藏的职位</a>
                 </dd>
                 <dd>
-                    <a href="/accountSetting">帐号设置</a>
+                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                </dd>
+                <dd>
+                    <a href="/setting">帐号设置</a>
                 </dd>
                 <dd class="logout">
                     <a rel="nofollow" href="/logout">退出</a>
                 </dd>
             </dl>
-            <script>
-                //点击 "我发布的职位"
-                $("#myPublishJobs").click(function () {
-                    //获取公司ID
-                    var companyId = $("#companyId").val();
-                    //跳转到有效职位页面
-                    location.href = "/effective?companyId=" + companyId;
-                    return false;
-                });
-                //点击 "我的公司主页"
-                $(".tomyhome").click(function () {
-                    //获取用户id
-                    var userId = $("#userId").val();
-                    location.href = "/myhome?" + "userId=" + userId;
-                });
 
-            </script>
         </div>
     </div>
-    <!-- 顶部导航栏 end -->
+    <!--顶部导航栏 end-->
 
     <div id="container">
         <div class="user_bindSidebar">
@@ -118,7 +99,6 @@
                             <td>
                                 <input type="password" id="oldPwd" name="oldPwd"
                                        style="background-image: url(style/images/img/0CQnd2Jos49xUAAAAASUVORK5CYII=quot); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;">
-                                <span id="updatePwd_beError" style="display:none;" class="error">
             				</span></td>
                         </tr>
                         <tr>

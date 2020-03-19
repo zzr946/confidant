@@ -52,6 +52,24 @@
         </div>
         <!--基本信息 end-->
 
+        <!--教育背景-->
+        <div class="profile_box" id="educationalBackground"
+             th:if="${session.jianli!=null && session.jianli.school!=null &&session.jianli.school!=''}">
+            <h2>教育背景</h2>
+            <div class="educationalShow">
+                <ul class="elist clearfix">
+                    <li class="clear c7" style="width: 606px">
+                        <span class="c9">[[${session.jianli.studyStartYear}]]年 ～ [[${session.jianli.studyEndYear}]]年</span><br>
+                        <span style="color: #3a3a3a;">毕业院校：</span>[[${session.jianli.school}]]<br>
+                        <span style="color: #3a3a3a;">学历：</span>[[${session.jianli.education}]]<br>
+                        <span style="color: #3a3a3a;">所学专业：</span>[[${session.jianli.majorName}]]<br>
+                    </li>
+                </ul>
+            </div>
+            <!--end .educationalShow-->
+        </div>
+        <!--教育背景 end-->
+
         <!--期望工作-->
         <div class="profile_box" id="expectJob"
              th:if="${session.jianli!=null && session.jianli.hopeWorkplace!=null &&session.jianli.hopeWorkplace!=''}">
@@ -110,35 +128,6 @@
         </div>
         <!--项目经验 end-->
 
-        <!--教育背景-->
-        <div class="profile_box" id="educationalBackground"
-             th:if="${session.jianli!=null && session.jianli.school!=null &&session.jianli.school!=''}">
-            <h2>教育背景</h2>
-            <div class="educationalShow">
-                <ul class="elist clearfix">
-                    <li class="clear c7" style="width: 606px">
-                        <span class="c9">[[${session.jianli.studyStartYear}]]年 ～ [[${session.jianli.studyEndYear}]]年</span><br>
-                        <span style="color: #3a3a3a;">毕业院校：</span>[[${session.jianli.school}]]<br>
-                        <span style="color: #3a3a3a;">学历：</span>[[${session.jianli.education}]]<br>
-                        <span style="color: #3a3a3a;">所学专业：</span>[[${session.jianli.majorName}]]<br>
-                    </li>
-                </ul>
-            </div>
-            <!--end .educationalShow-->
-        </div>
-        <!--教育背景 end-->
-
-        <!--自我描述-->
-        <div class="profile_box" id="selfDescription"
-             th:if="${session.jianli!=null && session.jianli.autognosis!=null &&session.jianli.autognosis!=''}">
-            <h2>自我描述</h2>
-            <div class="descriptionShow c7">
-                [[${session.jianli.autognosis}]]
-            </div>
-            <!--end .descriptionShow-->
-        </div>
-        <!--自我描述 end-->
-
         <!--作品展示-->
         <div class="profile_box" id="worksShow"
              th:if="${session.jianli!=null && session.jianli.worksDescribe!=null &&session.jianli.worksDescribe!=''}">
@@ -158,6 +147,17 @@
             <!--end .workShow-->
         </div>
         <!--作品展示 end-->
+
+        <!--自我描述-->
+        <div class="profile_box" id="selfDescription"
+             th:if="${session.jianli!=null && session.jianli.autognosis!=null &&session.jianli.autognosis!=''}">
+            <h2>自我描述</h2>
+            <div class="descriptionShow c7">
+                [[${session.jianli.autognosis}]]
+            </div>
+            <!--end .descriptionShow-->
+        </div>
+        <!--自我描述 end-->
     </div>
 </div>
 </body>

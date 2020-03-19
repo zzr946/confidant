@@ -91,12 +91,12 @@ public class PageJumpController {
     /****************************************普通用户相关*****************************************/
 
     /**
-     * 跳转到简历预览页面
+     * 跳转到修改密码页面
      */
-//    @GetMapping("/preview")
-//    public String preview(){
-//        return "preview";
-//    }
+    @GetMapping("/setting")
+    public String setting(){
+        return "userUpdatePwd";
+    }
 
 
 

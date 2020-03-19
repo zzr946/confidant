@@ -36,7 +36,7 @@
                     <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
                 </li>
                 <li class="current">
-                    <a href="/jianli" rel="nofollow" style="margin-left: 50px">我的简历</a>
+                    <a th:href="'/jianli?userId='+${session.user.id}" rel="nofollow" style="margin-left: 50px">我的简历</a>
                 </li>
             </ul>
             <!--未登陆显示登陆注册-->
@@ -57,7 +57,7 @@
                     <i></i>
                 </dt>
                 <dd>
-                    <a rel="nofollow" href="/jianli">我的简历</a>
+                    <a rel="nofollow" th:href="'/jianli?userId='+${session.user.id}">我的简历</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我收藏的职位</a>
@@ -66,7 +66,7 @@
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">帐号设置</a>
+                    <a href="/setting">帐号设置</a>
                 </dd>
                 <dd class="logout">
                     <a rel="nofollow" href="/logout">退出</a>
@@ -978,6 +978,7 @@
                                             <input type="hidden" class="companyMonthStart" name="companyMonthStart" id="oldJobStartMonth"
                                                    th:if="${session.jianli!=null&&session.jianli.oldJobStartMonth!=null}"
                                                    th:value="${session.jianli.oldJobStartMonth}">
+
                                             <input type="button" value="开始月份" th:if="${session.jianli==null || session.jianli.oldJobStartMonth==null}"
                                                    class="profile_select_139 profile_select_normal select_companyMonthStart">
                                             <input type="button" th:value="${session.jianli.oldJobStartMonth}" th:if="${session.jianli!=null && session.jianli.oldJobStartMonth!=null}"
@@ -1080,7 +1081,8 @@
                                                    value="">
                                             <input type="hidden" class="companyMonthEnd" name="companyMonthEnd" id="oldJobEndMonth"
                                                    th:if="${session.jianli!=null && session.jianli.oldJobEndMonth!=null}"
-                                                   value="">
+                                                   th:value="${session.jianli.oldJobEndMonth}">
+
                                             <input type="button" value="结束月份" th:if="${session.jianli==null || session.jianli.oldJobEndMonth==null}"
                                                    class="profile_select_139 profile_select_normal select_companyMonthEnd">
                                             <input type="button" th:value="${session.jianli.oldJobEndMonth}" th:if="${session.jianli!=null && session.jianli.oldJobEndMonth!=null}"
@@ -2064,9 +2066,9 @@
 				<!--我的信息-->
                 <div class="mycenterR" id="myInfo">
                     <h2>我的信息</h2>
-                    <a target="_blank" href="collections.html">我收藏的职位</a>
+                    <a href="collections.html">我收藏的职位</a>
                     <br>
-                    <a target="_blank" href="subscribe.html">我订阅的职位</a>
+                    <a href="subscribe.html">我投递的职位</a>
                 </div>
                 <!--我的信息 end-->
 

@@ -117,6 +117,7 @@ public class ResumeService {
             resume.setEmail(email);
             resume.setNowState(nowState);
             resume.setPhoto(filename);
+            resume.setResumeState("0");
             //调用mappe层
             int i = resumeMapper.insert(resume);
             //插入完成后，查询当前用户的简历

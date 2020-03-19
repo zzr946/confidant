@@ -3,17 +3,17 @@ package com.zzr.confidant.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zzr.confidant.dto.Company;
 import com.zzr.confidant.dto.ResultDTO;
+import com.zzr.confidant.dto.UserLookCompany;
+import com.zzr.confidant.dto.UserLookJob;
 import com.zzr.confidant.mapper.*;
-import com.zzr.confidant.model.CompanyInfo;
-import com.zzr.confidant.model.CompanyInit;
-import com.zzr.confidant.model.CompanyProduct;
-import com.zzr.confidant.model.CompanyTags;
+import com.zzr.confidant.model.*;
 import com.zzr.confidant.tool.Tools;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 赵志然
@@ -30,6 +30,8 @@ public class CompanyInfoService {
     CompanyInitMapper companyInitMapper;
     @Resource
     CompanyProductMapper companyProductMapper;
+    @Resource
+    PositionMapper positionMapper;
     @Resource
     UserMapper userMapper;
 
@@ -251,5 +253,23 @@ public class CompanyInfoService {
             resultDTO.setData(null);
         }
         return resultDTO;
+    }
+
+    /**
+     * 查询公司所有
+     * @param companyId 公司ID
+     * @return
+     */
+    public UserLookCompany company(String companyId) {
+        UserLookCompany lookCompany = new UserLookCompany();
+        //根据公司id查询改所有职位信息
+        List<Position> list = positionMapper.selectList(new QueryWrapper<Position>().eq("companyId", companyId));
+        lookCompany.setPositionList(list);
+        //将公司所有信息查询出来，存入公司信息对象中
+        lookCompany.setCompanyInfo(companyInfoMapper.selectById(companyId));
+        lookCompany.setCompanyTags(companyTagsMapper.selectOne(new QueryWrapper<CompanyTags>().eq("companyId",companyId)));
+        lookCompany.setCompanyInitList(companyInitMapper.selectList(new QueryWrapper<CompanyInit>().eq("companyId",companyId)));
+        lookCompany.setCompanyProduct(companyProductMapper.selectOne(new QueryWrapper<CompanyProduct>().eq("companyId",companyId)));
+        return lookCompany;
     }
 }

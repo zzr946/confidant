@@ -1,6 +1,9 @@
 package com.zzr.confidant.controller;
 
+import com.zzr.confidant.dto.Company;
 import com.zzr.confidant.dto.ResultDTO;
+import com.zzr.confidant.dto.UserLookCompany;
+import com.zzr.confidant.dto.UserLookJob;
 import com.zzr.confidant.service.CompanyInfoService;
 import com.zzr.confidant.tool.Tools;
 import io.swagger.annotations.Api;
@@ -172,4 +175,19 @@ public class CompanyInfoController {
                                   @ApiParam(value = "修改后的公司发展阶段") @PathVariable("newCompanyStage") String newCompanyStage) {
         return companyInfoService.resetCompanyStage(companyId, userId, newCompanyStage);
     }
+
+
+    /**************************************************************************************************/
+    /*******************************************普通话用户相关*******************************************/
+
+    @ApiOperation(value = "普通用户查看公司信息", notes = "开发：赵志然")
+    @GetMapping("/company")
+    public String company(@ApiParam(value = "公司Id") @RequestParam("companyId") String companyId,
+                                       HttpServletRequest request,HttpServletResponse response) {
+        UserLookCompany lookCompany = companyInfoService.company(companyId);
+        HttpSession session = request.getSession();
+        session.setAttribute("userLookCompany",lookCompany);
+        return "userLookCompany";
+    }
+
 }
