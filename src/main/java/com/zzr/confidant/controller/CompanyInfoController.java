@@ -1,9 +1,6 @@
 package com.zzr.confidant.controller;
 
-import com.zzr.confidant.dto.Company;
-import com.zzr.confidant.dto.ResultDTO;
-import com.zzr.confidant.dto.UserLookCompany;
-import com.zzr.confidant.dto.UserLookJob;
+import com.zzr.confidant.dto.*;
 import com.zzr.confidant.service.CompanyInfoService;
 import com.zzr.confidant.tool.Tools;
 import io.swagger.annotations.Api;
@@ -164,15 +161,15 @@ public class CompanyInfoController {
                                   @ApiParam(value = "修改后的公司所在城市") @PathVariable("newCompanyCity") String newCompanyCity,
                                   @ApiParam(value = "修改后的公司规模") @PathVariable("newCompanyScale") String newCompanyScale,
                                   @ApiParam(value = "修改后的公司网址") @PathVariable("newCompanyUrl") String newCompanyUrl) {
-        return companyInfoService.resetAddress(companyId, userId, newCompanyCity,newCompanyScale,newCompanyUrl);
+        return companyInfoService.resetAddress(companyId, userId, newCompanyCity, newCompanyScale, newCompanyUrl);
     }
 
     @ApiOperation(value = "修改公司发展阶段", notes = "开发：赵志然")
     @PostMapping("/resetCompanyStage/{companyId}/{userId}/{newCompanyStage}")
     @ResponseBody
     public ResultDTO resetCompanyStage(@ApiParam(value = "公司Id") @PathVariable("companyId") String companyId,
-                                  @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
-                                  @ApiParam(value = "修改后的公司发展阶段") @PathVariable("newCompanyStage") String newCompanyStage) {
+                                       @ApiParam(value = "当前登陆人ID") @PathVariable("userId") String userId,
+                                       @ApiParam(value = "修改后的公司发展阶段") @PathVariable("newCompanyStage") String newCompanyStage) {
         return companyInfoService.resetCompanyStage(companyId, userId, newCompanyStage);
     }
 
@@ -183,11 +180,32 @@ public class CompanyInfoController {
     @ApiOperation(value = "普通用户查看公司信息", notes = "开发：赵志然")
     @GetMapping("/company")
     public String company(@ApiParam(value = "公司Id") @RequestParam("companyId") String companyId,
-                                       HttpServletRequest request,HttpServletResponse response) {
+                          HttpServletRequest request, HttpServletResponse response) {
         UserLookCompany lookCompany = companyInfoService.company(companyId);
         HttpSession session = request.getSession();
-        session.setAttribute("userLookCompany",lookCompany);
+        session.setAttribute("userLookCompany", lookCompany);
         return "userLookCompany";
     }
+
+    @ApiOperation(value = "用户搜索公司", notes = "开发：赵志然")
+    @GetMapping("/companyList")
+    public String userSelectCompany(@ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "1") String page,
+                                    @ApiParam(value = "每页条数") @RequestParam(name = "size", required = false, defaultValue = "10") String size,
+                                    @ApiParam(value = "用户输入 公司名称") @RequestParam("companyName") String companyName,
+                                    @ApiParam(value = "搜索条件 公司所在城市") @RequestParam("city") String city,
+                                    @ApiParam(value = "搜索条件 发展阶段") @RequestParam("stage") String stage,
+                                    @ApiParam(value = "搜索条件 行业领域") @RequestParam("field") String field,
+                                    HttpServletRequest request) {
+        System.out.println("公司名称:"+companyName);
+        System.out.println("公司所在城市:"+city);
+        System.out.println("发展阶段:"+stage);
+        System.out.println("行业领域:"+field);
+
+        SelectCompanyItemDTO companyItemDTO = companyInfoService.selectCompanyList(page,size,companyName,city,stage,field);
+        HttpSession session = request.getSession();
+        session.setAttribute("companyItem", companyItemDTO);
+        return "companylist";
+    }
+
 
 }

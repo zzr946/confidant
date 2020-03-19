@@ -68,7 +68,7 @@
                     <a href="/index">首页</a>
                 </li>
                 <li>
-                    <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
+                    <a href="/companyList?page=1&size=9&companyName=&city=全国&stage=&field=" style="margin-left: 50px">搜索公司</a>
                 </li>
                 <li th:if="${session.user != null}" class="jianli">
                     <a href="javascript:void(0)" rel="nofollow" style="margin-left: 50px">我的简历</a>
@@ -552,8 +552,6 @@
                     <input type="submit" id="search_button" value="搜索"/>
                 </form>
             </div>
-            <!--点击搜索按钮后触发的事件-->
-            <script></script>
 
             <!--搜索框下面 热门搜索-->
             <dl class="hotSearch">

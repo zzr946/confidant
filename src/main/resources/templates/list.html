@@ -61,7 +61,7 @@
                     <a href="/index">首页</a>
                 </li>
                 <li>
-                    <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
+                    <a href="/companyList?page=1&size=9&companyName=&city=全国&stage=&field=" style="margin-left: 50px">搜索公司</a>
                 </li>
                 <li th:if="${session.user != null}" class="jianli">
                     <a href="javascript:void(0)" rel="nofollow" style="margin-left: 50px">我的简历</a>
@@ -117,7 +117,8 @@
         <div class="sidebar">
             <div id="options" class="greybg">
                 <form method="get" action="/listSelect">
-                    <input type="hidden" id="page" name="page" value="1">
+                    <input type="hidden" id="page" name="page" value="1" th:if="${session.jobItem==null || session.jobItem.page==null || session.jobItem.page==''}">
+                    <input type="hidden" id="page" name="page" th:value="${session.jobItem.page}" th:if="${session.jobItem!=null && session.jobItem.page!=null && session.jobItem.page!=''}">
                     <input type="hidden" id="size" name="size" value="10">
 
                     <input type="hidden" id="position" name="position" th:value="${session.jobItem.positionName}" th:if="${session.jobItem.positionName!=null && session.jobItem.positionName!=''}">
@@ -126,11 +127,11 @@
                     <input type="hidden" id="education" name="education" th:value="${session.jobItem.education}" th:if="${session.jobItem.education!=null && session.jobItem.education!=''}">
                     <input type="hidden" id="jobType" name="jobType" th:value="${session.jobItem.jobType}" th:if="${session.jobItem.jobType!=null && session.jobItem.jobType!=''}">
 
-                    <input type="hidden" id="position" name="position" value="">
-                    <input type="hidden" id="salary" name="salary" value="">
-                    <input type="hidden" id="suffer" name="suffer" value="">
-                    <input type="hidden" id="education" name="education" value="">
-                    <input type="hidden" id="jobType" name="jobType" value="">
+                    <input type="hidden" id="position" name="position" value="" th:if="${session.jobItem==null || session.jobItem.positionName==null || session.jobItem.positionName==''}">
+                    <input type="hidden" id="salary" name="salary" value="" th:if="${session.jobItem==null || session.jobItem.salary==null || session.jobItem.salary==''}">
+                    <input type="hidden" id="suffer" name="suffer" value="" th:if="${session.jobItem==null || session.jobItem.suffer==null || session.jobItem.suffer==''}">
+                    <input type="hidden" id="education" name="education" value="" th:if="${session.jobItem==null || session.jobItem.education==null || session.jobItem.education==''}">
+                    <input type="hidden" id="jobType" name="jobType" value="" th:if="${session.jobItem==null || session.jobItem.jobType==null || session.jobItem.jobType==''}">
 
                     <input type="submit" id="hidden_select" hidden >
 
@@ -329,6 +330,7 @@
                     <input type="text" id="search_input" name="position" tabindex="1" th:value="${session.jobItem.positionName}"
                            placeholder="请输入职位名称，如：产品经理"
 						   th:if="${session.jobItem!=null && session.jobItem.positionName!=null && session.jobItem.positionName!=''}"/>
+
 					<input type="text" id="search_input" name="position" tabindex="1" value=""
 						   placeholder="请输入职位名称，如：产品经理"
 						   th:if="${session.jobItem==null || session.jobItem.positionName==null || session.jobItem.positionName==''}"/>

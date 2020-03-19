@@ -194,8 +194,8 @@ public class PositionController {
         if(education.contains(",")){education=education.substring(0,education.indexOf(','));}
         if(jobType.contains(",")){jobType=jobType.substring(0,jobType.indexOf(','));}
 
-        System.out.println("后端接受到的职位名称："+positionName);
-        System.out.println("后端接受到的gongzifanwei:："+salary);
+        //System.out.println("后端接受到的职位名称："+positionName);
+        //System.out.println("后端接受到的gongzifanwei:："+salary);
         SelectJobItemDTO jobItemDTO = positionService.select(page, size,positionName,salary,suffer,education,jobType);
         HttpSession session = request.getSession();
         session.setAttribute("jobItem", jobItemDTO);
