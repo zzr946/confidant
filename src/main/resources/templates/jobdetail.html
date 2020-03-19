@@ -32,9 +32,17 @@
         var youdao_conv_id = 271546;
     </script>
     <script type="text/javascript" src="style/js/conv.js"></script>
+    <!--layer.js-->
+    <script type="text/javascript" src="style/js/layer/layer.js"></script>
 </head>
 
 <body>
+<!--隐藏域 存放用户ID-->
+<input type="hidden" id="userId" value="" th:if="${session.user==null || session.user.id==null}">
+<input type="hidden" id="userId" th:value="${session.user.id}" th:if="${session.user!=null && session.user.id!=null}">
+<!--隐藏域存放职位ID-->
+<input type="hidden" id="positionId" th:value="${session.UserLookPosition.position.id}">
+
 <div id="body">
     <!--引入顶部导航栏-->
     <div id="header" th:fragment="common_top_nav">
@@ -74,7 +82,7 @@
                     <a rel="nofollow" href="javascript:void(0)">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
@@ -109,8 +117,44 @@
 							[[${session.UserLookPosition.position.positionName}]]
                         </h1>
 
-                        <a class="jd_collection" href="javascript:void(0)" title="收藏">
-                        </a>
+                        <!--收藏按钮-->
+                        <a class="jd_collection" id="collect" href="javascript:void(0)" title="收藏"></a>
+                        <script>
+                            //点击搜藏按钮触发的事件
+                            $("#collect").click(function () {
+                                //获取当前登陆人id
+                                var userId=$("#userId").val().trim();
+                                //获取职位ID
+                                var positionId=$("#positionId").val().trim();
+
+                                if(userId==null || userId==''){
+                                    layer.alert("请先登陆！",{icon:2});
+                                    return false;
+                                }
+                                //通过则发送请求，收藏该职位
+                                $.ajax({
+                                    type: "post",
+                                    url: "/collectPosition/" + userId+"/"+positionId,
+                                    success: function (result) {
+                                        //成功的回调函数
+                                        if (result.code == -1) {
+                                            layer.alert("您已经收藏过该职位了",{icon:4});
+                                            return false;
+                                        }else if(result.code==0){
+                                            layer.msg("职位收藏成功！");
+                                            return false;
+                                        }else if(result.code==1){
+                                            layer.alert("职位太火爆，请稍后再试！",{icon:5});
+                                            return false;
+                                        } else {
+                                            layer.alert("系统异常,请稍后再试！", {icon: 5});
+                                        }
+                                    }
+                                });
+
+                            });
+                        </script>
+
                     </dt>
                     <dd class="job_request">
                         <span class="red">[[${session.UserLookPosition.position.leastSalary}]]K-[[${session.UserLookPosition.position.mostSalary}]]K</span>
@@ -126,17 +170,18 @@
 						[[${session.UserLookPosition.position.positionDescribe}]]
                     </dd>
 
-
+                    <!--投递简历按钮-->
                     <dd>
                         <a href="javascript:void(0);" class="btn fr btn_apply">投个简历</a>
                     </dd>
+
                 </dl>
                 <div id="weibolist"></div>
             </div>
             <div class="content_r">
                 <dl class="job_company">
                     <dt>
-                        <a href="h/c/683.html" target="_blank">
+                        <a th:href="'/company?companyId='+${session.UserLookPosition.companyInfo.id}" target="_blank">
                             <img class="b2" th:src="'companyLogo/'+${session.UserLookPosition.companyInfo.companyLogo}" width="80"
                                  height="80"/>
                             <div>
@@ -169,293 +214,15 @@
                         <a href="javascript:;" id="mapPreview">查看完整地图</a>
                     </dd>
                 </dl>
-                <a href="h/subject/s_zhouyou.html?utm_source=BD__lagou&utm_medium=&utm_campaign=zhouyou" target="_blank"
-                   class="eventAd">
+                <a href="javascript:void(0)" class="eventAd">
                     <img src="style/images/zhouyou.jpg" width="280" height="135"/>
                 </a>
             </div>
         </div>
-        <input type="hidden" value="" name="userid" id="userid"/>
-        <input type="hidden" value="" name="type" id="resend_type"/>
-        <input type="hidden" value="140204" id="jobid"/>
-        <input type="hidden" value="683" id="companyid"/>
-        <input type="hidden" value="" id="positionLng"/>
-        <input type="hidden" value="" id="positionLat"/>
 
 
         <div id="tipOverlay"></div>
-        <!-------------------------------------弹窗lightbox  ----------------------------------------->
         <div style="display:none;">
-            <!--/#setResume-->
-
-            <!--/#setResumeApply-->
-
-            <!--/#uploadFileSuccess-->
-
-            <!-- 投简历成功前填写基本信息 -->
-            <style>
-                #cboxContent {
-                    overflow: visible;
-                }
-
-                #colorbox,
-                #cboxOverlay,
-                #cboxWrapper {
-                    overflow: visible;
-                }
-            </style>
-            <div id="infoBeforeDeliverResume" class="popup" style="height:300px; overflow:visible;">
-                <div class="f18">为方便所投递企业HR查阅，请确认个人信息</div>
-                <form id="basicInfoForm" method="post">
-                    <table width="100%">
-                        <tr>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="text" name="name" placeholder="姓名"/>
-                            </td>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="hidden" name="degree" value="" id="degree"/>
-                                <input type="button" class="profile_select_190 profile_select_normal" id="select_degree"
-                                       value="最高学历"/>
-                                <div id="box_degree" class="boxUpDown boxUpDown_190 dn"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="hidden" name="workyear" value="" id="workyear"/>
-                                <input type="button" class="profile_select_190 profile_select_normal"
-                                       id="select_workyear" value="工作年限"/>
-                                <div id="box_workyear" class="boxUpDown boxUpDown_190 dn"></div>
-                            </td>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="hidden" name="expectCity" value="" id="expectCity"/>
-                                <input type="button" class="profile_select_190 profile_select_normal"
-                                       id="select_expectCity" value="期望工作城市"/>
-                                <div id="box_expectCity" class="boxUpDown boxUpDown_596 dn"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="text" name="tel" placeholder="联系电话"/>
-                            </td>
-                            <td valign="middle">
-                                <span class="redstar">*</span>
-                            </td>
-                            <td>
-                                <input type="text" name="email" placeholder="邮箱地址"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td colspan="3">
-                                <input type="hidden" name="type" value=""/>
-                                <input type="submit" class="btn" value="确认并投递"/>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-            <!--/#infoBeforeDeliverResume-->
-
-            <!-- 上传附件简历操作说明-重新上传 -->
-            <div id="fileResumeUpload" class="popup">
-                <table width="100%">
-                    <tr>
-                        <td>
-                            <div class="f18 mb10">请上传标准格式的word简历</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="f16">
-                                操作说明：<br/> 打开需要上传的文件 - 点击文件另存为 - 选择.docx - 保存
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <a class="inline btn" href="#uploadFile" title="上传附件简历">重新上传</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#fileResumeUpload-->
-
-            <!-- 上传附件简历操作说明-重新上传 -->
-            <div id="fileResumeUploadSize" class="popup">
-                <table width="100%">
-                    <tr>
-                        <td>
-                            <div class="f18 mb10">上传文件大小超出限制</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="f16">
-                                提示：<br/> 单个附件不能超过10M，请重新选择附件简历！
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <a class="inline btn" href="#uploadFile" title="上传附件简历">重新上传</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#deliverResumeConfirm-->
-
-            <!-- 投简历成功前二次确认 -->
-            <div id="deliverResumeConfirm" class="popup">
-                <table width="100%">
-                    <tr>
-                        <td class="msg">
-                            <div class="f18">你的简历中：</div>
-                            <div class="f16 count"><span class="f18 confirm_field">学历、工作年限、期望工作城市</span>与该职位要求不匹配，确认要投递吗？
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <input type="hidden" name="type" value=""/>
-                            <a href="javascript:sendResume(,140204,true,true);" class="btn">确认投递</a>
-                            <a href="javascript:;" class="btn_s">放弃投递</a>
-                            <a href="javascript:;" class="f20 edit_field">修改信息</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#deliverResumeConfirm-->
-
-            <!-- 投简历成功 -->
-            <div id="deliverResumesSuccess" class="popup" style="width:440px;padding-bottom:10px;">
-                <table width="100%">
-                    <tr class="drawGGJ">
-                        <td align="center">
-                            <p class="font_16 count"></p>
-                            <p class="font_16 share dn">邀请好友成功注册伯乐，可提升每日投递量 &nbsp;&nbsp;
-                                <a href="h/share/invite.html" target="_blank">邀请好友>></a>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr class="drawQD">
-                        <td align="center">
-                            <a href="javascript:top.location.reload();" class="btn_s">确&nbsp;定</a>
-                        </td>
-                    </tr>
-                    <tr class="weixinQR dn">
-                        <td>
-                            <div class="weixin">
-                                <div class="qr">
-                                    <img src="" width="120" height="120"/>
-
-                                    <div>[仅限本人使用]</div>
-                                </div>
-                                <div class="qr_text">
-                                    想知道HR是否看过你的简历？<br/> 想在微信中收到面试通知？
-                                    <br/>
-                                    <span><< 微信扫一扫，一并解决</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#deliverResumesSuccess-->
-
-            <!-- 投递时，一个简历都没有弹窗 -->
-            <div id="sendNoResume" class="popup">
-                <table width="100%">
-                    <tr>
-                        <td class="f18 c5" align="center">你还没有可以投递的简历呢</td>
-                    </tr>
-                    <tr>
-                        <td class="c5" align="center">请上传附件简历或填写在线简历后再投递吧~</td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <form>
-                                <a href="javascript:void(0);" class="btn_addPic">
-                                    <span>选择上传文件</span>
-                                    <input title="支持word、pdf、ppt、txt、wps格式文件，大小不超过10M" size="3" name="newResume"
-                                           id="resumeUpload2" class="filePrew" type="file"
-                                           onchange="file_check(this,'h/nearBy/updateMyResume.json','resumeUpload2')"/>
-                                </a>
-                            </form>
-                            <a class="btn" href="jianli.html" target="_blank">完善在线简历</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#sendNoResume-->
-
-            <!-- 没有简历请上传 -->
-            <div id="deliverResumesNo" class="popup">
-                <table width="100%">
-                    <tr>
-                        <td align="center">
-                            <p class="font_16">你在伯乐还没有简历，请先上传一份</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <form>
-                                <a href="javascript:void(0);" class="btn_addPic">
-                                    <span>选择上传文件</span>
-                                    <input title="支持word、pdf、ppt、txt、wps格式文件，大小不超过10M" size="3" name="newResume"
-                                           id="resumeUpload1" class="filePrew" type="file"
-                                           onchange="file_check(this,'h/nearBy/updateMyResume.json','resumeUpload1')"/>
-                                </a>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">支持word、pdf、ppt、txt、wps格式文件，大小不超过10M</td>
-                    </tr>
-                </table>
-            </div>
-            <!--/#deliverResumesNo-->
-
-            <!--
-激活邮箱
-登录邮箱未验证时，
- 点击上传附件简历、申请职位、订阅职位、发布职位出现该弹窗
--->
-            <div id="activePop" class="popup" style="height:240px;">
-                <h4>登录邮箱未验证</h4>
-                <p>请验证你的登录邮箱以使用伯乐网的所有功能！ </p>
-                <p>我们已将验证邮件发送至：
-                    <a></a>，请点击邮件内的链接完成验证。</p>
-                <p>
-                    <a href="javascript:void(0)" id="resend">重新发送验证邮件 </a> |
-                    <a href="register.html" target="_blank"> 换个邮箱？ </a>
-                </p>
-            </div>
-            <!--/#activePop-->
-
-            <!--
-激活邮箱
-验证邮件发送成功弹窗
--->
-            <div id="resend_success" class="popup">
-                <p>我们已将激活邮件发送至：
-                    <a></a>，请点击邮件内的链接完成验证。</p>
-            </div>
-            <!--/#resend_success-->
 
             <!--地图弹窗-->
             <div id="baiduMap" class="popup">

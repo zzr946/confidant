@@ -94,8 +94,8 @@
                 <dd class="jianli">
                     <a rel="nofollow" href="javascript:void(0)">我的简历</a>
                 </dd>
-                <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                <dd id="collect">
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>

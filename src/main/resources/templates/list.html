@@ -88,7 +88,7 @@
                     <a rel="nofollow" href="javascript:void(0)">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
@@ -302,7 +302,7 @@
             <a href="http://www.w3cplus.com/" target="_blank" class="partnersAd">
                 <img src="style/images/w3cplus.png" width="230" height="80" alt="w3cplus"/>
             </a>
-            <a href="" target="_blank" class="partnersAd">
+            <a href="http://ww.jqschool.com" target="_blank" class="partnersAd">
                 <img src="style/images/jquery_school.jpg" width="230" height="80" alt="JQ学校"/>
             </a>
             <a href="http://linux.cn/" target="_blank" class="partnersAd">

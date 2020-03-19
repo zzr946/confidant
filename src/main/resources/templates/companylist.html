@@ -7,16 +7,13 @@
     <link rel="alternate" media="handheld"/>
     <!-- end 云适配 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>全国-公司列表-拉勾网-最专业的互联网招聘平台</title>
+    <title>公司列表-伯乐网</title>
     <meta property="qc:admins" content="23635710066417756375"/>
-    <meta content="全国condition-condition-公司列表-拉勾网-最专业的互联网招聘平台" name="description">
-    <meta content="全国condition-公司列表-拉勾网-最专业的互联网招聘平台" name="keywords">
     <meta name="baidu-site-verification" content="QIQ6KC1oZ6"/>
 
     <!-- <div class="web_root"  style="display:none">h</div> -->
     <script type="text/javascript">
         var ctx = "h";
-        console.log(1);
     </script>
     <link rel="Shortcut Icon" href="h/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="style/css/style.css"/>
@@ -93,7 +90,7 @@
                     <a rel="nofollow" href="javascript:void(0)">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
