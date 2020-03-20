@@ -47,6 +47,9 @@
 <input type="hidden" id="pageCount" th:value="${session.jobItem.pageCount}">
 <!--隐藏域 存放分页查询 存放总记录数-->
 <input type="hidden" id="total" th:value="${session.jobItem.total}">
+<!--隐藏域 存放分登陆人id-->
+<input type="hidden" id="userId" th:value="${session.user.id}" th:if="${session.user!=null}">
+<input type="hidden" id="userId" value="" th:if="${session.user==null}">
 
 <div id="body">
 
@@ -91,7 +94,7 @@
                     <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                    <a th:href="'/myToudi?userId='+${session.user.id}">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
                 </dd>
                 <dd>
                     <a href="/setting">帐号设置</a>
@@ -558,8 +561,45 @@
                     </div>
                     <div class="hot_pos_r">
                         <div class="apply">
-                            <a href="toudi.html" target="_blank">投个简历</a>
+                            <input type="hidden" th:value="${item.position.id}">
+                            <a onclick="toudi(this)" href="javascript:void(0)" >投个简历</a>
                         </div>
+                        <script>
+                            //点击投简历按钮触发事件
+                            function toudi(t) {
+                                //获取 职位id
+                                var positionId = $(t).prev().val().trim();
+                                //获取用户ID
+                                var userId=$("#userId").val().trim();
+                                if(userId==""||userId==null){
+                                    layer.alert("请先登陆！",{icon:2});
+                                    return false;
+                                }
+                                $.ajax({
+                                    type: "post",
+                                    url: "/toudi/" + userId+"/"+positionId,
+                                    success: function (result) {
+                                        //成功的回调函数
+                                        if(result.code==-2){
+                                            //没有简历
+                                            layer.alert("您无可用的简历，请先添加简历信息",{icon: 2});
+                                            return false;
+                                        }else if(result.code==-1){
+                                            //重读投递
+                                            layer.alert("该职位您已经投递过简历，请勿重复投递",{icon: 4});
+                                            return false;
+                                        } else if (result.code == 0) {
+                                            //成功
+                                            layer.alert("投递成功！请关注简历投递的最新动态",{icon: 1});
+                                            return false;
+                                        } else {
+                                            layer.alert("系统异常,请稍后再试！", {icon: 5});
+                                        }
+                                    }
+                                });
+
+                            }
+                        </script>
                         <div class="mb10">
                             <a th:href="'/company?companyId='+${item.companyInfo.id}" th:title="${item.companyInfo.companyName}" target="_blank">[[${item.companyInfo.companyName}]]</a>
                         </div>

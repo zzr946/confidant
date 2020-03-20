@@ -39,6 +39,8 @@ public class PositionService{
     CompanyInitMapper companyInitMapper;
     @Resource
     CompanyProductMapper companyProductMapper;
+    @Resource
+    DeliverMapper deliverMapper;
 
 
     /**
@@ -178,6 +180,9 @@ public class PositionService{
         int i = positionMapper.offline(positionId);
         if(i==1){
             //成功
+            //下线成功则将简历投递表中的相关记录设置为已删除状态 2
+            deliverMapper.delState(positionId);
+
             result.setCode(0);
             result.setMsg("下线成功");
             result.setData(null);
@@ -201,6 +206,8 @@ public class PositionService{
         int i = positionMapper.delPosition(positionId);
         if(i==1){
             //成功
+            //删除成功则将简历投递表中的相关记录设置为已删除状态 2
+            deliverMapper.delState(positionId);
             result.setCode(0);
             result.setMsg("删除成功");
             result.setData(null);
@@ -290,7 +297,7 @@ public class PositionService{
     public SelectJobItemDTO selectJobByName(String positionName, String page, String size) {
         SelectJobItemDTO jobItemDTO = new SelectJobItemDTO();
         QueryWrapper<Position> queryWrapper = new QueryWrapper<Position>();
-        queryWrapper.like("positionName",positionName);
+        queryWrapper.like("positionName",positionName).ne("positionState","1").ne("positionState","2");
         //分页查询
         Page<Position> positionPage = new Page<Position>(Integer.parseInt(page),Integer.parseInt(size));
         IPage<Position> iPage = positionMapper.selectPage(positionPage,queryWrapper);
@@ -357,6 +364,8 @@ public class PositionService{
         if(finalMaxSalary==finalMaxSalary){if(finalMaxSalary==0){boo=false;}}
 
         queryWrapper.like("positionName",positionName)
+                .ne("positionState","1")
+                .ne("positionState","2")
                 .le(finalMinSalary !=0,"leastSalary", finalMinSalary)
                 .ge(finalMaxSalary !=0,"mostSalary", finalMaxSalary)
 

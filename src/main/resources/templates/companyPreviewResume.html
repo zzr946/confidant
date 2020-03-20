@@ -1,0 +1,161 @@
+﻿<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>简历预览-[[${session.companyPreviewResume.name}]]的简历-伯乐网</title>
+    <link href="style/css/style.css" type="text/css" rel="stylesheet">
+    <link href="style/css/colorbox.min.css" type="text/css" rel="stylesheet">
+    <link href="style/css/popup.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="style/js/jquery.1.10.1.min.js"></script>
+    <script src="style/js/jquery.colorbox-min.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $("body").on("click", "a.btn_s", function () {
+                $.colorbox.close();
+                parent.jQuery.colorbox.close();
+            });
+            $(".inline").colorbox({
+                inline: true
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="previewWrapper">
+    <div class="preview_header">
+        <h1 th:title="${session.companyPreviewResume.name}+'的简历'">[[${session.companyPreviewResume.name}]]的简历</h1>
+    </div>
+
+    <div class="preview_content">
+        <!--基本信息-->
+        <div class="profile_box" id="basicInfo">
+            <h2>基本信息</h2>
+            <div class="basicShow">
+                <span>
+					姓名：[[${session.companyPreviewResume.name}]] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别：[[${session.companyPreviewResume.sex}]]<br>
+					学历：[[${session.companyPreviewResume.maxEducation}]]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   学校：[[${session.companyPreviewResume.school}]]<br>
+					电话：[[${session.companyPreviewResume.phone}]]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：[[${session.companyPreviewResume.email}]]<br>
+					工作经验：[[${session.companyPreviewResume.schoolSystem}]]
+				</span>
+                <div class="m_portrait" style="top: -25px;">
+                    <div></div>
+                    <img width="120" height="120" th:alt="${session.companyPreviewResume.name}"
+                         th:src="'userPhoto/'+${session.companyPreviewResume.photo}">
+                </div>
+            </div>
+            <!--end .basicShow-->
+        </div>
+        <!--基本信息 end-->
+
+        <!--教育背景-->
+        <div class="profile_box" id="educationalBackground"
+             th:if="${session.companyPreviewResume!=null && session.companyPreviewResume.school!=null &&session.companyPreviewResume.school!=''}">
+            <h2>教育背景</h2>
+            <div class="educationalShow">
+                <ul class="elist clearfix">
+                    <li class="clear c7" style="width: 606px">
+                        <span class="c9">[[${session.companyPreviewResume.studyStartYear}]]年 ～ [[${session.companyPreviewResume.studyEndYear}]]年</span><br>
+                        <span style="color: #3a3a3a;">毕业院校：</span>[[${session.companyPreviewResume.school}]]<br>
+                        <span style="color: #3a3a3a;">学历：</span>[[${session.companyPreviewResume.education}]]<br>
+                        <span style="color: #3a3a3a;">所学专业：</span>[[${session.companyPreviewResume.majorName}]]<br>
+                    </li>
+                </ul>
+            </div>
+            <!--end .educationalShow-->
+        </div>
+        <!--教育背景 end-->
+
+        <!--期望工作-->
+        <div class="profile_box" id="expectJob"
+             th:if="${session.companyPreviewResume!=null && session.companyPreviewResume.hopeWorkplace!=null &&session.companyPreviewResume.hopeWorkplace!=''}">
+            <h2>期望工作</h2>
+            <div class="expectShow c7">
+                <span style="color: #3a3a3a;">工作地点：</span>[[${session.companyPreviewResume.hopeWorkplace}]]<br>
+                <span style="color: #3a3a3a;">工作性质：</span>[[${session.companyPreviewResume.jobType}]]<br>
+                <span style="color: #3a3a3a;">职位：</span>[[${session.companyPreviewResume.hopePosition}]]<br>
+                <span style="color: #3a3a3a;">薪资：</span>[[${session.companyPreviewResume.hopeSalary}]]
+            </div>
+            <!--end .expectShow-->
+        </div>
+        <!--期望工作 end-->
+
+        <!--工作经历-->
+        <div class="profile_box" id="workExperience"
+             th:if="${session.companyPreviewResume!=null && session.companyPreviewResume.oldCompany!=null &&session.companyPreviewResume.oldCompany!=''}">
+            <h2>工作经历</h2>
+            <div class="experienceShow">
+                <ul class="wlist clearfix">
+                    <li class="clear c7">
+                        <span class="c9"><span style="color: #3a3a3a;">时间：</span>[[${session.companyPreviewResume.oldJobStartYear}]]年[[${session.companyPreviewResume.oldJobStartMonth}]]月 ～ [[${session.companyPreviewResume.oldJobEndYear}]]年[[${session.companyPreviewResume.oldJobEndMonth}]]月</span>
+                        <div>
+                            <span class="c7" style="margin-left: 0;width: 500px"><span
+                                    style="color: #3a3a3a;">工作单位：</span>[[${session.companyPreviewResume.oldCompany}]]</span><br>
+                            <span class="c7" style="margin-left: 0;width: 500px"><span
+                                    style="color: #3a3a3a;">担任职位：</span>[[${session.companyPreviewResume.oldPosition}]] </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--end .experienceShow-->
+        </div>
+        <!--工作经历 end-->
+
+        <!--项目经验-->
+        <div class="profile_box" id="projectExperience"
+             th:if="${session.companyPreviewResume!=null && session.companyPreviewResume.projectName!=null &&session.companyPreviewResume.projectName!=''}">
+            <h2>项目经验</h2>
+            <div class="projectShow">
+                <ul class="plist clearfix">
+                    <li class="noborder">
+                        <div class="projectList">
+                            <div class="c7">
+                                <span style="color: #3a3a3a;">项目名称：</span>[[${session.companyPreviewResume.projectName}]]
+                                <span class="c9">([[${session.companyPreviewResume.pojStartYear}]]年[[${session.companyPreviewResume.pojStartMonth}]]月 ～ [[${session.companyPreviewResume.pojEndYear}]]年[[${session.companyPreviewResume.pojEndMonth}]]月)</span><br>
+                                <span style="color: #3a3a3a;">担任职务：</span>[[${session.companyPreviewResume.role}]]<br>
+                                <span style="color: #3a3a3a;">项目简介：</span>[[${session.companyPreviewResume.pojDescribe}]]
+                            </div>
+                            <div class="dl1"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--end .projectShow-->
+        </div>
+        <!--项目经验 end-->
+
+        <!--作品展示-->
+        <div class="profile_box" id="worksShow"
+             th:if="${session.jianli!=null && session.companyPreviewResume.worksDescribe!=null &&session.companyPreviewResume.worksDescribe!=''}">
+            <h2>作品展示</h2>
+            <div class="workShow">
+                <ul class="slist clearfix">
+                    <li class="noborder">
+                        <div class="workList c7">
+                            <div class="f16">
+                                <span style="color: #3a3a3a;">网址：</span><a href="javascript:void(0)">[[${session.companyPreviewResume.worksUrl}]]</a><br><br>
+                                <span style="color: #3a3a3a;">作品介绍：</span>[[${session.companyPreviewResume.worksDescribe}]]
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--end .workShow-->
+        </div>
+        <!--作品展示 end-->
+
+        <!--自我描述-->
+        <div class="profile_box" id="selfDescription"
+             th:if="${session.companyPreviewResume!=null && session.companyPreviewResume.autognosis!=null &&session.companyPreviewResume.autognosis!=''}">
+            <h2>自我描述</h2>
+            <div class="descriptionShow c7">
+                [[${session.companyPreviewResume.autognosis}]]
+            </div>
+            <!--end .descriptionShow-->
+        </div>
+        <!--自我描述 end-->
+    </div>
+</div>
+</body>
+
+</html>

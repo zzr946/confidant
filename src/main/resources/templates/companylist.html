@@ -15,7 +15,6 @@
     <script type="text/javascript">
         var ctx = "h";
     </script>
-    <link rel="Shortcut Icon" href="h/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="style/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/external.min.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/popup.css"/>
@@ -93,7 +92,7 @@
                     <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                    <a th:href="'/myToudi?userId='+${session.user.id}">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
                 </dd>
                 <dd>
                     <a href="/setting">帐号设置</a>
@@ -118,7 +117,7 @@
 
         <div class="clearfix">
             <div class="content_l">
-                <div id="companyListForm" name="companyListForm" method="get" action="h/c/companylist.html">
+                <div id="companyListForm" name="companyListForm">
                     <!--搜索框-->
                     <div id="search_box" style="width: 675px;">
                         <form id="searchForm" name="searchForm" action="/companyList" method="get">
@@ -232,7 +231,7 @@
                                         $(t).removeClass("current");//取消选中自己
                                         $("qg").addClass("current");//选中全国
                                         //重新查询
-                                        $("#city").val('');//清空val值
+                                        $("#searchForm #city").val('');//清空val值
                                         $("#search_button").click();
                                         return false;
                                     }
@@ -247,7 +246,7 @@
                                     //选中点击的自己
                                     $(t).addClass("current");
                                     //重新查询
-                                    $("#city").val($(t).text().trim());
+                                    $("#searchForm #city").val($(t).text().trim());
                                     $("#search_button").click();
                                     return false;
                                 }
@@ -338,7 +337,7 @@
                                 if ($(t).hasClass("current")){
                                     $(t).removeClass("current");
                                     //重新查询
-                                    $("#stage").val('');//清空val值
+                                    $("#searchForm #stage").val('');//清空val值
                                     $("#search_button").click();
                                     return false;
                                 }
@@ -350,17 +349,17 @@
                                 //选中点击的自己
                                 $(t).addClass("current");
                                 //重新查询
-                                $("#stage").val($(t).text().trim());
+                                $("#searchForm #stage").val($(t).text().trim());
                                 $("#search_button").click();
                                 return false;
                             }
-
+                            //选择行业领域
                             function selectField(t) {
                                 //如果自己已经被选中，再次点击取消选中
                                 if ($(t).hasClass("current")){
                                     $(t).removeClass("current");
                                     //重新查询
-                                    $("#field").val('');//清空val值
+                                    $("#searchForm #field").val('');//清空val值
                                     $("#search_button").click();
                                     return false;
                                 }
@@ -372,7 +371,7 @@
                                 //选中点击的自己
                                 $(t).addClass("current");
                                 //重新查询
-                                $("#field").val($(t).text().trim());
+                                $("#searchForm #field").val($(t).text().trim());
                                 $("#search_button").click();
                                 return false;
                             }

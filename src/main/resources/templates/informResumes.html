@@ -27,10 +27,10 @@
             <a class="btn_create" href="/create">发布新职位</a>
             <dl class="company_center_aside">
                 <dt>我收到的简历</dt>
-                <dd class="current">
+                <dd>
                     <a th:href="'/manager?userId='+${session.user.id}">待处理简历</a>
                 </dd>
-                <dd>
+                <dd class="current">
                     <a th:href="'/informResume?userId='+${session.user.id}">已通知面试简历</a>
                 </dd>
                 <dd>
@@ -46,12 +46,12 @@
                 <dt>
                     <h1>
                         <em></em>
-                        待处理简历 <span></span></h1>
+                        已通知面试的简历 <span></span></h1>
                 </dt>
                 <dd>
                     <form action="canInterviewResumes.html" method="get" id="filterForm">
                         <!--收到的简历列表-->
-                        <ul class="reset resumeLists" th:each="toudi:${session.managerToudi}">
+                        <ul class="reset resumeLists" th:each="toudi:${session.managerToudi_inform}">
                             <li class="onlineResume">
 
                                 <div class="resumeShow" style="margin-left: 0px">
@@ -121,7 +121,7 @@
                                                     //成功的回调函数
                                                     //删除该节点
                                                     $(t).parent().parent().parent().remove();
-                                                    layer.alert("设置成功！", {icon: 1});
+                                                    layer.alert("删除成功！", {icon: 1});
                                                     return false;
                                                 },
                                                 exception(){

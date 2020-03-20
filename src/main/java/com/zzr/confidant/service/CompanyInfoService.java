@@ -270,7 +270,7 @@ public class CompanyInfoService {
     public UserLookCompany company(String companyId) {
         UserLookCompany lookCompany = new UserLookCompany();
         //根据公司id查询改所有职位信息
-        List<Position> list = positionMapper.selectList(new QueryWrapper<Position>().eq("companyId", companyId));
+        List<Position> list = positionMapper.selectList(new QueryWrapper<Position>().eq("companyId", companyId).eq("positionState","0"));
         lookCompany.setPositionList(list);
         //将公司所有信息查询出来，存入公司信息对象中
         lookCompany.setCompanyInfo(companyInfoMapper.selectById(companyId));

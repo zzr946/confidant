@@ -29,7 +29,7 @@
                     <a href="/index">首页</a>
                 </li>
                 <li>
-                    <a href="companylist.html" style="margin-left: 50px">搜索公司</a>
+                    <a href="/companyList?page=1&size=9&companyName=&city=全国&stage=&field=" style="margin-left: 50px">搜索公司</a>
                 </li>
                 <li class="current">
                     <a th:href="'/jianli?userId='+${session.user.id}" rel="nofollow" style="margin-left: 50px">我的简历</a>
@@ -56,7 +56,7 @@
                     <a rel="nofollow" th:href="'/jianli?userId='+${session.user.id}">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
                     <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>

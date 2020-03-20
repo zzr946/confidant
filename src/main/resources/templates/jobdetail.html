@@ -85,7 +85,7 @@
                     <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                    <a th:href="'/myToudi?userId='+${session.user.id}">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
                 </dd>
                 <dd>
                     <a href="/setting">帐号设置</a>
@@ -172,12 +172,50 @@
 
                     <!--投递简历按钮-->
                     <dd>
-                        <a href="javascript:void(0);" class="btn fr btn_apply">投个简历</a>
+                        <a onclick="toudi(this)" href="javascript:void(0);" class="btn fr btn_apply">投个简历</a>
                     </dd>
+                    <script>
+                        //点击投简历按钮触发事件
+                        function toudi(t) {
+                            //获取 职位id
+                            var positionId = $("#positionId").val().trim();
+                            //获取用户ID
+                            var userId=$("#userId").val().trim();
+                            if(userId==null || userId==''){
+                                layer.alert("请先登陆！",{icon:2});
+                                return false;
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: "/toudi/" + userId+"/"+positionId,
+                                success: function (result) {
+                                    //成功的回调函数
+                                    if(result.code==-2){
+                                        //没有简历
+                                        layer.alert("您无可用的简历，请先添加简历信息",{icon: 2});
+                                        return false;
+                                    }else if(result.code==-1){
+                                        //重读投递
+                                        layer.alert("该职位您已经投递过简历，请勿重复投递",{icon: 4});
+                                        return false;
+                                    } else if (result.code == 0) {
+                                        //成功
+                                        layer.alert("投递成功！请关注简历投递的最新动态",{icon: 1});
+                                        return false;
+                                    } else {
+                                        layer.alert("系统异常,请稍后再试！", {icon: 5});
+                                    }
+                                }
+                            });
+
+                        }
+
+                    </script>
 
                 </dl>
                 <div id="weibolist"></div>
             </div>
+            <!--右边栏-->
             <div class="content_r">
                 <dl class="job_company">
                     <dt>

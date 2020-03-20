@@ -27,13 +27,13 @@
             <a class="btn_create" href="/create">发布新职位</a>
             <dl class="company_center_aside">
                 <dt>我收到的简历</dt>
-                <dd class="current">
+                <dd>
                     <a th:href="'/manager?userId='+${session.user.id}">待处理简历</a>
                 </dd>
                 <dd>
                     <a th:href="'/informResume?userId='+${session.user.id}">已通知面试简历</a>
                 </dd>
-                <dd>
+                <dd class="current">
                     <a th:href="'/notResume?userId='+${session.user.id}">不合适简历</a>
                 </dd>
             </dl>
@@ -46,12 +46,12 @@
                 <dt>
                     <h1>
                         <em></em>
-                        待处理简历 <span></span></h1>
+                        不合适的简历 <span></span></h1>
                 </dt>
                 <dd>
                     <form action="canInterviewResumes.html" method="get" id="filterForm">
                         <!--收到的简历列表-->
-                        <ul class="reset resumeLists" th:each="toudi:${session.managerToudi}">
+                        <ul class="reset resumeLists" th:each="toudi:${session.managerToudi_not}">
                             <li class="onlineResume">
 
                                 <div class="resumeShow" style="margin-left: 0px">
@@ -80,48 +80,23 @@
                                     <div class="links">
                                         <!--隐藏域 存放投递记录ID-->
                                         <input type="hidden" th:value="${toudi.deliver.id}">
-                                        <a class="resume_notice" onclick="inform(this)" href="javascript:void(0)">通知面试</a>
-                                        <a class="resume_refuse" onclick="notSuitable(this)" href="javascript:void(0)">不合适</a>
+                                        <a class="resume_refuse" onclick="del(this)" href="javascript:void(0)">删除</a>
                                     </div>
                                     <script>
-                                        //点击通知面试按钮
-                                        function inform(t) {
+                                        //点击不合适按钮
+                                        function del(t) {
                                             //获取简历投递ID
                                             var toudiId=$(t).prev().val().trim();
                                             //获取当前登陆人id
                                             var userId=$("#userId").val().trim();
                                             $.ajax({
                                                 type: "post",
-                                                url: "/inform/" + toudiId+"/"+userId,
+                                                url: "/del/" + toudiId+"/"+userId,
                                                 success: function (result) {
                                                     //成功的回调函数
                                                     //删除该节点
                                                     $(t).parent().parent().parent().remove();
-                                                    layer.alert("通知成功！", {icon: 1});
-                                                    return false;
-                                                },
-                                                exception(){
-                                                    layer.alert("系统繁忙，请稍后再试！", {icon: 5});
-                                                    return false;
-                                                }
-                                            });
-
-                                        }
-
-                                        //点击不合适按钮
-                                        function notSuitable(t) {
-                                            //获取简历投递ID
-                                            var toudiId=$(t).prev().prev().val().trim();
-                                            //获取当前登陆人id
-                                            var userId=$("#userId").val().trim();
-                                            $.ajax({
-                                                type: "post",
-                                                url: "/notSuitable/" + toudiId+"/"+userId,
-                                                success: function (result) {
-                                                    //成功的回调函数
-                                                    //删除该节点
-                                                    $(t).parent().parent().parent().remove();
-                                                    layer.alert("设置成功！", {icon: 1});
+                                                    layer.alert("删除成功！", {icon: 1});
                                                     return false;
                                                 },
                                                 exception(){

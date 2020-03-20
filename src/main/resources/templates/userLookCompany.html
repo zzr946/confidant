@@ -56,10 +56,10 @@
                     <a rel="nofollow" href="javascript:void(0)">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我收藏的职位</a>
+                    <a th:href="'/selectCollections?userId='+${session.user.id}">我收藏的职位</a>
                 </dd>
                 <dd>
-                    <a href="javascript:void(0)">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
+                    <a th:href="'/myToudi?userId='+${session.user.id}">我投递的职位 <span id="noticeNo" class="red dn">(0)</span></a>
                 </dd>
                 <dd>
                     <a href="/setting">帐号设置</a>
