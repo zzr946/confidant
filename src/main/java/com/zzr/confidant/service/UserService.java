@@ -47,7 +47,7 @@ public class UserService {
         //获取六位数的验证码，并保存下来
         phoneCode = PhoneCode.getCode();
         //发送短信
-        //PhoneCode.sendCode(phone,phoneCode);
+        PhoneCode.sendCode(phone,phoneCode);
         result.setCode(0);
         result.setMsg("发送成功");
         result.setData(phoneCode);
