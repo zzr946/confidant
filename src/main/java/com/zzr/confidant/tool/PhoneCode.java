@@ -24,8 +24,8 @@ public class PhoneCode {
      * @param code  发送的验证码
      */
     public static void sendCode(String phone, String code) {
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4FxZZbV49dB1cn6CXmuL",
-                "OxyX1qFIxBXZ9zDwB1boqeGcNPTTid");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "<AccessKey ID>",
+                "<AccessKey Secret>");
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
@@ -35,8 +35,8 @@ public class PhoneCode {
         request.setAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
-        request.putQueryParameter("SignName", "伯乐网");
-        request.putQueryParameter("TemplateCode", "SMS_173250721");
+        request.putQueryParameter("SignName", "<SignName>");
+        request.putQueryParameter("TemplateCode", "<TemplateCode>");
 
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
         try {
